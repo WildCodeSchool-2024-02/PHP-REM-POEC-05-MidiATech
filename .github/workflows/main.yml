@@ -30,10 +30,10 @@ jobs:
                   if [ -d "./vendor" ]; then echo "Forbidden external libs folder (vendor/) found !"; exit 2; fi
 
             # Runs a single command using the runners shell
-            - name: Composer
-              run: composer install
             - name: ComposerUpdate
               run: composer update
+            - name: Composer
+              run: composer install
 
             - name: code_quality
               run: |
