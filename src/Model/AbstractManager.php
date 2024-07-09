@@ -25,7 +25,19 @@ abstract class AbstractManager
      */
     public function selectAll(string $orderBy = '', string $direction = 'ASC'): array
     {
-        $query = 'SELECT * FROM ' . static::TABLE;
+        $query = match (static::TABLE) {
+            'books' => 'SELECT books.*, categories.name AS category FROM ' . static::TABLE .
+                ' JOIN categories ON books.category_id = categories.id',
+
+            'musics' => 'SELECT musics.*, categories.name AS category FROM ' . static::TABLE .
+                ' JOIN categories ON musics.id_category = categories.id',
+
+            'videos' => 'SELECT videos.*, categories.name AS category, types.name AS type FROM ' . static::TABLE .
+                ' JOIN categories ON videos.id_category = categories.id JOIN types ON videos.id_types = types.id',
+
+            default => 'SELECT * FROM ' . static::TABLE,
+        };
+
         if ($orderBy) {
             $query .= ' ORDER BY ' . $orderBy . ' ' . $direction;
         }
@@ -39,8 +51,26 @@ abstract class AbstractManager
     public function selectOneById(int $id): array|false
     {
         // prepared request
-        $statement = $this->pdo->prepare("SELECT * FROM " . static::TABLE . " WHERE id=:id");
-        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement = match (static::TABLE) {
+            'books' => $this->pdo->prepare("SELECT books.*, categories.name AS category
+                FROM " . static::TABLE .
+                " JOIN categories ON books.category_id = categories.id
+                WHERE books.id = :id"),
+
+            'musics' => $this->pdo->prepare("SELECT musics.*, categories.name AS category
+                FROM " . static::TABLE .
+                " JOIN categories ON musics.id_category = categories.id
+                WHERE musics.id = :id"),
+
+            'videos' => $this->pdo->prepare("SELECT videos.*, categories.name AS category, types.name AS type
+                FROM " . static::TABLE .
+                " JOIN categories ON videos.id_category = categories.id JOIN types ON videos.id_types = types.id
+                WHERE videos.id = :id"),
+
+            default => $this->pdo->prepare("SELECT * FROM " . static::TABLE . " WHERE id = :id"),
+        };
+
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetch();
