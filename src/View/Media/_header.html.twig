@@ -1,0 +1,31 @@
+{# Démarrer la session pour vérifier si l'utilisateur est connecté (cela doit être fait dans votre contrôleur PHP) #}
+
+<header>
+    <div class="container">
+        {# Logo de la médiathèque #}
+        <div class="logo">
+            <a href="{{ path('homepage') }}"><img src="{{ asset('images/logo.png') }}" alt="Logo Médiathèque"></a>
+        </div>
+        
+        {# Barre de navigation #}
+        <nav>
+            {# Checkbox pour activer le menu en mode mobile #}
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="menu-icon">&#9776;</label>
+            <ul class="menu">
+                {# Liens de navigation #}
+                <li><a href="{{ path('livres') }}">Livres</a></li>
+                <li><a href="{{ path('musiques') }}">Musiques</a></li>
+                <li><a href="{{ path('films') }}">Films</a></li>
+                <li>
+                    {# Vérifier si l'utilisateur est connecté #}
+                    {% if app.user %}
+                        <a href="{{ path('profil') }}">Profil</a>
+                    {% else %}
+                        <a href="{{ path('connexion') }}">Connexion</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
