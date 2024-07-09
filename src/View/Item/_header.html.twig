@@ -1,0 +1,37 @@
+<?php
+// Démarrer la session pour vérifier si l'utilisateur est connecté
+session_start();
+
+// Vérifier si l'utilisateur est connecté
+$is_logged_in = isset($_SESSION['user']);
+?>
+
+<header>
+    <div class="container">
+        <!-- Logo de la médiathèque -->
+        <div class="logo">
+            <a href="index.php"><img src="logo_midi_a_tech.png" Logo Médiathèque> </a>
+            <h1>Midi A TECH</h1>
+        </div>
+        
+        <!-- Barre de navigation -->
+        <nav>
+            <!-- Checkbox pour activer le menu en mode mobile -->
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="menu-icon">&#9776;</label>
+            <ul class="menu">
+                <!-- Liens de navigation -->
+                <li><a href="livres.php">Livres</a></li>
+                <li><a href="musiques.php">Musiques</a></li>
+                <li><a href="films.php">Films</a></li>
+                <li>
+                    <?php if ($is_logged_in): ?>
+                        <a href="profil.php">Profil</a>
+                    <?php else: ?>
+                        <a href="connexion.php">Connexion</a>
+                    <?php endif; ?>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
