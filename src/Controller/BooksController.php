@@ -2,19 +2,19 @@
 
 namespace App\Controller;
 
-use App\Model\ItemManager;
+use App\Model\BooksManager;
 
-class ItemController extends AbstractController
+class BooksController extends AbstractController
 {
     /**
      * List items
      */
     public function index(): string
     {
-        $itemManager = new ItemManager();
-        $items = $itemManager->selectAll('title');
+        $booksManager = new BooksManager();
+        $books = $booksManager->selectAll('title');
 
-        return $this->twig->render('Item.dist/index.html.twig', ['items' => $items]);
+        return $this->twig->render('Book/index.html.twig', compact('books'));
     }
 
     /**
@@ -22,10 +22,10 @@ class ItemController extends AbstractController
      */
     public function show(int $id): string
     {
-        $itemManager = new ItemManager();
-        $item = $itemManager->selectOneById($id);
+        $booksManager = new BooksManager();
+        $book = $booksManager->selectOneById($id);
 
-        return $this->twig->render('Item.dist/show.html.twig', ['item' => $item]);
+        return $this->twig->render('Book/show.html.twig', compact('book'));
     }
 
     /**
@@ -33,25 +33,25 @@ class ItemController extends AbstractController
      */
     public function edit(int $id): ?string
     {
-        $itemManager = new ItemManager();
-        $item = $itemManager->selectOneById($id);
+        $booksManager = new BooksManager();
+        $book = $booksManager->selectOneById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
-            $item = array_map('trim', $_POST);
+            $book = array_map('trim', $_POST);
 
             // TODO validations (length, format...)
 
             // if validation is ok, update and redirection
-            $itemManager->update($item);
+            $booksManager->update($book);
 
-            header('Location: /items/show?id=' . $id);
+            header('Location: /books/show?id=' . $id);
 
             // we are redirecting so we don't want any content rendered
             return null;
         }
 
-        return $this->twig->render('Item.dist/edit.html.twig', ['item' => $item,]);
+        return $this->twig->render('Book/edit.html.twig', compact('book'));
     }
 
     /**
@@ -61,19 +61,19 @@ class ItemController extends AbstractController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
-            $item = array_map('trim', $_POST);
+            $book = array_map('trim', $_POST);
 
             // TODO validations (length, format...)
 
             // if validation is ok, insert and redirection
-            $itemManager = new ItemManager();
-            $id = $itemManager->insert($item);
+            $booksManager = new BooksManager();
+            $id = $booksManager->insert($book);
 
-            header('Location:/items/show?id=' . $id);
+            header('Location:/books/show?id=' . $id);
             return null;
         }
 
-        return $this->twig->render('Item.dist/add.html.twig');
+        return $this->twig->render('Book/add.html.twig');
     }
 
     /**
@@ -83,10 +83,10 @@ class ItemController extends AbstractController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = trim($_POST['id']);
-            $itemManager = new ItemManager();
-            $itemManager->delete((int)$id);
+            $booksManager = new BooksManager();
+            $booksManager->delete((int)$id);
 
-            header('Location:/items');
+            header('Location:/books');
         }
     }
 }

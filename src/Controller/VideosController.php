@@ -2,19 +2,19 @@
 
 namespace App\Controller;
 
-use App\Model\ItemManager;
+use App\Model\VideosManager;
 
-class ItemController extends AbstractController
+class VideosController extends AbstractController
 {
     /**
      * List items
      */
     public function index(): string
     {
-        $itemManager = new ItemManager();
-        $items = $itemManager->selectAll('title');
+        $videosManager = new VideosManager();
+        $videos = $videosManager->selectAll('title');
 
-        return $this->twig->render('Item.dist/index.html.twig', ['items' => $items]);
+        return $this->twig->render('Item.dist/index.html.twig', compact('videos'));
     }
 
     /**
@@ -22,10 +22,10 @@ class ItemController extends AbstractController
      */
     public function show(int $id): string
     {
-        $itemManager = new ItemManager();
-        $item = $itemManager->selectOneById($id);
+        $videosManager = new VideosManager();
+        $video = $videosManager->selectOneById($id);
 
-        return $this->twig->render('Item.dist/show.html.twig', ['item' => $item]);
+        return $this->twig->render('Video/show.html.twig', compact('video'));
     }
 
     /**
@@ -33,25 +33,25 @@ class ItemController extends AbstractController
      */
     public function edit(int $id): ?string
     {
-        $itemManager = new ItemManager();
-        $item = $itemManager->selectOneById($id);
+        $videosManager = new VideosManager();
+        $video = $videosManager->selectOneById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
-            $item = array_map('trim', $_POST);
+            $video = array_map('trim', $_POST);
 
             // TODO validations (length, format...)
 
             // if validation is ok, update and redirection
-            $itemManager->update($item);
+            $videosManager->update($video);
 
-            header('Location: /items/show?id=' . $id);
+            header('Location: /videos/show?id=' . $id);
 
             // we are redirecting so we don't want any content rendered
             return null;
         }
 
-        return $this->twig->render('Item.dist/edit.html.twig', ['item' => $item,]);
+        return $this->twig->render('Video/edit.html.twig', compact('video'));
     }
 
     /**
@@ -61,19 +61,19 @@ class ItemController extends AbstractController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
-            $item = array_map('trim', $_POST);
+            $video = array_map('trim', $_POST);
 
             // TODO validations (length, format...)
 
             // if validation is ok, insert and redirection
-            $itemManager = new ItemManager();
-            $id = $itemManager->insert($item);
+            $videosManager = new VideosManager();
+            $id = $videosManager->insert($video);
 
-            header('Location:/items/show?id=' . $id);
+            header('Location:/videos/show?id=' . $id);
             return null;
         }
 
-        return $this->twig->render('Item.dist/add.html.twig');
+        return $this->twig->render('Video/add.html.twig');
     }
 
     /**
@@ -83,10 +83,10 @@ class ItemController extends AbstractController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = trim($_POST['id']);
-            $itemManager = new ItemManager();
-            $itemManager->delete((int)$id);
+            $videosManager = new VideosManager();
+            $videosManager->delete((int)$id);
 
-            header('Location:/items');
+            header('Location:/videos');
         }
     }
 }
