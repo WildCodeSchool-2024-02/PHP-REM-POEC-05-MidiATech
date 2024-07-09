@@ -130,11 +130,11 @@ CREATE TABLE IF NOT EXISTS `midiATech`.`musics` (
                                                     `date` DATE NOT NULL,
                                                     `duration` INT NOT NULL,
                                                     `quantities` INT NOT NULL,
-                                                    `id_categories` INT NOT NULL,
+                                                    `id_category` INT NOT NULL,
                                                     PRIMARY KEY (`id`),
-                                                    INDEX `fk_musics_categories1_idx` (`id_categories` ASC) VISIBLE,
+                                                    INDEX `fk_musics_categories1_idx` (`id_category` ASC) VISIBLE,
                                                     CONSTRAINT `fk_musics_categories`
-                                                        FOREIGN KEY (`id_categories`)
+                                                        FOREIGN KEY (`id_category`)
                                                             REFERENCES `midiATech`.`categories` (`id`)
                                                             ON DELETE NO ACTION
                                                             ON UPDATE NO ACTION)
@@ -147,34 +147,19 @@ CREATE TABLE IF NOT EXISTS `midiATech`.`musics` (
 DROP TABLE IF EXISTS `midiATech`.`borrowing` ;
 
 CREATE TABLE IF NOT EXISTS `midiATech`.`borrowing` (
-                                                       `id_borrowing` INT NOT NULL AUTO_INCREMENT,
+                                                       `id` INT NOT NULL AUTO_INCREMENT,
                                                        `id_users` INT NOT NULL,
                                                        `id_media` INT NOT NULL,
+                                                       `media_type` ENUM('book', 'music', 'video') NOT NULL,
                                                        `date` DATE NOT NULL,
-                                                       PRIMARY KEY (`id_borrowing`, `id_users`, `id_media`),
-                                                       INDEX `fk_users_has_books_books1_idx` (`id_media` ASC) VISIBLE,
-                                                       INDEX `fk_users_has_books_users_idx` (`id_users` ASC) VISIBLE,
+                                                       PRIMARY KEY (`id`),
+                                                       INDEX `fk_users_idx` (`id_users` ASC) VISIBLE,
                                                        CONSTRAINT `fk_borrowing_users`
                                                            FOREIGN KEY (`id_users`)
                                                                REFERENCES `midiATech`.`users` (`id`)
                                                                ON DELETE NO ACTION
-                                                               ON UPDATE NO ACTION,
-                                                       CONSTRAINT `fk_borrowing_books`
-                                                           FOREIGN KEY (`id_media`)
-                                                               REFERENCES `midiATech`.`books` (`id`)
-                                                               ON DELETE NO ACTION
-                                                               ON UPDATE NO ACTION,
-                                                       CONSTRAINT `fk_borrowing_videos`
-                                                           FOREIGN KEY (`id_media`)
-                                                               REFERENCES `midiATech`.`videos` (`id`)
-                                                               ON DELETE NO ACTION
-                                                               ON UPDATE NO ACTION,
-                                                       CONSTRAINT `fk_borrowing_musics`
-                                                           FOREIGN KEY (`id_media`)
-                                                               REFERENCES `midiATech`.`musics` (`id`)
-                                                               ON DELETE NO ACTION
-                                                               ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
+                                                               ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
