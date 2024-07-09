@@ -1,13 +1,10 @@
 {% extends 'layout.html.twig' %}
 
+{% block title %}Index{% endblock %}
+
+{% block stylesheet %}<link rel="stylesheet" href="/assets/css/index.css">{% endblock %}
+
 {% block content %}
-    <h1>Items</h1>
-    <ul>
-        {% for item in items %}
-            <li><a href="/items/show?id={{ item.id }}">{{ item.id }}. {{ item.title }}</a></li>
-        {% else %}
-            <li>Nothing to display</li>
-        {% endfor %}
-    </ul>
-    <a href="/items/add">Ajouter</a>
+{% include 'Item/_searchbar.html.twig' %}
+
 {% endblock %}
