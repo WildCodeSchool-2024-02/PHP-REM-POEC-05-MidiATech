@@ -12,9 +12,9 @@ class BooksController extends AbstractController
     public function index(): string
     {
         $booksManager = new BooksManager();
-        $books = $booksManager->selectAll('title');
+        $medias = $booksManager->selectAll('title');
 
-        return $this->twig->render('Book/index.html.twig', compact('books'));
+        return $this->twig->render('Media/index.html.twig', compact('medias'));
     }
 
     /**
@@ -23,9 +23,9 @@ class BooksController extends AbstractController
     public function show(int $id): string
     {
         $booksManager = new BooksManager();
-        $book = $booksManager->selectOneById($id);
+        $media = $booksManager->selectOneById($id);
 
-        return $this->twig->render('Book/show.html.twig', compact('book'));
+        return $this->twig->render('Media/show.html.twig', compact('media'));
     }
 
     /**
@@ -34,24 +34,24 @@ class BooksController extends AbstractController
     public function edit(int $id): ?string
     {
         $booksManager = new BooksManager();
-        $book = $booksManager->selectOneById($id);
+        $media = $booksManager->selectOneById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
-            $book = array_map('trim', $_POST);
+            $media = array_map('trim', $_POST);
 
             // TODO validations (length, format...)
 
             // if validation is ok, update and redirection
-            $booksManager->update($book);
+            $booksManager->update($media);
 
-            header('Location: /books/show?id=' . $id);
+            header('Location: /medias/show?id=' . $id);
 
             // we are redirecting so we don't want any content rendered
             return null;
         }
 
-        return $this->twig->render('Book/edit.html.twig', compact('book'));
+        return $this->twig->render('Media/edit.html.twig', compact('media'));
     }
 
     /**
@@ -61,19 +61,19 @@ class BooksController extends AbstractController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
-            $book = array_map('trim', $_POST);
+            $media = array_map('trim', $_POST);
 
             // TODO validations (length, format...)
 
             // if validation is ok, insert and redirection
             $booksManager = new BooksManager();
-            $id = $booksManager->insert($book);
+            $id = $booksManager->insert($media);
 
-            header('Location:/books/show?id=' . $id);
+            header('Location:/medias/show?id=' . $id);
             return null;
         }
 
-        return $this->twig->render('Book/add.html.twig');
+        return $this->twig->render('Media/add.html.twig');
     }
 
     /**
@@ -86,7 +86,7 @@ class BooksController extends AbstractController
             $booksManager = new BooksManager();
             $booksManager->delete((int)$id);
 
-            header('Location:/books');
+            header('Location:/medias');
         }
     }
 }

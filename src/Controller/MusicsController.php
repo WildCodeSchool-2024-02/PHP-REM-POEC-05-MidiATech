@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\MusicsManager;
+use App\Model\CategoriesManager;
 
 class MusicsController extends AbstractController
 {
@@ -12,9 +13,9 @@ class MusicsController extends AbstractController
     public function index(): string
     {
         $musicsManager = new MusicsManager();
-        $musics = $musicsManager->selectAll('title');
+        $medias = $musicsManager->selectAll('title');
 
-        return $this->twig->render('Music/index.html.twig', compact('musics'));
+        return $this->twig->render('Media/index.html.twig', compact('medias'));
     }
 
     /**
@@ -23,9 +24,9 @@ class MusicsController extends AbstractController
     public function show(int $id): string
     {
         $musicsManager = new MusicsManager();
-        $music = $musicsManager->selectOneById($id);
+        $media = $musicsManager->selectOneById($id);
 
-        return $this->twig->render('Music/show.html.twig', compact('music'));
+        return $this->twig->render('Media/show.html.twig', compact('media'));
     }
 
     /**
@@ -34,7 +35,7 @@ class MusicsController extends AbstractController
     public function edit(int $id): ?string
     {
         $musicsManager = new MusicsManager();
-        $music = $musicsManager->selectOneById($id);
+        $media = $musicsManager->selectOneById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
@@ -45,13 +46,13 @@ class MusicsController extends AbstractController
             // if validation is ok, update and redirection
             $musicsManager->update($music);
 
-            header('Location: /music/show?id=' . $id);
+            header('Location: /media/show?id=' . $id);
 
             // we are redirecting, so we don't want any content rendered
             return null;
         }
 
-        return $this->twig->render('Music/edit.html.twig', compact('music'));
+        return $this->twig->render('Media/edit.html.twig', compact('media'));
     }
 
     /**
@@ -61,19 +62,19 @@ class MusicsController extends AbstractController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
-            $music = array_map('trim', $_POST);
+            $media = array_map('trim', $_POST);
 
             // TODO validations (length, format...)
 
             // if validation is ok, insert and redirection
             $musicsManager = new MusicsManager();
-            $id = $musicsManager->insert($music);
+            $id = $musicsManager->insert($media);
 
-            header('Location:/musics/show?id=' . $id);
+            header('Location:/medias/show?id=' . $id);
             return null;
         }
 
-        return $this->twig->render('Music/add.html.twig');
+        return $this->twig->render('Media/add.html.twig');
     }
 
     /**
@@ -86,7 +87,7 @@ class MusicsController extends AbstractController
             $musicsManager = new MusicsManager();
             $musicsManager->delete((int)$id);
 
-            header('Location:/musics');
+            header('Location:/medias');
         }
     }
 }
