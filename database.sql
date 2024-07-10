@@ -165,3 +165,27 @@ CREATE TABLE IF NOT EXISTS `midiATech`.`borrowing` (
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+INSERT INTO `categories` (`name`) VALUES 
+('Roman'),
+('Policier'),
+('Science-fiction'),
+('Fantastique'),
+('Histoire'),
+('Essai');
+
+INSERT INTO `books` (`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`) VALUES 
+('L\'Étranger', 'letranger.jpg', 'Un roman de l\'absurde écrit par Albert Camus.', 'Albert Camus', '1942-05-01', 123, 10, 1),
+('Le Petit Prince', 'le_petit_prince.jpg', 'Un conte poétique et philosophique écrit par Antoine de Saint-Exupéry.', 'Antoine de Saint-Exupéry', '1943-04-06', 96, 15, 1),
+('Millénium : Les hommes qui n\'aimaient pas les femmes', 'millenium.jpg', 'Un roman policier suédois écrit par Stieg Larsson.', 'Stieg Larsson', '2005-08-09', 465, 20, 2),
+('Dune', 'dune.jpg', 'Un roman de science-fiction écrit par Frank Herbert.', 'Frank Herbert', '1965-08-01', 412, 8, 3),
+('Harry Potter à l \'école des sorciers', 'harry_potter.jpg', 'Un roman fantastique écrit par J.K. Rowling.', 'J.K. Rowling', '1997-06-26', 309, 12, 4 ),
+('Sapiens : Une brève histoire de l\'humanité', 'sapiens.jpg', 'Un essai explorant l\'histoire de l\'espèce humaine.', 'Yuval Noah Harari', '2011-06-04', 498, 10, 6),
+('Les Misérables', 'les_miserables.jpg', 'Un roman historique écrit par Victor Hugo.', 'Victor Hugo', '1862-01-14', 1488, 11, 5),
+('1984', '1984.jpg', 'Un roman de science-fiction dystopique écrit par George Orwell.', 'George Orwell', '1949-06-08', 328, 9, 3),
+('Le Nom de la rose', 'le_nom_de_la_rose.jpg', 'Un roman policier historique écrit par Umberto Eco.', 'Umberto Eco', '1980-04-01', 500, 14, 2);
+
+
+
+
+
