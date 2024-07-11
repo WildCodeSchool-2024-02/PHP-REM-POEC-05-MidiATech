@@ -1,0 +1,25 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ media.title }}{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/assets/css/show.css">
+{% endblock %}
+
+{% block page_title %}
+    <h1>{{ media.title }}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="media-details">
+        <img src="/path/to/images/{{ media.picture }}" alt="{{ media.title }}">
+        <div class="media-info">
+            <p><strong>Auteur :</strong> {{ media.author }}</p>
+            <p><strong>Date de publication :</strong> {{ media.date|date('d M Y') }}</p>
+            <p><strong>Pages :</strong> {{ media.pages }}</p>
+            <p><strong>Description :</strong> {{ media.description }}</p>
+            <p><strong>Quantité disponible :</strong> {{ media.quantities }}</p>
+            <p><strong>Catégorie :</strong> {{ media.category }}</p>
+        </div>
+    </div>
+{% endblock %}

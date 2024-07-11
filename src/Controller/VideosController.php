@@ -3,18 +3,33 @@
 namespace App\Controller;
 
 use App\Model\VideosManager;
+use App\Model\CategoriesManager;
 
 class VideosController extends AbstractController
 {
     /**
-     * List items
+     * List Films
      */
     public function index(): string
     {
+        $categoriesManager = new CategoriesManager();
         $videosManager = new VideosManager();
         $medias = $videosManager->selectAll('title');
 
-        return $this->twig->render('Media/index.html.twig', compact('medias'));
+        foreach ($medias as &$media) {
+            $media['categories'] = $categoriesManager->getCategoriesByVideoId($media['id']);
+        }
+
+        $title = "Films";
+        $filters = ['Action', 'Comédie', 'Drame', 'Documentaire', 'Science-fiction', 'Horreur'];
+
+        return $this->twig->render('Media/index.html.twig', [
+            'page_title' => $title,
+            'filters' => $filters,
+            'medias' => $medias,
+            'media_type' => 'videos'
+
+        ]);
     }
 
     /**
@@ -25,7 +40,7 @@ class VideosController extends AbstractController
         $videosManager = new VideosManager();
         $media = $videosManager->selectOneById($id);
 
-        return $this->twig->render('Media/show.html.twig', compact('media'));
+        return $this->twig->render('Media/showFilm.html.twig', compact('media'));
     }
 
     /**
