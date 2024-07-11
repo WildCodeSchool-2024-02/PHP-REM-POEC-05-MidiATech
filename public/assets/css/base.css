@@ -1,0 +1,238 @@
+:root {
+    --primaryColor: #d8ecf7;
+    --secondaryColor: #f8faf6;
+    --tertiaryColor: #251565;
+    --quaternaryColor: #5f599f;
+}
+
+body {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile {
+        display: initial;
+    }
+
+    .desktop {
+        display: none;
+    }
+}
+
+/* Style pour le header */
+header {
+    background-color: var(--primaryColor);
+    color: var(--tertiaryColor);
+    padding: 0;
+}
+
+/* Conteneur principal pour le contenu du header */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0 20px;
+}
+
+/* Style pour le logo */
+.logo {
+    display: flex;
+    align-items: center;
+
+    & img {
+        height: 70px; /* Ajustez la taille du logo selon vos besoins */
+        border-radius: 50%;
+        margin-right: 30px;
+    }
+}
+
+/* Style pour la barre de navigation */
+nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    /* Style pour la liste de navigation */
+    & ul {
+        list-style: none;
+        margin: 0;
+        padding: 0 30px;
+        display: flex;
+        background: var(--secondaryColor);
+        border: 1px solid var(--tertiaryColor);
+        border-radius: 10px;
+
+        /* Style pour les éléments de la liste de navigation */
+        & li {
+            margin: 5px 10px;
+
+            /* Style pour les liens de navigation */
+            & a {
+                color: var(--tertiaryColor);
+                text-decoration: none;
+                font-size: 18px;
+
+                /* Style pour les liens de navigation au survol */
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    & i {
+        font-size: 40px;
+        color: var(--quaternaryColor);
+        margin-left: 30px;
+    }
+}
+
+/* Style de l'icône du menu pour les petits écrans */
+.menu-button-container {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    display: none;
+    height: 100%;
+    width: 30px;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+.menu-button,
+.menu-button::before,
+.menu-button::after {
+    display: block;
+    background-color: var(--tertiaryColor);
+    position: absolute;
+    height: 4px;
+    width: 30px;
+    transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    border-radius: 2px;
+}
+
+.menu-button::before {
+    content: '';
+    margin-top: -8px;
+}
+
+.menu-button::after {
+    content: '';
+    margin-top: 8px;
+}
+
+#menu-toggle:checked + .menu-button-container .menu-button::before {
+    margin-top: 0;
+    transform: rotate(405deg);
+}
+
+#menu-toggle:checked + .menu-button-container .menu-button {
+    background: rgba(255, 255, 255, 0);
+}
+
+#menu-toggle:checked + .menu-button-container .menu-button::after {
+    margin-top: 0;
+    transform: rotate(-405deg);
+}
+
+
+/* Styles pour la réactivité du header */
+@media (max-width: 768px) {
+    /* Ajustement de la flex-direction pour les petits écrans */
+    .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+
+    nav {
+        width: 100%;
+    }
+
+    .menu-button-container {
+        display: flex;
+    }
+
+    .menu {
+        position: absolute;
+        top: 0;
+        margin: -55px 0 0;
+        right: -20px;
+        flex-direction: column;
+        width: auto;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0;
+        border: none;
+        background: var(--primaryColor);
+        z-index: -1;
+    }
+
+    #menu-toggle:checked ~ .menu {
+        margin: 0;
+        z-index: 500;
+    }
+
+    #menu-toggle ~ .menu li {
+        height: 0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    #menu-toggle:checked ~ .menu li {
+        height: 2.5em;
+        padding: 0.5em;
+        transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .menu > li {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        padding: 0.5em 0;
+        width: 100%;
+    }
+}
+
+
+#goToTop {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 30px;
+    right: 10px;
+    z-index: 1000;
+    border: none;
+    background-color: var(--tertiaryColor);
+    filter: opacity(50%);
+    color: var(--secondaryColor);
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+    font-size: 35px;
+    padding-bottom: 6px;
+    transform: rotate(-90deg);
+    transition: .3s;
+
+    &:hover {
+        filter: none;
+        transition: .3s;
+    }
+}

@@ -174,6 +174,19 @@ INSERT INTO `categories` (`name`) VALUES
 ('Histoire'),
 ('Essai');
 
+
+INSERT INTO `videos` (`title`, `picture`, `description`, `director`, `date`, `duration`, `quantities`, `id_category`, `id_types`) VALUES
+('Inception', 'inception.jpg', 'Un thriller de science-fiction réalisé par Christopher Nolan.', 'Christopher Nolan', '2010-07-16', 148, 12, 1, 1),
+('The Godfather', 'the_godfather.jpg', 'Un film de crime réalisé par Francis Ford Coppola.', 'Francis Ford Coppola', '1972-03-24', 175, 8, 2, 1),
+('The Dark Knight', 'the_dark_knight.jpg', 'Un film de super-héros réalisé par Christopher Nolan.', 'Christopher Nolan', '2008-07-18', 152, 10, 3, 1),
+('Pulp Fiction', 'pulp_fiction.jpg', 'Un film néo-noir réalisé par Quentin Tarantino.', 'Quentin Tarantino', '1994-10-14', 154, 9, 4, 1),
+('The Matrix', 'the_matrix.jpg', 'Un film de science-fiction réalisé par les Wachowski.', 'Lana Wachowski, Lilly Wachowski', '1999-03-31', 136, 15, 1, 1),
+('Fight Club', 'fight_club.jpg', 'Un film dramatique réalisé par David Fincher.', 'David Fincher', '1999-10-15', 139, 7, 4, 1),
+('Forrest Gump', 'forrest_gump.jpg', 'Un film dramatique réalisé par Robert Zemeckis.', 'Robert Zemeckis', '1994-07-06', 142, 11, 5, 1),
+('Interstellar', 'interstellar.jpg', 'Un film de science-fiction réalisé par Christopher Nolan.', 'Christopher Nolan', '2014-11-07', 169, 13, 1, 1),
+('Gladiator', 'gladiator.jpg', 'Un film historique réalisé par Ridley Scott.', 'Ridley Scott', '2000-05-05', 155, 9, 6, 1),
+('The Shawshank Redemption', 'shawshank_redemption.jpg', 'Un film dramatique réalisé par Frank Darabont.', 'Frank Darabont', '1994-09-23', 142, 14, 5, 1);
+
 INSERT INTO `books` (`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`) VALUES 
 ('L\'Étranger', 'letranger.jpg', 'Un roman de l\'absurde écrit par Albert Camus.', 'Albert Camus', '1942-05-01', 123, 10, 1),
 ('Le Petit Prince', 'le_petit_prince.jpg', 'Un conte poétique et philosophique écrit par Antoine de Saint-Exupéry.', 'Antoine de Saint-Exupéry', '1943-04-06', 96, 15, 1),
@@ -184,7 +197,6 @@ INSERT INTO `books` (`title`, `picture`, `description`, `author`, `date`, `pages
 ('Les Misérables', 'les_miserables.jpg', 'Un roman historique écrit par Victor Hugo.', 'Victor Hugo', '1862-01-14', 1488, 11, 5),
 ('1984', '1984.jpg', 'Un roman de science-fiction dystopique écrit par George Orwell.', 'George Orwell', '1949-06-08', 328, 9, 3),
 ('Le Nom de la rose', 'le_nom_de_la_rose.jpg', 'Un roman policier historique écrit par Umberto Eco.', 'Umberto Eco', '1980-04-01', 500, 14, 2);
-
 
 
 

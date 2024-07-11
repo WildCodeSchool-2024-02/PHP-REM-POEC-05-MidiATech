@@ -8,6 +8,33 @@ class CategoriesManager extends AbstractManager
 {
     public const TABLE = 'categories';
 
+    public function getCategoriesByBookId($bookId) {
+        $statement = $this->pdo->prepare("SELECT c.* 
+                FROM `midiATech`.`categories` c
+                JOIN `midiATech`.`books` b ON c.id = b.id_category
+                WHERE b.id = :book_id
+                ");
+    
+        $statement->bindValue(':book_id', $bookId, PDO::PARAM_INT);
+    
+        $statement->execute();
+    
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getCategoriesByVideoId($videoId) {
+        $statement = $this->pdo->prepare("
+            SELECT c.* 
+            FROM `midiATech`.`categories` c
+            JOIN `midiATech`.`videos` v ON c.id = v.id_category
+            WHERE v.id = :video_id
+        ");
+
+        $statement->bindValue(':video_id', $videoId, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
     /**
      * Insert new item in database
      */
