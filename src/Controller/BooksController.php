@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Model\BooksManager;
-use App\Model\CategoriesManager ; 
+use App\Model\CategoriesManager;
 
 class BooksController extends AbstractController
 {
@@ -21,9 +21,9 @@ class BooksController extends AbstractController
             $media['categories'] = $categoriesManager->getCategoriesByBookId($media['id']);
         }
 
-        $title = "Livres" ;
+        $title = "Livres";
         $filters = ['Roman', 'Policier', 'Science-fiction', 'Fantastique', 'Histoire', 'Essai'];
-        
+
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
             'filters' => $filters,
@@ -32,12 +32,12 @@ class BooksController extends AbstractController
 
         ]);
     }
-    
 
     /**
      * Show informations for a specific book
      */
-    public function show(int $id): string {
+    public function show(int $id): string
+    {
         $booksManager = new BooksManager();
         $media = $booksManager->selectOneById($id);
 

@@ -3,14 +3,15 @@
 namespace App\Controller;
 
 use App\Model\VideosManager;
-use App\Model\CategoriesManager ;
+use App\Model\CategoriesManager;
 
 class VideosController extends AbstractController
 {
     /**
      * List Films
      */
-    public function index(): string {
+    public function index(): string
+    {
         $categoriesManager = new CategoriesManager();
         $videosManager = new VideosManager();
         $medias = $videosManager->selectAll('title');
