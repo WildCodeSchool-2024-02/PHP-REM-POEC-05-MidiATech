@@ -111,4 +111,41 @@ abstract class AbstractManager
         $statement->bindValue('id', $id, \PDO::PARAM_INT);
         $statement->execute();
     }
+
+    public function columnExists($columnName): bool
+    {
+        $statement = $this->pdo->prepare("SHOW COLUMNS FROM " . static::TABLE . " LIKE :columnName");
+        $statement->bindValue(':columnName', $columnName, \PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetch() !== false;
+    }
+
+    public function search($searchTerm)
+    {
+        $columnsToSearch = ['author', 'singer', 'director'];
+        $searchQuery = "SELECT * FROM " . static::TABLE . " WHERE title LIKE :searchTerm";
+
+        $conditions = [];
+
+        foreach ($columnsToSearch as $column) {
+            if ($this->columnExists($column)) {
+                $conditions[] = "$column LIKE :searchTerm";
+            }
+        }
+
+        if (!empty($conditions)) {
+            $searchQuery .= " OR (" . implode(' OR ', $conditions) . ")";
+        }
+
+        $statement = $this->pdo->prepare($searchQuery);
+        $statement->bindValue(':searchTerm', '%' . $searchTerm . '%', \PDO::PARAM_STR);
+
+        try {
+            $statement->execute();
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            die('Search query failed: ' . $e->getMessage());
+        }
+    }
 }

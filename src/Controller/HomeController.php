@@ -2,6 +2,13 @@
 
 namespace App\Controller;
 
+use App\Model\BooksManager;
+use App\Model\MusicsManager;
+use App\Model\VideosManager;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+
 class HomeController extends AbstractController
 {
     /**
@@ -10,5 +17,37 @@ class HomeController extends AbstractController
     public function index(): string
     {
         return $this->twig->render('Home/index.html.twig');
+    }
+
+    public function search(): string|false
+    {
+        $searchTerm = $_GET['term'] ?? '';
+        $results = [];
+
+        // Musics
+        $musicsManager = new MusicsManager();
+        $musics = $musicsManager->search($searchTerm);
+        if ($musics) {
+            $results['musics'] = $musics;
+        }
+
+        // Books
+        $booksManager = new BooksManager();
+        $books = $booksManager->search($searchTerm);
+        if ($books) {
+            $results['books'] = $books;
+        }
+
+        // Videos
+        $videosManager = new VideosManager();
+        $videos = $videosManager->search($searchTerm);
+        if ($videos) {
+            $results['videos'] = $videos;
+        }
+
+        header('Content-Type: application/json');
+
+        echo json_encode($results, JSON_THROW_ON_ERROR);
+        exit;
     }
 }
