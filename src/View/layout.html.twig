@@ -4,18 +4,24 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="/assets/images/favicon.png">
-    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="icon" href="/assets/images/favicon.ico">
+
     <title>{% block title %}{% endblock %}</title>
 
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
     {% block stylesheet %}{% endblock %}
+
+    <script defer src="https://kit.fontawesome.com/643c9e7905.js" crossorigin="anonymous"></script>
+    <script defer src="/assets/javascript/base.js"></script>
+    {% block javascript %}{% endblock %}
 </head>
 
 <body>
+    {% include 'Base/_header.html.twig' %}
+
     {% block content %}{% endblock %}
-    {%include "_footer.html.twig"%}
-    {% block javascript %}{% endblock %}
+
+    {% include 'Base/_footer.html.twig' %}
 </body>
 </html>
 

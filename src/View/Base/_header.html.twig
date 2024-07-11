@@ -1,0 +1,40 @@
+{# Démarrer la session pour vérifier si l'utilisateur est connecté (cela doit être fait dans votre contrôleur PHP) #}
+<button onclick="topFunction()" id="goToTop" title="Go to top">&#187;</button>
+
+<header>
+    <div class="container">
+        {# Logo de la médiathèque #}
+        <div class="logo">
+            <a href="/"><img src="/../assets/images/logo.webp" alt="Midi a tech"></a>
+            <h1>MIDI A TECH</h1>
+        </div>
+
+        {# Barre de navigation #}
+        <nav>
+            {# Checkbox pour activer le menu en mode mobile #}
+            <input id="menu-toggle" type="checkbox">
+            <label class="menu-button-container" for="menu-toggle">
+                <span class="menu-button"></span>
+            </label>
+
+            <ul class="menu">
+                {# Liens de navigation #}
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/books">Livres</a></li>
+                <li><a href="/musics">Musiques</a></li>
+                <li><a href="/videos">Films</a></li>
+                <li class="mobile">
+                    {# Vérifier si l'utilisateur est connecté #}
+                        <a href="/account">
+                            {% if app.user %}
+                            Profil
+                            {% else %}
+                            Connexion
+                            {% endif %}
+                        </a>
+                </li>
+            </ul>
+            <a class="desktop" href="/account"><i class="fa-regular fa-circle-user"></i></a>
+        </nav>
+    </div>
+</header>
