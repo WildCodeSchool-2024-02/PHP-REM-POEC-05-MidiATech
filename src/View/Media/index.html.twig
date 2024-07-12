@@ -11,8 +11,6 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'Base/_searchbar.html.twig' %}
-
     <div class="filters">
         {% for filter in filters %}
             <span class="chip">{{ filter }}</span>
@@ -24,13 +22,13 @@
             <div class="card">
                 <img src="public/assets/images/couverture-livre.webp" alt="{{ item.title }}">
                 <h2>{{ item.title }}</h2>
-                
+
                 <div class="categories">
                     {% for category in item.categories %}
                         <span class="category">{{ category.name }}</span>
                     {% endfor %}
                 </div>
-                
+
                 <a href="/{{media_type}}/details/show?id={{ item.id }}" class="btn">Voir Détails</a>
             </div>
         {% endfor %}
