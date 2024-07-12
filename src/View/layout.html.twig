@@ -18,11 +18,14 @@
 
 <body>
     {% include 'Base/_header.html.twig' %}
-{% block page_title %}
-{% endblock %}
-    {% block content %}{% endblock %}
-    {% include 'Base/_footer.html.twig' %}
 
+    {% include 'Base/_search.html.twig' %}
+
+    {% block page_title %}{% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% include 'Base/_footer.html.twig' %}
 </body>
 </html>
 
