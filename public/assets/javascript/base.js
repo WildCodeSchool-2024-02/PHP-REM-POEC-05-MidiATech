@@ -32,14 +32,13 @@ function topFunction()
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
-
-document.getElementById('searchInput').addEventListener('input', function () {
+document.getElementById("searchInput").addEventListener("input", function () {
     const searchTerm = this.value.trim();
-    const resultsDiv = document.getElementById('results');
+    const resultsDiv = document.getElementById("results");
 
     if (searchTerm.length > 2) {
         fetch(`/search?term=${encodeURIComponent(searchTerm)}`)
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -51,54 +50,64 @@ document.getElementById('searchInput').addEventListener('input', function () {
 
                 return response.json();
             })
-            .then(data => {
-                resultsDiv.innerHTML = '';
+            .then((data) => {
+                while (resultsDiv.firstChild) {
+                    resultsDiv.removeChild(resultsDiv.firstChild);
+                }
 
                 if (data.musics) {
-                    data.musics.forEach(item => {
-                        resultsDiv.innerHTML +=
-                            `<p>
-                                <a href="musics/details/show?id=${item.id}">
-                                    ${item.title} chantés par ${item.singer}
-                                </a>
-                            </p>`;
+                    data.musics.forEach((item) => {
+                        let paragraph = document.createElement("p");
+                        let link = document.createElement("a");
+                        link.textContent = `${item.title} chantés par ${item.author}`;
+                        link.href = `musics/details/show?id=${item.id}`;
+                        paragraph.appendChild(link);
+                        resultsDiv.appendChild(paragraph);
                     });
                 }
                 if (data.books) {
-                    data.books.forEach(item => {
-                        resultsDiv.innerHTML +=
-                            `<p>
-                                <a href="musics/details/show?id=${item.id}">
-                                    ${item.title} écris par ${item.author}
-                                </a>
-                            </p>`;
+                    data.books.forEach((item) => {
+                        let paragraph = document.createElement("p");
+                        let link = document.createElement("a");
+                        link.textContent = `${item.title} écris par ${item.author}`;
+                        link.href = `books/details/show?id=${item.id}`;
+                        paragraph.appendChild(link);
+                        resultsDiv.appendChild(paragraph);
                     });
                 }
                 if (data.videos) {
-                    data.videos.forEach(item => {
-                        resultsDiv.innerHTML +=
-                            `<p>
-                                <a href="musics/details/show?id=${item.id}">
-                                    ${item.title} réalisés par ${item.director}
-                                </a>
-                            </p>`;
+                    data.videos.forEach((item) => {
+                        let paragraph = document.createElement("p");
+                        let link = document.createElement("a");
+                        link.textContent = `${item.title} réalisés par ${item.author}`;
+                        link.href = `videos/details/show?id=${item.id}`;
+                        paragraph.appendChild(link);
+                        resultsDiv.appendChild(paragraph);
                     });
                 }
 
                 if (data.length === 0) {
-                    resultsDiv.innerHTML = '<div>Aucun résultat</div>';
+                    let paragraph = document.createElement("p");
+                    paragraph.textContent = `Aucun résultat`;
+                    resultsDiv.appendChild(paragraph);
                 }
 
-                resultsDiv.style.display = 'initial';
-
+                resultsDiv.style.display = "initial";
             })
-            .catch(error => {
-                console.error('There was a problem with the fetch operation:', error);
-                resultsDiv.innerHTML = `<p>Erreur lors de la recherche</p>`;
-                resultsDiv.style.display = 'initial';
+            .catch((error) => {
+                console.error(
+                    "There was a problem with the fetch operation:",
+                    error
+                );
+                let paragraph = document.createElement("p");
+                paragraph.textContent = `Erreur lors de la recherche`;
+                resultsDiv.appendChild(paragraph);
+                resultsDiv.style.display = "initial";
             });
     } else {
-        resultsDiv.innerHTML = '';
-        resultsDiv.style.display = 'none';
+        while (resultsDiv.firstChild) {
+            resultsDiv.removeChild(resultsDiv.firstChild);
+        }
+        resultsDiv.style.display = "none";
     }
 });
