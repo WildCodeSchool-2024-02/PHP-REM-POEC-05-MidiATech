@@ -1,10 +1,40 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Index{% endblock %}
+{% block title %}{{ page_title }}{% endblock %}
 
-{% block stylesheet %}<link rel="stylesheet" href="/assets/css/index.css">{% endblock %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="/assets/css/medias.css">
+{% endblock %}
+
+{% block page_title %}
+    <h1>{{ page_title }}</h1>
+{% endblock %}
 
 {% block content %}
-{% include 'Item/_searchbar.html.twig' %}
+    {% include 'Base/_searchbar.html.twig' %}
 
+    <div class="filters">
+        {% for filter in filters %}
+            <span class="chip">{{ filter }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="cards">
+        {% for item in medias %}
+            <div class="card">
+                <img src="public/assets/images/couverture-livre.webp" alt="{{ item.title }}">
+                <h2>{{ item.title }}</h2>
+                
+                <div class="categories">
+                    {% for category in item.categories %}
+                        <span class="category">{{ category.name }}</span>
+                    {% endfor %}
+                </div>
+                
+                <a href="/{{media_type}}/details/show?id={{ item.id }}" class="btn">Voir Détails</a>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
+
+
