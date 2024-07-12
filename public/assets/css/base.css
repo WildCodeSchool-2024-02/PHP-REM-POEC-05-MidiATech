@@ -305,3 +305,49 @@ nav {
 .footer p.copyright {
     font-size: 12px;
 }
+
+
+.search {
+    margin-top: 20px;
+    position: relative;
+
+    & .searchBar {
+        text-align: center;
+
+        & input {
+            font-size: 18px;
+            padding: 10px;
+            max-width: 350px;
+            width: 100%;
+            border: 2px solid var(--quaternaryColor);
+            background-color: var(--secondaryColor);
+            border-radius: 20px;
+            outline: none;
+        }
+    }
+
+    & .results {
+        display: none;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 330px;
+        width: 100%;
+        border: 2px solid var(--quaternaryColor);
+        background-color: var(--secondaryColor);
+        font-size: 18px;
+        padding: 0 10px;
+        margin-top: 5px;
+        border-radius: 20px;
+        z-index: 1000;
+
+        & p a {
+            text-decoration: none;
+            color: var(--tertiaryColor);
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
