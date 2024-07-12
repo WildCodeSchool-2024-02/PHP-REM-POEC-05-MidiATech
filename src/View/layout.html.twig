@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -18,12 +19,10 @@
 
 <body>
     {% include 'Base/_header.html.twig' %}
-{% block page_title %}
-{% endblock %}
+    {% block page_title %}{% endblock %}
     {% block content %}{% endblock %}
     {% include 'Base/_footer.html.twig' %}
 
 </body>
+
 </html>
-
-
