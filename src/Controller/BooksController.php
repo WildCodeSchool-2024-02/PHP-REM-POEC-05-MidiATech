@@ -3,33 +3,48 @@
 namespace App\Controller;
 
 use App\Model\BooksManager;
+use App\Model\CategoriesManager;
 
 class BooksController extends AbstractController
 {
     /**
-     * List items
+     * List Books
      */
     public function index(): string
     {
+        $categoriesManager = new CategoriesManager();
+
         $booksManager = new BooksManager();
         $medias = $booksManager->selectAll('title');
 
-        return $this->twig->render('Media/index.html.twig', compact('medias'));
+        foreach ($medias as &$media) {
+            $media['categories'] = $categoriesManager->getCategoriesByBookId($media['id']);
+        }
+
+        $title = "Livres";
+        $filters = ['Roman', 'Policier', 'Science-fiction', 'Fantastique', 'Histoire', 'Essai'];
+
+        return $this->twig->render('Media/index.html.twig', [
+            'page_title' => $title,
+            'filters' => $filters,
+            'medias' => $medias,
+            'media_type' => 'books'
+
+        ]);
     }
 
     /**
-     * Show informations for a specific item
+     * Show informations for a specific book
      */
     public function show(int $id): string
     {
         $booksManager = new BooksManager();
         $media = $booksManager->selectOneById($id);
 
-        return $this->twig->render('Media/show.html.twig', compact('media'));
+        return $this->twig->render('Media/showBook.html.twig', ['media' => $media]);
     }
-
     /**
-     * Edit a specific item
+     * Edit a specific book
      */
     public function edit(int $id): ?string
     {

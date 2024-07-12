@@ -9,9 +9,10 @@
 return [
     '' => ['HomeController', 'index',],
     'search' => ['HomeController', 'search',],
-    'items' => ['ItemController', 'index',],
-    'items/edit' => ['ItemController', 'edit', ['id']],
-    'items/show' => ['ItemController', 'show', ['id']],
-    'items/add' => ['ItemController', 'add',],
-    'items/delete' => ['ItemController', 'delete',],
+    'books' => ['BooksController', 'index',],
+    'videos' => ['VideosController', 'index'],
+    'musics' => ['MusicsController', 'index'],
+    'books/details/show' => ['BooksController', 'show', ['id']],
+    'musics/details/show' => ['MusicsController', 'show', ['id']],
+    'videos/details/show' => ['VideosController', 'show', ['id']],
 ];
