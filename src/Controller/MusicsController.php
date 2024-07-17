@@ -12,10 +12,24 @@ class MusicsController extends AbstractController
      */
     public function index(): string
     {
+        $categoriesManager = new CategoriesManager();
+
         $musicsManager = new MusicsManager();
         $medias = $musicsManager->selectAll('title');
 
-        return $this->twig->render('Media/index.html.twig', compact('medias'));
+        foreach ($medias as &$media) {
+            $media['categories'] = $categoriesManager->getCategoriesByMusicId($media['id']);
+        }
+
+        $title = "Musiques";
+        $filters = ['Rap', 'R&b', 'Pop'];
+
+        return $this->twig->render('Media/index.html.twig', [
+            'page_title' => $title,
+            'filters' => $filters,
+            'medias' => $medias,
+            'media_type' => 'musics'
+        ]);
     }
 
     /**
@@ -26,7 +40,7 @@ class MusicsController extends AbstractController
         $musicsManager = new MusicsManager();
         $media = $musicsManager->selectOneById($id);
 
-        return $this->twig->render('Media/show.html.twig', compact('media'));
+        return $this->twig->render('Media/show.html.twig', ['media' => $media, 'media_type' => 'musics']);
     }
 
     /**
@@ -36,23 +50,36 @@ class MusicsController extends AbstractController
     {
         $musicsManager = new MusicsManager();
         $media = $musicsManager->selectOneById($id);
+        $categoriesManager = new CategoriesManager();
+        $categories = $categoriesManager->selectAll();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
-            $music = array_map('trim', $_POST);
+            $media = array_map('trim', $_POST);
 
-            // TODO validations (length, format...)
+            $errors = $this->validate($media);
 
-            // if validation is ok, update and redirection
-            $musicsManager->update($music);
+            // Si aucune erreur, procéder à l'insertion
+            if (empty($errors)) {
+                $fileName = $this->uploadFile($errors);
+                if ($fileName !== "") {
+                    $media['picture'] = $fileName;
+                } else {
+                    $media['picture'] = null;
+                }
 
-            header('Location: /media/show?id=' . $id);
+                $musicsManager->update($media);
+                header('Location:/musics/show?id=' . $id);
+                return null;
+            }
 
-            // we are redirecting, so we don't want any content rendered
-            return null;
+            // Renvoyer le formulaire avec les erreurs et les données saisies
+            return $this->twig->render('Media/edit.html.twig', ['categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'musics', 'isEdit' => true]);
         }
 
-        return $this->twig->render('Media/edit.html.twig', compact('media'));
+        return $this->twig->render('Media/edit.html.twig', ['categories' => $categories, 'media' => $media,
+            'media_type' => 'musics', 'isEdit' => true]);
     }
 
     /**
@@ -60,21 +87,36 @@ class MusicsController extends AbstractController
      */
     public function add(): ?string
     {
+        $categoriesManager = new CategoriesManager();
+        $categories = $categoriesManager->selectAll();
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // clean $_POST data
+            // Nettoyer les données POST
             $media = array_map('trim', $_POST);
 
-            // TODO validations (length, format...)
+            $errors = $this->validate($media);
 
-            // if validation is ok, insert and redirection
-            $musicsManager = new MusicsManager();
-            $id = $musicsManager->insert($media);
+            // Si aucune erreur, procéder à l'insertion
+            if (empty($errors)) {
+                $fileName = $this->uploadFile($errors);
+                if ($fileName !== "") {
+                    $media['picture'] = $fileName;
+                } else {
+                    $media['picture'] = null;
+                }
 
-            header('Location:/medias/show?id=' . $id);
-            return null;
+                $musicsManager = new MusicsManager();
+                $id = $musicsManager->insert($media);
+                header('Location:/musics/show?id=' . $id);
+                return null;
+            }
+
+            // Renvoyer le formulaire avec les erreurs et les données saisies
+            return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'musics']);
         }
 
-        return $this->twig->render('Media/add.html.twig');
+        return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'musics']);
     }
 
     /**
@@ -85,9 +127,15 @@ class MusicsController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = trim($_POST['id']);
             $musicsManager = new MusicsManager();
-            $musicsManager->delete((int)$id);
+            $music = $musicsManager->selectOneById((int)$id);
+            $fileName = "../public/assets/images/covers/" . $music['picture'];
 
-            header('Location:/medias');
+            if ($music['picture'] && file_exists($fileName)) {
+                unlink($fileName);  // Supprime le fichier image
+            }
+
+            $musicsManager->delete((int)$id);
+            header('Location:/musics');
         }
     }
 }

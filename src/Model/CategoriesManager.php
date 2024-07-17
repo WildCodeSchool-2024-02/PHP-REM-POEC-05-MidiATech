@@ -8,10 +8,10 @@ class CategoriesManager extends AbstractManager
 {
     public const TABLE = 'categories';
 
-    public function getCategoriesByBookId($bookId)
+    public function getCategoriesByBookId($bookId): false|array
     {
 
-        $statement = $this->pdo->prepare("SELECT c.* 
+        $statement = $this->pdo->prepare("SELECT c.*
                 FROM `midiATech`.`categories` c
                 JOIN `midiATech`.`books` b ON c.id = b.id_category
                 WHERE b.id = :book_id
@@ -23,16 +23,32 @@ class CategoriesManager extends AbstractManager
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function getCategoriesByVideoId($videoId)
+
+    public function getCategoriesByVideoId($videoId): false|array
     {
         $statement = $this->pdo->prepare("
-            SELECT c.* 
+            SELECT c.*
             FROM `midiATech`.`categories` c
             JOIN `midiATech`.`videos` v ON c.id = v.id_category
             WHERE v.id = :video_id
         ");
 
         $statement->bindValue(':video_id', $videoId, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getCategoriesByMusicId($musicId): false|array
+    {
+        $statement = $this->pdo->prepare("
+            SELECT c.*
+            FROM `midiATech`.`categories` c
+            JOIN `midiATech`.`musics` m ON c.id = m.id_category
+            WHERE m.id = :music_id
+        ");
+
+        $statement->bindValue(':music_id', $musicId, PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);

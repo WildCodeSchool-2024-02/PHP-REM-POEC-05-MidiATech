@@ -8,6 +8,21 @@ class TypesManager extends AbstractManager
 {
     public const TABLE = 'types';
 
+    public function getTypesByVideoId($videoId): false|array
+    {
+        $statement = $this->pdo->prepare("
+            SELECT t.*
+            FROM `midiATech`.`types` t
+            JOIN `midiATech`.`videos` v ON t.id = v.id_types
+            WHERE v.id = :video_id
+        ");
+
+        $statement->bindValue(':video_id', $videoId, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /**
      * Insert new item in database
      */

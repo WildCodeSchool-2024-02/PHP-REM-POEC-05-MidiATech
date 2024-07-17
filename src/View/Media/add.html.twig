@@ -1,6 +1,23 @@
 {% extends 'layout.html.twig' %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="/assets/css/form.css">
+{% endblock %}
+
 {% block content %}
-    <h1>Add a new item</h1>
-    {% include 'Media/_form.html.twig' %}
+    <section class="return">
+        <a href="/{{ media_type }}">Retour aux résultats</a>
+    </section>
+    <section class="addMedia">
+        <h1>
+            {% if media_type == 'books' %}
+                Ajouter un nouveau livre
+            {% elseif media_type == 'musics' %}
+                Ajouter une nouvelle musique
+            {% elseif media_type == 'videos' %}
+                Ajouter une nouvelle video
+            {% endif %}
+        </h1>
+        {% include 'Media/_form.html.twig' %}
+    </section>
 {% endblock %}
