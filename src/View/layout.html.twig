@@ -9,23 +9,33 @@
     <title>{% block title %}{% endblock %}</title>
 
     <link rel="stylesheet" href="/assets/css/base.css">
+        <link rel="stylesheet" href="/assets/css/popUp.css">
+
     {% block stylesheet %}{% endblock %}
 
     <script defer src="https://kit.fontawesome.com/643c9e7905.js" crossorigin="anonymous"></script>
     <script defer src="/assets/javascript/base.js"></script>
+            <script defer src="/assets/javascript/popUp.js"></script>
+
+
     {% block javascript %}{% endblock %}
 </head>
 
 <body>
     {% include 'Base/_header.html.twig' %}
+{% include 'Base/_popUp.html.twig' %}
+
+
 
     {% include 'Base/_search.html.twig' %}
+
 
     {% block page_title %}{% endblock %}
 
     {% block content %}{% endblock %}
 
     {% include 'Base/_footer.html.twig' %}
+
 </body>
 </html>
 

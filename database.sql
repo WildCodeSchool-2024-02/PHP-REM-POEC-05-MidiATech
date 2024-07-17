@@ -176,6 +176,8 @@ INSERT INTO `categories` (`name`) VALUES
 ;
 
 
+INSERT INTO types (name) VALUES ('Film'), ('Série'), ('Jeunesse'), ('Documentaire');
+
 INSERT INTO `videos` (`title`, `picture`, `description`, `director`, `date`, `duration`, `quantities`, `id_category`, `id_types`) VALUES
 ('Inception', 'inception.jpg', 'Un thriller de science-fiction réalisé par Christopher Nolan.', 'Christopher Nolan', '2010-07-16', 148, 12, 3, 1),
 ('The Godfather', 'the_godfather.jpg', 'Un film de crime réalisé par Francis Ford Coppola.', 'Francis Ford Coppola', '1972-03-24', 175, 8, 2, 1),
