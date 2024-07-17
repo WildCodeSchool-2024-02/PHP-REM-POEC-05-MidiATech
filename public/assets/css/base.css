@@ -48,7 +48,19 @@ header {
     & img {
         height: 70px; /* Ajustez la taille du logo selon vos besoins */
         border-radius: 50%;
-        margin-right: 30px;
+
+        @media (max-width: 370px) {
+            height: 50px;
+        }
+    }
+
+    & h1 {
+        margin: 0 20px;
+        font-size: 30px;
+
+        @media (max-width: 370px) {
+            font-size: 20px;
+        }
     }
 }
 
@@ -106,6 +118,10 @@ nav {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+
+    @media (max-width: 370px) {
+        top: -27px;
+    }
 }
 
 #menu-toggle {
@@ -349,5 +365,20 @@ nav {
                 text-decoration: underline;
             }
         }
+    }
+}
+
+.return {
+    margin: 30px;
+
+    & a {
+        background: var(--quaternaryColor);
+        color: var(--secondaryColor);
+        padding: 10px 20px;
+        border-radius: 15px;
+        border: 1px solid var(--tertiaryColor);
+        box-shadow: 2px 1px 10px var(--tertiaryColor);
+        cursor: pointer;
+        text-decoration: none;
     }
 }

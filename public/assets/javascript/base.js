@@ -36,7 +36,7 @@ document.getElementById("searchInput").addEventListener("input", function () {
     const searchTerm = this.value.trim();
     const resultsDiv = document.getElementById("results");
 
-    if (searchTerm.length > 2) {
+    if (searchTerm.length > 1) {
         fetch(`/search?term=${encodeURIComponent(searchTerm)}`)
             .then((response) => {
                 if (!response.ok) {
@@ -59,8 +59,12 @@ document.getElementById("searchInput").addEventListener("input", function () {
                     data.musics.forEach((item) => {
                         let paragraph = document.createElement("p");
                         let link = document.createElement("a");
-                        link.textContent = `${item.title} chantés par ${item.author}`;
-                        link.href = `musics/details/show?id=${item.id}`;
+                        let strong = document.createElement("strong");
+                        strong.textContent = 'Musique';
+                        let textNode = document.createTextNode(` - ${item.title} chantés par ${item.singer}`);
+                        link.appendChild(strong);
+                        link.appendChild(textNode);
+                        link.href = `musics/show?id=${item.id}`;
                         paragraph.appendChild(link);
                         resultsDiv.appendChild(paragraph);
                     });
@@ -69,8 +73,12 @@ document.getElementById("searchInput").addEventListener("input", function () {
                     data.books.forEach((item) => {
                         let paragraph = document.createElement("p");
                         let link = document.createElement("a");
-                        link.textContent = `${item.title} écris par ${item.author}`;
-                        link.href = `books/details/show?id=${item.id}`;
+                        let strong = document.createElement("strong");
+                        strong.textContent = 'Livre';
+                        let textNode = document.createTextNode(` - ${item.title} écrit par ${item.author}`);
+                        link.appendChild(strong);
+                        link.appendChild(textNode);
+                        link.href = `books/show?id=${item.id}`;
                         paragraph.appendChild(link);
                         resultsDiv.appendChild(paragraph);
                     });
@@ -79,8 +87,12 @@ document.getElementById("searchInput").addEventListener("input", function () {
                     data.videos.forEach((item) => {
                         let paragraph = document.createElement("p");
                         let link = document.createElement("a");
-                        link.textContent = `${item.title} réalisés par ${item.author}`;
-                        link.href = `videos/details/show?id=${item.id}`;
+                        let strong = document.createElement("strong");
+                        strong.textContent = `${item.name}`;
+                        let textNode = document.createTextNode(` - ${item.title} réalisé par ${item.director}`);
+                        link.appendChild(strong);
+                        link.appendChild(textNode);
+                        link.href = `videos/show?id=${item.id}`;
                         paragraph.appendChild(link);
                         resultsDiv.appendChild(paragraph);
                     });
