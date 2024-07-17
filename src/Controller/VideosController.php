@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\TypesManager;
 use App\Model\VideosManager;
 use App\Model\CategoriesManager;
+use App\Services\FileUploadService;
 
 class VideosController extends AbstractController
 {
@@ -72,7 +73,8 @@ class VideosController extends AbstractController
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $fileName = $this->uploadFile($errors);
+                $uploadService = new FileUploadService();
+                $fileName = $uploadService->uploadFile($errors);
                 if ($fileName !== "") {
                     $media['picture'] = $fileName;
                 } else {
@@ -118,7 +120,8 @@ class VideosController extends AbstractController
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $fileName = $this->uploadFile($errors);
+                $uploadService = new FileUploadService();
+                $fileName = $uploadService->uploadFile($errors);
                 if ($fileName !== "") {
                     $media['picture'] = $fileName;
                 } else {
