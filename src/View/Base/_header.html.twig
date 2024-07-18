@@ -1,4 +1,3 @@
-{# Démarrer la session pour vérifier si l'utilisateur est connecté (cela doit être fait dans votre contrôleur PHP) #}
 
 <button onclick="topFunction()" id="goToTop" title="Go to top">&#187;</button>
 
@@ -30,7 +29,19 @@
                         </a>
                 </li>
             </ul>
-            <a class="desktop" href="#" id="accountIcon"><i class="fa-regular fa-circle-user"></i></a>
+<a class="desktop" href="/" id="accountIcon"><i class="fa-regular fa-circle-user"></i></a>
         </nav>
     </div>
 </header>
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const accountIcon = document.getElementById('accountIcon');
+    const isLoggedIn = {{ app.user ? 'true' : 'false' }};
+    
+    if (isLoggedIn) {
+        accountIcon.href = '/profile';
+    } else {
+        accountIcon.href = '/';
+    }
+});</script>

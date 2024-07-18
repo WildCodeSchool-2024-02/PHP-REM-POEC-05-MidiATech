@@ -18,11 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('overlay').classList.remove('active');
     });
 
-    document.getElementById('loginButton').addEventListener('click', function () {
-
-
-        alert('Login successful!');
-        document.getElementById('popup').classList.remove('active');
-        document.getElementById('overlay').classList.remove('active');
+    document.getElementById('loginButton').addEventListener('click', function (event) {
+        event.preventDefault(); // Empêche le comportement par défaut du bouton de soumission
+    
+        document.getElementById('loginForm').submit(); // Soumet le formulaire
     });
+    
 });

@@ -15,5 +15,8 @@ return [
     'books/details/show' => ['BooksController', 'show', ['id']],
     'musics/details/show' => ['MusicsController', 'show', ['id']],
     'videos/details/show' => ['VideosController', 'show', ['id']],
-    
+    'login' => ['UserController', 'login',],
+    'inscription' => ['UserController', 'inscription',],
+    'profile' => ['UserController', 'show']
+
 ];

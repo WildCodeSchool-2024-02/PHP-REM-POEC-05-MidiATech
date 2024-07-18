@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block stylesheet %}
+{% endblock %}
+
+{% block page_title %}
+    <h1>{{ firstname }}</h1>
+{% endblock %}
+
+{% block content %}
+     {% if error %}
+            <p style="color: rgb(202, 106, 106)">{{ error }}</p>
+            {% endif %}
+{% endblock %}
