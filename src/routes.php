@@ -9,7 +9,7 @@
 return [
     '' => ['HomeController', 'index',],
     'search' => ['HomeController', 'search',],
-    'books' => ['BooksController', 'index',],
+    'books' => ['BooksController', 'index', ['category']],
     'videos' => ['VideosController', 'index'],
     'musics' => ['MusicsController', 'index'],
 

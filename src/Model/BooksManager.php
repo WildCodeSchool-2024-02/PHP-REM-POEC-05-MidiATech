@@ -15,7 +15,7 @@ class BooksManager extends AbstractManager
     {
         $statement = $this->pdo->prepare(
             "INSERT INTO " . self::TABLE .
-            "(`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`)
+                "(`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`)
             VALUES (:title, :picture, :description, :author, :date, :pages, :quantities, :id_category)"
         );
 
@@ -55,5 +55,20 @@ class BooksManager extends AbstractManager
         $statement->bindValue(':id_category', $item['id_category'], PDO::PARAM_INT);
 
         return $statement->execute();
+    }
+
+    public function selectByCategory(string $category)
+    {
+        $statement = $this->pdo->prepare("
+            SELECT b.* 
+            FROM books b
+            JOIN book_category bc ON b.id = bc.book_id 
+            JOIN categories c ON c.id = bc.category_id 
+            WHERE c.name = :category
+        ");
+        $statement->bindValue(':category', $category, PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }

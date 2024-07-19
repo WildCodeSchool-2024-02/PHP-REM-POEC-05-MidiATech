@@ -140,6 +140,18 @@ CREATE TABLE
         CONSTRAINT `fk_borrowing_users` FOREIGN KEY (`id_users`) REFERENCES `midiATech`.`users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `midiATech`.`book_category`
+-- -----------------------------------------------------
+CREATE TABLE book_category (
+    book_id INT NOT NULL,
+    category_id INT NOT NULL,
+    PRIMARY KEY (book_id, category_id),
+    FOREIGN KEY (book_id) REFERENCES books(id),
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
 -- -----------------------------------------------------
 -- Table `midiATech`.`roles`
 -- -----------------------------------------------------

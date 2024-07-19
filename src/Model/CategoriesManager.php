@@ -10,20 +10,18 @@ class CategoriesManager extends AbstractManager
 
     public function getCategoriesByBookId($bookId): false|array
     {
-
-        $statement = $this->pdo->prepare("SELECT c.*
-                FROM `midiATech`.`categories` c
-                JOIN `midiATech`.`books` b ON c.id = b.id_category
-                WHERE b.id = :book_id
-                ");
+        $statement = $this->pdo->prepare("
+            SELECT c.*
+            FROM categories c
+            JOIN book_category bc ON c.id = bc.category_id
+            WHERE bc.book_id = :book_id
+        ");
 
         $statement->bindValue(':book_id', $bookId, PDO::PARAM_INT);
-
         $statement->execute();
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-
     public function getCategoriesByVideoId($videoId): false|array
     {
         $statement = $this->pdo->prepare("

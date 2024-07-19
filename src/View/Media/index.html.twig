@@ -21,12 +21,12 @@
         {% elseif media_type == 'musics' %}
             <a href="/{{ media_type }}/add">Ajouter une musique</a>
         {% elseif media_type == 'videos' %}
-            <a href="/{{ media_type }}/add">Ajouter une videos</a>
+            <a href="/{{ media_type }}/add">Ajouter une vidéos</a>
         {% endif %}
     </section>
     <div class="filters">
         {% for filter in filters %}
-            <span class="chip">{{ filter }}</span>
+            <a href="/books?category={{ filter }}" class="chip {% if filter == selected_category %}active{% endif %}">{{ filter }}</a>
         {% endfor %}
     </div>
 
@@ -44,9 +44,6 @@
                     {% for category in item.categories %}
                         <span class="category">{{ category.name }}</span>
                     {% endfor %}
-                    {% for type in item.types %}
-                        <span class="category">{{ type.name }}</span>
-                    {% endfor %}
                 </div>
 
                 <a href="/{{media_type}}/show?id={{ item.id }}" class="btn">Voir Détails</a>
@@ -54,5 +51,3 @@
         {% endfor %}
     </div>
 {% endblock %}
-
-
