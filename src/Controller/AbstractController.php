@@ -7,6 +7,7 @@ use Ramsey\Uuid\Uuid;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
+use App\Model\UserManager;
 
 /**
  * Initialized some Controller common features (Twig...)
@@ -26,6 +27,19 @@ abstract class AbstractController
             ]
         );
         $this->twig->addExtension(new DebugExtension());
+        $this->twig->addGlobal('app', ['user' => $this->getUser()]);
+    }
+
+    private function getUser()
+    {
+        if (isset($_SESSION['user_id'])) {
+            $userManager = new UserManager();
+            return $userManager->selectOneById($_SESSION['user_id']);
+        } elseif (isset($_COOKIE['user_id'])) {
+            $userManager = new UserManager();
+            return $userManager->selectOneById($_COOKIE['user_id']);
+        }
+        return null;
     }
 
     public function validate($media): array

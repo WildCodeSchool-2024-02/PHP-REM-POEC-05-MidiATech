@@ -12,6 +12,12 @@ return [
     'books' => ['BooksController', 'index',],
     'videos' => ['VideosController', 'index'],
     'musics' => ['MusicsController', 'index'],
+
+    'login' => ['UserController', 'login',],
+    'inscription' => ['UserController', 'inscription',],
+    'profile' => ['UserController', 'profile'],
+    'logout' => ['UserController', 'logout'],
+
     'books/show' => ['BooksController', 'show', ['id']],
     'musics/show' => ['MusicsController', 'show', ['id']],
     'videos/show' => ['VideosController', 'show', ['id']],
