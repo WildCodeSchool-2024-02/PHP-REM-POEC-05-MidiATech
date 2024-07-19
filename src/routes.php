@@ -12,11 +12,22 @@ return [
     'books' => ['BooksController', 'index',],
     'videos' => ['VideosController', 'index'],
     'musics' => ['MusicsController', 'index'],
-    'books/details/show' => ['BooksController', 'show', ['id']],
-    'musics/details/show' => ['MusicsController', 'show', ['id']],
-    'videos/details/show' => ['VideosController', 'show', ['id']],
+
     'login' => ['UserController', 'login',],
     'inscription' => ['UserController', 'inscription',],
-    'profile' => ['UserController', 'show']
+    'profile' => ['UserController', 'profile'],
+    'logout' => ['UserController', 'logout'],
 
+    'books/show' => ['BooksController', 'show', ['id']],
+    'musics/show' => ['MusicsController', 'show', ['id']],
+    'videos/show' => ['VideosController', 'show', ['id']],
+    'books/add' => ['BooksController', 'add',],
+    'videos/add' => ['VideosController', 'add'],
+    'musics/add' => ['MusicsController', 'add'],
+    'books/edit' => ['BooksController', 'edit', ['id']],
+    'musics/edit' => ['MusicsController', 'edit', ['id']],
+    'videos/edit' => ['VideosController', 'edit', ['id']],
+    'books/delete' => ['BooksController', 'delete', ['id']],
+    'musics/delete' => ['MusicsController', 'delete', ['id']],
+    'videos/delete' => ['VideosController', 'delete', ['id']]
 ];

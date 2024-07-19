@@ -9,7 +9,6 @@
     <title>{% block title %}{% endblock %}</title>
 
     <link rel="stylesheet" href="/assets/css/base.css">
-        <link rel="stylesheet" href="/assets/css/popUp.css">
 
     {% block stylesheet %}{% endblock %}
 
@@ -23,18 +22,14 @@
 
 <body>
     {% include 'Base/_header.html.twig' %}
-{% include 'Base/_popUp.html.twig' %}
-
-
-
-    {% include 'Base/_search.html.twig' %}
-
 
     {% block page_title %}{% endblock %}
 
     {% block content %}{% endblock %}
 
     {% include 'Base/_footer.html.twig' %}
+        {% block javascripts %}{% endblock %}
+
 
 </body>
 </html>

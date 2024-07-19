@@ -1,8 +1,89 @@
-{# TODO : manage errors display #}
+{% if errors %}
+    <div class="errors">
+        <h3>Erreur :</h3>
+        {% for error in errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
 
-<form method="post">
-	<input type="hidden" value="{{ item.id }}" name="id">
-	<label for="title">Tile</label>
-	<input type="text" value="{{ item.title }}" name="title" id="title">
-	<button>Submit</button>
+<form class="formMedia" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="id" id="id" value={{ media.id }}>
+    <label for="title">Titre :</label>
+    <input type="text" id="title" name="title" value="{{ media.title }}">
+
+    <label for="picture">Image :</label>
+    <input type="file" id="picture" name="picture">
+
+    {% if media.picture %}
+        <label for="delete_picture">Supprimer l'image
+            <input type="checkbox" id="delete_picture" name="delete_picture">
+        </label>
+        <input type="hidden" name="imageActual" value="{{ media.picture }}">
+        <img src="/assets/images/covers/{{ media.picture }}" alt="Image actuelle" style="width: 150px; height: auto; margin-bottom: 15px">
+    {% endif %}
+
+    {% if media_type != 'musics' %}
+        <label for="description">Description :</label>
+        <textarea id="description" name="description">{{ media.description }}</textarea>
+    {% endif %}
+
+    {% if media_type == 'books' %}
+        <label for="author">Auteur :</label>
+        <input type="text" id="author" name="author" value="{{ media.author }}">
+    {% elseif media_type == 'musics' %}
+        <label for="singer">Chanteur :</label>
+        <input type="text" id="singer" name="singer" value="{{ media.singer }}">
+    {% elseif media_type == 'videos' %}
+        <label for="director">Réalisateur :</label>
+        <input type="text" id="director" name="director" value="{{ media.director }}">
+    {% endif %}
+
+    <label for="date">Date de publication :</label>
+    <input type="date" id="date" name="date" value={{ media.date }}>
+
+    {% if media_type == 'books' %}
+        <label for="pages">Nombre de pages :</label>
+        <input type="number" id="pages" name="pages" value={{ media.pages }}>
+    {% else %}
+        <label for="duration">Durée en seconde :</label>
+        <input type="number" id="duration" name="duration" value={{ media.duration }}>
+    {% endif %}
+
+    <label for="quantities">Quantités disponibles :</label>
+    <input type="number" id="quantities" name="quantities" value={{ media.quantities }}>
+
+    <label for="category">Catégorie :</label>
+    <select id="category" name="id_category">
+        <option value="" selected disabled></option>
+        {% for category in categories %}
+            {% if media.id_category == category.id %}
+            <option value="{{ category.id }}" selected>{{ category.name }}</option>
+            {% else %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+
+    {% if media_type == 'videos' %}
+    <label for="type">Type :</label>
+    <select id="type" name="id_types">
+        <option value="" selected disabled></option>
+        {% for type in types %}
+            {% if media.id_types == type.id %}
+                <option value="{{ type.id }}" selected>{{ type.name }}</option>
+            {% else %}
+                <option value="{{ type.id }}">{{ type.name }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    {% endif %}
+
+    {% if media_type == 'books' %}
+        <input type="submit" value="{{ isEdit ? "Modifier" : "Ajouter"}} le livre">
+    {% elseif media_type == 'musics' %}
+        <input type="submit" value="{{ isEdit ? "Modifier" : "Ajouter"}} la musique">
+    {% elseif media_type == 'videos' %}
+        <input type="submit" value="{{ isEdit ? "Modifier" : "Ajouter"}} la vidéo">
+    {% endif %}
 </form>

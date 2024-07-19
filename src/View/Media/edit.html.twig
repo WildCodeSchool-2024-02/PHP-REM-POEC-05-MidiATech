@@ -1,7 +1,23 @@
 {% extends 'layout.html.twig' %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="/assets/css/form.css">
+{% endblock %}
+
 {% block content %}
-    <h1>Edit item {{ item.title }}</h1>
-    {% include 'Media/_form.html.twig' %}
-    <a href="/items/show?id={{ item.id }}">Back</a>
+    <section class="return">
+        <a href="/{{ media_type }}/show?id={{ media.id }}">Retour à l'affiche</a>
+    </section>
+    <section class="addMedia">
+        <h1>
+            {% if media_type == 'books' %}
+                Modifier le livre "{{ media.title }}"
+            {% elseif media_type == 'musics' %}
+                Modifier la musique {{ media.title }}
+            {% elseif media_type == 'videos' %}
+                Modifier la video {{ media.title }}
+            {% endif %}
+        </h1>
+        {% include 'Media/_form.html.twig' %}
+    </section>
 {% endblock %}

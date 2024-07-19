@@ -1,0 +1,71 @@
+.addMedia {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+
+    & h1 {
+        color: var(--tertiaryColor);
+        font-size: 30px;
+    }
+
+    & .errors {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: red;
+        text-align: center;
+        margin-bottom: 15px;
+
+        & h3 {
+            font-size: 26px;
+            margin-bottom: 0;
+        }
+
+        & p {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.formMedia {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 5px solid var(--tertiaryColor);
+    background-color: var(--quaternaryColor);
+    padding: 20px;
+    border-radius: 20px;
+    width: auto;
+
+    & label {
+        color: var(--secondaryColor);
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    & input, select, textarea {
+        margin-bottom: 20px;
+        font-size: 16px;
+        background: none;
+        border: 2px solid var(--tertiaryColor);
+        border-radius: 5px;
+        padding: 10px;
+        color: var(--primaryColor);
+        outline: none;
+    }
+
+    & textarea {
+        height: 70px;
+    }
+
+    & option {
+        background: var(--quaternaryColor);
+    }
+
+    & input[type="submit"] {
+        background: green;
+    }
+}

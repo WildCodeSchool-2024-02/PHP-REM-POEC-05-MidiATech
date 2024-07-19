@@ -1,16 +1,26 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}{% endblock %}
+{% block title %}{{ user.firstname }}{% endblock %}
 
 {% block stylesheet %}
 {% endblock %}
 
 {% block page_title %}
-    <h1>{{ firstname }}</h1>
+    <h1> {{ user.firstname }}</h1>
 {% endblock %}
 
 {% block content %}
-     {% if error %}
-            <p style="color: rgb(202, 106, 106)">{{ error }}</p>
-            {% endif %}
+    {% if error %}
+        <p style="color: rgb(202, 106, 106)">{{ error }}</p>
+    {% endif %}
+
+    <div class="profile-details">
+        <p><strong>Nom :</strong> {{ user.lastname }}</p>
+        <p><strong>Prénom :</strong> {{ user.firstname }}</p>
+        <p><strong>Email :</strong> {{ user.email }}</p>
+    </div>
+
+    <form method="post" action="/logout">
+        <button type="submit">Se déconnecter</button>
+    </form>
 {% endblock %}

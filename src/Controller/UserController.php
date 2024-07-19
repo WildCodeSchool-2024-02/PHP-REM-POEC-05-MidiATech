@@ -37,9 +37,7 @@ class UserController extends AbstractController
                     'role_id' => $userRoleId,
                 ]);
 
-
-                header('Location: /');
-                exit();
+                return $this->twig->render('Profile/profile.html.twig');
             } else {
                 $error = 'Tous les champs sont obligatoires';
                 return $this->twig->render('Profile/inscription.html.twig', ['error' => $error]);
@@ -47,8 +45,6 @@ class UserController extends AbstractController
         }
         return $this->twig->render('Profile/inscription.html.twig');
     }
-
-
 
     public function login()
     {
@@ -66,42 +62,48 @@ class UserController extends AbstractController
                 return $this->twig->render('Profile/profile.html.twig', ['user' => $user]);
             } else {
                 $error = 'Email ou mot de passe invalide';
-                return $this->twig->render('Profile/profile.html.twig', ['error' => $error]);
+                return $this->twig->render('Profile/login.html.twig', ['error' => $error]);
             }
         }
 
-        return $this->twig->render('Home/index.html.twig');
+        return $this->twig->render('Profile/login.html.twig');
     }
-
 
     public function isUserLoggedIn()
     {
         return isset($_SESSION['user_id']) || isset($_COOKIE['user_id']);
     }
 
-
-    // private function getUser()
-    // {
-    //     if (isset($_SESSION['user_id'])) {
-    //         $userManager = new UserManager();
-    //         return $userManager->selectOneById($_SESSION['user_id']);
-    //     } elseif (isset($_COOKIE['user_id'])) {
-    //         $userManager = new UserManager();
-    //         return $userManager->selectOneById($_COOKIE['user_id']);
-    //     }
-    //     return null;
-    // }
-
-
-
-
+    private function getUser()
+    {
+        if (isset($_SESSION['user_id'])) {
+            $userManager = new UserManager();
+            return $userManager->selectOneById($_SESSION['user_id']);
+        } elseif (isset($_COOKIE['user_id'])) {
+            $userManager = new UserManager();
+            return $userManager->selectOneById($_COOKIE['user_id']);
+        }
+        return null;
+    }
 
     public function logout()
     {
+        session_start();
         session_destroy();
-        unset($_SESSION['user']);
-        unset($_COOKIE);
-        header('Location: /');
+        setcookie('user_id', '', time() - 3600, "/");
+        header('Location: /login');
         exit();
+    }
+
+
+    public function profile()
+    {
+        if ($this->isUserLoggedIn()) {
+            $user = $this->getUser();
+            return $this->twig->render('Profile/profile.html.twig', ['user' => $user]);
+        } else {
+            header('Location: /login');
+            exit();
+        }
     }
 }
