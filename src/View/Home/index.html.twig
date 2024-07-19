@@ -1,7 +1,45 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
+    {% include 'Base/_search.html.twig' %}
+    <h1>Home</h1>
+
 {% include 'Base/_searchbar.html.twig' %}
+
+<main>
+    <section>
+        <div class="mise-en-avant">
+            <article class="recommandations">
+                <h2>Recommandations</h2>
+                <ul>
+                    <li><img src="" alt=""></li>
+                    <li><img src="" alt=""></li>
+                    <li><img src="" alt=""></li>
+                </ul>
+                <h3 class="button">Voir plus</h3>
+            </article>
+            <article class="collection-populaire">
+                <h2>Collection Populaire</h2>
+                <ul>
+                    <li><img src="" alt=""></li>
+                    <li><img src="" alt=""></li>
+                    <li><img src="" alt=""></li>
+                </ul>
+                <h3 class="button">Voir plus</h3>
+            </article>
+            <article class="informations">
+                <h2>Informations</h2>
+                <ul>
+                    <li><img src="" alt=""></li>
+                    <li><img src="" alt=""></li>
+                    <li><img src="" alt=""></li>
+                </ul>
+                <h3 class="button">En savoir plus</h3>
+            </article>
+        </div>
+    </section>
+</main>
+
 
 <main>
     <section>

@@ -123,13 +123,17 @@ abstract class AbstractManager
 
     public function search($searchTerm)
     {
-        $columnsToSearch = ['author', 'singer', 'director'];
+        $columnsToSearch = ['author', 'singer', 'director', 'id_types'];
         $searchQuery = "SELECT * FROM " . static::TABLE . " WHERE title LIKE :searchTerm";
 
         $conditions = [];
 
         foreach ($columnsToSearch as $column) {
             if ($this->columnExists($column)) {
+                if ($column === 'id_types') {
+                    $searchQuery = "SELECT * FROM " . static::TABLE . "
+        JOIN types ON videos.id_types = types.id WHERE title LIKE :searchTerm";
+                }
                 $conditions[] = "$column LIKE :searchTerm";
             }
         }

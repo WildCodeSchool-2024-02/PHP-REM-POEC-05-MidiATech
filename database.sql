@@ -166,15 +166,21 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-INSERT INTO `categories` (`name`) VALUES 
+INSERT INTO `categories` (`name`) VALUES
 ('Roman'),
 ('Policier'),
 ('Science-fiction'),
 ('Fantastique'),
 ('Histoire'),
-('Essai'),       ('Action'), ('Comédie'), ('Drame'), ('Documentaire'), ('Science-fiction'), ('Horreur');
-;
+('Essai'),
+('Action'),
+('Comédie'),
+('Drame'),
+('Documentaire'),
+('Science-fiction'),
+('Horreur');
 
+INSERT INTO `types` (`name`) VALUES ('Film'), ('Série'), ('Jeunesse'), ('Documentaire');
 
 INSERT INTO `videos` (`title`, `picture`, `description`, `director`, `date`, `duration`, `quantities`, `id_category`, `id_types`) VALUES
 ('Inception', 'inception.jpg', 'Un thriller de science-fiction réalisé par Christopher Nolan.', 'Christopher Nolan', '2010-07-16', 148, 12, 3, 1),
@@ -188,7 +194,7 @@ INSERT INTO `videos` (`title`, `picture`, `description`, `director`, `date`, `du
 ('Gladiator', 'gladiator.jpg', 'Un film historique réalisé par Ridley Scott.', 'Ridley Scott', '2000-05-05', 155, 9, 5, 1),
 ('The Shawshank Redemption', 'shawshank_redemption.jpg', 'Un film dramatique réalisé par Frank Darabont.', 'Frank Darabont', '1994-09-23', 142, 14, 9, 1);
 
-INSERT INTO `books` (`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`) VALUES 
+INSERT INTO `books` (`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`) VALUES
 ('L\'Étranger', 'letranger.jpg', 'Un roman de l\'absurde écrit par Albert Camus.', 'Albert Camus', '1942-05-01', 123, 10, 1),
 ('Le Petit Prince', 'le_petit_prince.jpg', 'Un conte poétique et philosophique écrit par Antoine de Saint-Exupéry.', 'Antoine de Saint-Exupéry', '1943-04-06', 96, 15, 1),
 ('Millénium : Les hommes qui n\'aimaient pas les femmes', 'millenium.jpg', 'Un roman policier suédois écrit par Stieg Larsson.', 'Stieg Larsson', '2005-08-09', 465, 20, 2),
