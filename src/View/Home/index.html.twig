@@ -1,19 +1,39 @@
 {% extends 'layout.html.twig' %}
 
+{% block stylesheet %}
+<link rel="stylesheet" href="/assets/css/home.css">
+{% endblock %}
+
+{% block javascript %}
+<script defer src="/assets/javascript/home.js"></script>
+{% endblock %}
+
 {% block content %}
-{% include 'Base/_searchbar.html.twig' %}
+{% include 'Base/_search.html.twig' %}
 
 <main>
     <section>
         <div class="mise-en-avant">
             <article class="recommandations">
                 <h2>Recommandations</h2>
-                <ul>
-                    <li><img src="" alt=""></li>
-                    <li><img src="" alt=""></li>
-                    <li><img src="" alt=""></li>
-                </ul>
-                <h3 class="button">Voir plus</h3>
+
+                <section class ="caroussel">
+
+                    <button class="fleche" id="fleche-gauche">
+                        &#8249;
+                      </button>
+                      
+                      <button class="fleche" id="fleche-droite">
+                        &#8250;
+                      </button>
+                    <ul class="slides-container" id="slides-container">
+                        <li class="slide"><img src="/assets/images/link-faces-of-evil-loli.png" alt=></li>
+                        <li class="slide"><img src="/assets/images/link-faces-of-evil-loli.png" alt=></li>
+                        <li class="slide"><img src="/assets/images/link-faces-of-evil-loli.png" alt=></li>
+                    </ul>
+                </section>
+
+                {# <h3 class="button">Voir plus</h3>
             </article>
             <article class="collection-populaire">
                 <h2>Collection Populaire</h2>
@@ -32,7 +52,7 @@
                     <li><img src="" alt=""></li>
                 </ul>
                 <h3 class="button">En savoir plus</h3>
-            </article>
+            </article> #}
         </div>
     </section>
 </main>
