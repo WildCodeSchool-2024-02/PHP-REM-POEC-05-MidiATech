@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use Exception;
-use Ramsey\Uuid\Uuid;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
+use Twig\Extra\Intl\IntlExtension;
 use Twig\Loader\FilesystemLoader;
 use App\Model\UserManager;
 
@@ -27,6 +26,7 @@ abstract class AbstractController
             ]
         );
         $this->twig->addExtension(new DebugExtension());
+        $this->twig->addExtension(new IntlExtension());
         $this->twig->addGlobal('app', ['user' => $this->getUser()]);
     }
 
@@ -48,12 +48,11 @@ abstract class AbstractController
         $errors = [];
 
         // Validation de l'image
-        if (isset($_FILES['picture'])) {
-            if (
-                ($_FILES['picture']['error'] !== UPLOAD_ERR_OK)
-                && ($_FILES['picture']['error'] !== UPLOAD_ERR_NO_FILE)
-            ) {
-                $errors['picture'] = "Impossible d'uploader l'image";
+        if (!empty($media['picture'])) {
+            $url = $media['picture'];
+
+            if (!filter_var($url, FILTER_VALIDATE_URL)) {
+                $errors['title'] = 'L\'URL n\'est pas valide.';
             }
         }
 

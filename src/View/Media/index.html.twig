@@ -34,7 +34,7 @@
         {% for item in medias %}
             <div class="card">
                 {% if item.picture %}
-                    <img src="/assets/images/covers/{{ item.picture }}" alt="{{ item.title }}">
+                    <img src="{{ item.picture }}" alt="{{ item.title }}">
                 {% else %}
                     <img src="/assets/images/covers/couverture-livre.webp" alt="cover">
                 {% endif %}

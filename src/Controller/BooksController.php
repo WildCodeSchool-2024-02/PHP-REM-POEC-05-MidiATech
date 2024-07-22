@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Model\BooksManager;
 use App\Model\CategoriesManager;
-use App\Services\FileUploadService;
 
 class BooksController extends AbstractController
 {
@@ -62,14 +61,6 @@ class BooksController extends AbstractController
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $uploadService = new FileUploadService();
-                $fileName = $uploadService->uploadFile($errors);
-                if ($fileName !== "") {
-                    $media['picture'] = $fileName;
-                } else {
-                    $media['picture'] = null;
-                }
-
                 $booksManager->update($media);
                 header('Location:/books/show?id=' . $id);
                 return null;
@@ -100,14 +91,6 @@ class BooksController extends AbstractController
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $uploadService = new FileUploadService();
-                $fileName = $uploadService->uploadFile($errors);
-                if ($fileName !== "") {
-                    $media['picture'] = $fileName;
-                } else {
-                    $media['picture'] = null;
-                }
-
                 $booksManager = new BooksManager();
                 $id = $booksManager->insert($media);
                 header('Location:/books/show?id=' . $id);

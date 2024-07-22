@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Model\MusicsManager;
 use App\Model\CategoriesManager;
-use App\Services\FileUploadService;
 
 class MusicsController extends AbstractController
 {
@@ -62,14 +61,6 @@ class MusicsController extends AbstractController
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $uploadService = new FileUploadService();
-                $fileName = $uploadService->uploadFile($errors);
-                if ($fileName !== "") {
-                    $media['picture'] = $fileName;
-                } else {
-                    $media['picture'] = null;
-                }
-
                 $musicsManager->update($media);
                 header('Location:/musics/show?id=' . $id);
                 return null;
@@ -100,14 +91,6 @@ class MusicsController extends AbstractController
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $uploadService = new FileUploadService();
-                $fileName = $uploadService->uploadFile($errors);
-                if ($fileName !== "") {
-                    $media['picture'] = $fileName;
-                } else {
-                    $media['picture'] = null;
-                }
-
                 $musicsManager = new MusicsManager();
                 $id = $musicsManager->insert($media);
                 header('Location:/musics/show?id=' . $id);

@@ -24,7 +24,7 @@ class VideosController extends AbstractController
             $media['types'] = $typeManager->getTypesByVideoId($media['id']);
         }
 
-        $title = "Films";
+        $title = "Films - Séries - Jeunesses - Documentaires";
         $filters = ['Action', 'Comédie', 'Drame', 'Documentaire', 'Science-fiction', 'Horreur'];
 
         return $this->twig->render('Media/index.html.twig', [
@@ -73,14 +73,6 @@ class VideosController extends AbstractController
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $uploadService = new FileUploadService();
-                $fileName = $uploadService->uploadFile($errors);
-                if ($fileName !== "") {
-                    $media['picture'] = $fileName;
-                } else {
-                    $media['picture'] = null;
-                }
-
                 $videosManager->update($media);
                 header('Location:/videos/show?id=' . $id);
                 return null;
@@ -112,22 +104,14 @@ class VideosController extends AbstractController
             $errors = $this->validate($media);
 
             // Validation de la catégorie
-            if (empty($media['id_type'])) {
-                $errors['id_type'] = 'Le type est requis.';
-            } elseif (!is_numeric($media['id_type'])) {
-                $errors['id_type'] = 'Identifiant de type invalide.';
+            if (empty($media['id_types'])) {
+                $errors['id_types'] = 'Le type est requis.';
+            } elseif (!is_numeric($media['id_types'])) {
+                $errors['id_types'] = 'Identifiant de type invalide.';
             }
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $uploadService = new FileUploadService();
-                $fileName = $uploadService->uploadFile($errors);
-                if ($fileName !== "") {
-                    $media['picture'] = $fileName;
-                } else {
-                    $media['picture'] = null;
-                }
-
                 $videosManager = new VideosManager();
                 $id = $videosManager->insert($media);
                 header('Location:/videos/show?id=' . $id);
