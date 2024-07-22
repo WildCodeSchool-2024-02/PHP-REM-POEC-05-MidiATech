@@ -12,28 +12,37 @@ class VideosController extends AbstractController
     /**
      * List Films
      */
-    public function index(): string
+
+    public function index(?string $category = null): string
     {
         $categoriesManager = new CategoriesManager();
-        $typeManager = new TypesManager();
         $videosManager = new VideosManager();
-        $medias = $videosManager->selectAll('title');
+
+        if ($category && $category !== 'Tout') {
+            $categoryFullName = 'Video ' . $category;
+            $medias = $videosManager->selectByCategory($categoryFullName);
+        } else {
+            $medias = $videosManager->selectAll('title');
+        }
 
         foreach ($medias as &$media) {
             $media['categories'] = $categoriesManager->getCategoriesByVideoId($media['id']);
-            $media['types'] = $typeManager->getTypesByVideoId($media['id']);
         }
 
-        $title = "Films";
-        $filters = ['Action', 'Comédie', 'Drame', 'Documentaire', 'Science-fiction', 'Horreur'];
+        $title = "Videos";
+        $filters = array_merge(['Tout'], $categoriesManager->getAllVideoCategories());
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
             'filters' => $filters,
             'medias' => $medias,
-            'media_type' => 'videos'
+            'media_type' => 'videos',
+            'selected_category' => $category
         ]);
     }
+
+
+
 
     /**
      * Show informations for a specific item
@@ -87,12 +96,16 @@ class VideosController extends AbstractController
             }
 
             // Renvoyer le formulaire avec les erreurs et les données saisies
-            return $this->twig->render('Media/edit.html.twig', ['categories' => $categories, 'types' => $types,
-                'errors' => $errors, 'media' => $media, 'media_type' => 'videos', 'isEdit' => true]);
+            return $this->twig->render('Media/edit.html.twig', [
+                'categories' => $categories, 'types' => $types,
+                'errors' => $errors, 'media' => $media, 'media_type' => 'videos', 'isEdit' => true
+            ]);
         }
 
-        return $this->twig->render('Media/edit.html.twig', ['categories' => $categories, 'types' => $types,
-            'media' => $media, 'media_type' => 'videos', 'isEdit' => true]);
+        return $this->twig->render('Media/edit.html.twig', [
+            'categories' => $categories, 'types' => $types,
+            'media' => $media, 'media_type' => 'videos', 'isEdit' => true
+        ]);
     }
 
     /**
@@ -135,12 +148,16 @@ class VideosController extends AbstractController
             }
 
             // Renvoyer le formulaire avec les erreurs et les données saisies
-            return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'types' => $types,
-                'errors' => $errors, 'media' => $media, 'media_type' => 'videos']);
+            return $this->twig->render('Media/add.html.twig', [
+                'categories' => $categories, 'types' => $types,
+                'errors' => $errors, 'media' => $media, 'media_type' => 'videos'
+            ]);
         }
 
-        return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'types' => $types,
-            'media_type' => 'videos']);
+        return $this->twig->render('Media/add.html.twig', [
+            'categories' => $categories, 'types' => $types,
+            'media_type' => 'videos'
+        ]);
     }
 
     /**

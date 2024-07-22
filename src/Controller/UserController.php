@@ -12,7 +12,7 @@ class UserController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = trim($_POST['name']);
             $lastname = trim($_POST['lastname']);
-            $mail = trim($_POST['mail']);
+            $mail = trim($_POST['email']);
             $password = $_POST['password'];
             $address = trim($_POST['address']);
             $birthday = trim($_POST['birthday']);
@@ -37,7 +37,8 @@ class UserController extends AbstractController
                     'role_id' => $userRoleId,
                 ]);
 
-                return $this->twig->render('Profile/profile.html.twig');
+
+                return $this->twig->render('Profile/login.html.twig');
             } else {
                 $error = 'Tous les champs sont obligatoires';
                 return $this->twig->render('Profile/inscription.html.twig', ['error' => $error]);
