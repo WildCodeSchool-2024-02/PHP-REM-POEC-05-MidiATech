@@ -11,7 +11,7 @@ DROP SCHEMA IF EXISTS `midiATech`;
 -- Schema midiATech
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `midiATech` DEFAULT CHARACTER
-    SET
+SET
     utf8mb4 COLLATE utf8mb4_0900_as_ci;
 
 USE `midiATech`;
@@ -23,16 +23,16 @@ DROP TABLE IF EXISTS `midiATech`.`users`;
 
 CREATE TABLE
     IF NOT EXISTS `midiATech`.`users` (
-                                          `id` INT NOT NULL AUTO_INCREMENT,
-                                          `firstname` VARCHAR(80) NOT NULL,
-                                          `lastname` VARCHAR(80) NOT NULL,
-                                          `birthday` DATE NOT NULL,
-                                          `email` VARCHAR(255) NOT NULL,
-                                          `address` VARCHAR(400) NOT NULL,
-                                          `password` VARCHAR(255) NOT NULL,
-                                          `temporary_password` VARCHAR(255) NULL,
-                                          PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `firstname` VARCHAR(80) NOT NULL,
+        `lastname` VARCHAR(80) NOT NULL,
+        `birthday` DATE NOT NULL,
+        `email` VARCHAR(255) NOT NULL,
+        `address` VARCHAR(400) NOT NULL,
+        `password` VARCHAR(255) NOT NULL,
+        `temporary_password` VARCHAR(255) NULL,
+        PRIMARY KEY (`id`)
+    ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`categories`
@@ -41,10 +41,10 @@ DROP TABLE IF EXISTS `midiATech`.`categories`;
 
 CREATE TABLE
     IF NOT EXISTS `midiATech`.`categories` (
-                                               `id` INT NOT NULL AUTO_INCREMENT,
-                                               `name` VARCHAR(100) NOT NULL,
-                                               PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `name` VARCHAR(100) NOT NULL,
+        PRIMARY KEY (`id`)
+    ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`books`
@@ -53,19 +53,19 @@ DROP TABLE IF EXISTS `midiATech`.`books`;
 
 CREATE TABLE
     IF NOT EXISTS `midiATech`.`books` (
-                                          `id` INT NOT NULL AUTO_INCREMENT,
-                                          `title` VARCHAR(255) NOT NULL,
-                                          `picture` VARCHAR(500) NULL,
-                                          `description` LONGTEXT NULL,
-                                          `author` VARCHAR(255) NOT NULL,
-                                          `date` DATE NOT NULL,
-                                          `pages` INT NOT NULL,
-                                          `quantities` INT NOT NULL,
-                                          `id_category` INT NOT NULL,
-                                          PRIMARY KEY (`id`),
-                                          INDEX `fk_books_categories1_idx` (`id_category` ASC) VISIBLE,
-                                          CONSTRAINT `fk_books_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB;
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `title` VARCHAR(255) NOT NULL,
+        `picture` VARCHAR(500) NULL,
+        `description` LONGTEXT NULL,
+        `author` VARCHAR(255) NOT NULL,
+        `date` DATE NOT NULL,
+        `pages` INT NOT NULL,
+        `quantities` INT NOT NULL,
+        `id_category` INT NOT NULL,
+        PRIMARY KEY (`id`),
+        INDEX `fk_books_categories1_idx` (`id_category` ASC) VISIBLE,
+        CONSTRAINT `fk_books_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`types`
@@ -74,10 +74,10 @@ DROP TABLE IF EXISTS `midiATech`.`types`;
 
 CREATE TABLE
     IF NOT EXISTS `midiATech`.`types` (
-                                          `id` INT NOT NULL AUTO_INCREMENT,
-                                          `name` VARCHAR(100) NOT NULL,
-                                          PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `name` VARCHAR(100) NOT NULL,
+        PRIMARY KEY (`id`)
+    ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`videos`
@@ -86,22 +86,22 @@ DROP TABLE IF EXISTS `midiATech`.`videos`;
 
 CREATE TABLE
     IF NOT EXISTS `midiATech`.`videos` (
-                                           `id` INT NOT NULL AUTO_INCREMENT,
-                                           `title` VARCHAR(255) NOT NULL,
-                                           `picture` VARCHAR(500) NULL,
-                                           `description` LONGTEXT NULL,
-                                           `director` VARCHAR(255) NOT NULL,
-                                           `date` DATE NOT NULL,
-                                           `duration` INT NOT NULL,
-                                           `quantities` INT NOT NULL,
-                                           `id_category` INT NOT NULL,
-                                           `id_types` INT NOT NULL,
-                                           PRIMARY KEY (`id`),
-                                           INDEX `fk_videos_categories1_idx` (`id_category` ASC) VISIBLE,
-                                           INDEX `fk_videos_types1_idx` (`id_types` ASC) VISIBLE,
-                                           CONSTRAINT `fk_videos_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-                                           CONSTRAINT `fk_videos_types` FOREIGN KEY (`id_types`) REFERENCES `midiATech`.`types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB;
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `title` VARCHAR(255) NOT NULL,
+        `picture` VARCHAR(500) NULL,
+        `description` LONGTEXT NULL,
+        `director` VARCHAR(255) NOT NULL,
+        `date` DATE NOT NULL,
+        `duration` INT NOT NULL,
+        `quantities` INT NOT NULL,
+        `id_category` INT NOT NULL,
+        `id_types` INT NOT NULL,
+        PRIMARY KEY (`id`),
+        INDEX `fk_videos_categories1_idx` (`id_category` ASC) VISIBLE,
+        INDEX `fk_videos_types1_idx` (`id_types` ASC) VISIBLE,
+        CONSTRAINT `fk_videos_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+        CONSTRAINT `fk_videos_types` FOREIGN KEY (`id_types`) REFERENCES `midiATech`.`types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`musics`
@@ -110,18 +110,18 @@ DROP TABLE IF EXISTS `midiATech`.`musics`;
 
 CREATE TABLE
     IF NOT EXISTS `midiATech`.`musics` (
-                                           `id` INT NOT NULL AUTO_INCREMENT,
-                                           `title` VARCHAR(255) NOT NULL,
-                                           `picture` VARCHAR(500) NULL,
-                                           `singer` VARCHAR(255) NOT NULL,
-                                           `date` DATE NOT NULL,
-                                           `duration` INT NOT NULL,
-                                           `quantities` INT NOT NULL,
-                                           `id_category` INT NOT NULL,
-                                           PRIMARY KEY (`id`),
-                                           INDEX `fk_musics_categories1_idx` (`id_category` ASC) VISIBLE,
-                                           CONSTRAINT `fk_musics_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB;
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `title` VARCHAR(255) NOT NULL,
+        `picture` VARCHAR(500) NULL,
+        `singer` VARCHAR(255) NOT NULL,
+        `date` DATE NOT NULL,
+        `duration` INT NOT NULL,
+        `quantities` INT NOT NULL,
+        `id_category` INT NOT NULL,
+        PRIMARY KEY (`id`),
+        INDEX `fk_musics_categories1_idx` (`id_category` ASC) VISIBLE,
+        CONSTRAINT `fk_musics_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`borrowing`
@@ -130,25 +130,25 @@ DROP TABLE IF EXISTS `midiATech`.`borrowing`;
 
 CREATE TABLE
     IF NOT EXISTS `midiATech`.`borrowing` (
-                                              `id` INT NOT NULL AUTO_INCREMENT,
-                                              `id_users` INT NOT NULL,
-                                              `id_media` INT NOT NULL,
-                                              `media_type` ENUM ('book', 'music', 'video') NOT NULL,
-                                              `date` DATE NOT NULL,
-                                              PRIMARY KEY (`id`),
-                                              INDEX `fk_users_idx` (`id_users` ASC) VISIBLE,
-                                              CONSTRAINT `fk_borrowing_users` FOREIGN KEY (`id_users`) REFERENCES `midiATech`.`users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB;
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `id_users` INT NOT NULL,
+        `id_media` INT NOT NULL,
+        `media_type` ENUM ('book', 'music', 'video') NOT NULL,
+        `date` DATE NOT NULL,
+        PRIMARY KEY (`id`),
+        INDEX `fk_users_idx` (`id_users` ASC) VISIBLE,
+        CONSTRAINT `fk_borrowing_users` FOREIGN KEY (`id_users`) REFERENCES `midiATech`.`users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`roles`
 -- -----------------------------------------------------
 CREATE TABLE
     IF NOT EXISTS `midiATech`.`roles` (
-                                          `id` INT NOT NULL AUTO_INCREMENT,
-                                          `name` VARCHAR(50) NOT NULL,
-                                          PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
+        `id` INT NOT NULL AUTO_INCREMENT,
+        `name` VARCHAR(50) NOT NULL,
+        PRIMARY KEY (`id`)
+    ) ENGINE = InnoDB;
 
 -- Ajout de la colonne role_id à la table users
 ALTER TABLE `midiATech`.`users`
@@ -281,7 +281,7 @@ VALUES
 
 
 INSERT INTO `videos`
-    (`title`, `picture`, `description`, `director`, `date`, `duration`, `quantities`, `id_category`, `id_types`)
+(`title`, `picture`, `description`, `director`, `date`, `duration`, `quantities`, `id_category`, `id_types`)
 VALUES
     ('Die Hard', '', 'Un policier de New York tente de sauver un groupe de personnes pris en otage par des terroristes lors d\'une fête de Noël à Los Angeles.', 'John McTiernan', '1988-07-15', '7920', '50', '1', '1'),
     ('24 heures chrono', '', 'Un agent fédéral doit déjouer des complots terroristes en 24 heures.', 'Robert Cochran', '2001-11-06', '103680', '50', '1', '2'),
@@ -577,7 +577,73 @@ VALUES
     ('Frankenstein', 'https://m.media-amazon.com/images/I/41+TJDLYviL._SY445_SX342_.jpg', 'Le récit de Victor Frankenstein et de sa création monstrueuse.', 'Mary Shelley', '1818-01-01', '280', '50', '51'),
     ('Ça', 'https://m.media-amazon.com/images/I/31IHWxBVh8L.jpg', 'L’histoire de l’entité maléfique qui hante la ville de Derry.', 'Stephen King', '1986-09-15', '1138', '50', '51'),
     ('Le Shining', 'https://m.media-amazon.com/images/I/61evFv7CJ5L._SY466_.jpg', 'L’histoire d’un écrivain et de sa famille confrontés à des forces surnaturelles.', 'Stephen King', '1977-01-28', '447', '50', '51'),
-    ('L’Exorciste', 'https://m.media-amazon.com/images/I/71Aa9Pgz0sL._SY466_.jpg', 'Un récit de possession démoniaque et de lutte contre le mal.', 'William Peter Blatty', '1971-06-01', '332', '50', '51');
+    ('L’Exorciste', 'https://m.media-amazon.com/images/I/71Aa9Pgz0sL._SY466_.jpg', 'Un récit de possession démoniaque et de lutte contre le mal.', 'William Peter Blatty', '1971-06-01', '332', '50', '51'),
+
+    ('Le Petit Nicolas', '', 'Les aventures amusantes et espiègles d\'un jeune garçon nommé Nicolas et de ses amis.', 'René Goscinny', '1960-03-29', '160', '50', '52' ),
+    ('Les Tribulations d\'un chinois en Chine', '', 'Les mésaventures humoristiques d\'un riche héritier en voyage en Chine.', 'Jules Verne', '1879-07-01', '288', '50', '52' ),
+    ('Le Journal d\'une femme de chambre', '', 'Le récit satirique des expériences d\'une femme de chambre au service des bourgeois parisiens.', 'Octave Mirbeau', '1900-02-20', '352', '50', '52' ),
+    ('Au bonheur des ogres', '', 'Les mésaventures loufoques d\'un héros gaffeur au sein d\'une famille farfelue.', 'Daniel Pennac', '1985-09-20', '288', '50', '52' ),
+    ('La vie sexuelle des super-héros', '', 'Une parodie amusante de la vie privée des super-héros et de leurs relations amoureuses.', 'Marco Mancassola', '2010-04-15', '416', '50', '52' ),
+
+    ('Harry Potter à l\'école des sorciers', '', 'Le jour de ses onze ans, Harry Potter, un orphelin élevé par un oncle et une tante qui le détestent, voit son existence bouleversée. Un géant vient le chercher pour l\'emmener à Poudlard, une école de sorcellerie ! Voler en balai, jeter des sorts, combattre les trolls : Harry se révèle un sorcier doué.', 'J. K. Rowling', '1997-06-26', '305', '50', '53' ),
+    ('Le Petit Prince', '', 'L\'histoire poétique et philosophique d\'un jeune prince explorant des planètes lointaines.', 'Antoine de Saint-Exupéry', '1943-04-06', '96', '50', '53' ),
+    ('Alice au pays des merveilles', '', 'Les aventures surréalistes d\'une jeune fille dans un monde fantastique peuplé de créatures étranges.', 'Lewis Carroll', '1865-11-26', '200', '50', '53' ),
+    ('Charlie et la chocolaterie', '', 'Les aventures extraordinaires de Charlie Bucket dans la fabuleuse chocolaterie de Willy Wonka.', 'Roald Dahl', '1964-01-17', '176', '50', '53' ),
+    ('Le Lion', '', 'L\'histoire touchante de la relation entre une jeune fille et un lion dans la savane africaine.', 'Joseph Kessel', '1958-01-01', '272', '50', '53' ),
+
+    ('La Tresse', '', 'Trois femmes, trois histoires, trois continents : le destin tressé de Smita en Inde, Giulia en Sicile et Sarah au Canada.', 'Laetitia Colombani', '2017-05-10', '224', '50', '54' ),
+    ('L\'élégance du hérisson', '', 'Dans un immeuble bourgeois parisien, la concierge Renée et la jeune Paloma nouent une amitié improbable.', 'Muriel Barbery', '2006-08-20', '359', '50', '54' ),
+    ('En attendant Bojangles', '', 'Un enfant raconte la vie extravagante de ses parents, entre folie et amour démesuré.', 'Olivier Bourdeaut', '2016-01-06', '160', '50', '54' ),
+    ('Les Gratitudes', '', 'Une réflexion sur la gratitude à travers l\'histoire d\'une vieille femme et de son entourage.', 'Delphine de Vigan', '2019-02-20', '208', '50', '54' ),
+    ('Changer l\'eau des fleurs', '', 'La vie douce-amère de Violette Toussaint, gardienne de cimetière, au milieu des histoires de deuil et de renaissance.', 'Valérie Perrin', '2018-02-28', '576', '50', '54' ),
+
+    ('Madame Bovary', '', 'L\'histoire tragique d\'Emma Bovary, une femme insatisfaite de sa vie provinciale.', 'Gustave Flaubert', '1857-04-15', '432', '50', '55' ),
+    ('Bel-Ami', '', 'L\'ascension sociale d\'un jeune homme ambitieux dans le Paris du XIXe siècle.', 'Guy de Maupassant', '1885-04-01', '384', '50', '55' ),
+    ('Thérèse Raquin', '', 'Le drame d\'une femme adultère et de son amant après qu\'ils ont assassiné son mari.', 'Émile Zola', '1867-01-01', '336', '50', '55' ),
+    ('Le Rouge et le Noir', '', 'Le parcours ambitieux et amoureux de Julien Sorel dans la France post-napoléonienne.', 'Stendhal', '1830-11-01', '576', '50', '55' ),
+    ('La Curée', '', 'Les excès et la décadence de la bourgeoisie parisienne sous le Second Empire.', 'Émile Zola', '1871-01-01', '416', '50', '55' ),
+
+    ('Le Dahlia noir', '', 'L\'enquête sur le meurtre brutal et non résolu d\'une jeune femme à Los Angeles en 1947.', 'James Ellroy', '1987-09-15', '512', '50', '56' ),
+    ('American Psycho', '', 'Le récit dérangeant d\'un jeune cadre new-yorkais en apparence parfait, mais en réalité psychopathe et meurtrier.', 'Bret Easton Ellis', '1991-03-06', '400', '50', '56' ),
+    ('Millénium, Tome 1 : Les Hommes qui n\'aimaient pas les femmes', '', 'Le journaliste Mikael Blomkvist et la hackeuse Lisbeth Salander enquêtent sur une disparition vieille de 40 ans.', 'Stieg Larsson', '2005-08-01', '672', '50', '56' ),
+    ('La Nuit des temps', '', 'La découverte d\'une civilisation ancienne et l\'amour impossible entre deux êtres séparés par des millénaires.', 'René Barjavel', '1968-09-25', '384', '50', '56' ),
+    ('Seul le silence', '', 'Un jeune garçon découvre les secrets sombres de sa petite ville après une série de meurtres brutaux.', 'R. J. Ellory', '2007-01-18', '544', '50', '56' ),
+
+    ('Le Monde de Sophie', '', 'Une introduction à la philosophie à travers les aventures d\'une jeune fille découvrant les grandes questions existentielles.', 'Jostein Gaarder', '1991-12-05', '544', '50', '57' ),
+    ('L\'Étranger', '', 'Le récit absurde et détaché de Meursault, un homme indifférent aux normes sociales, confronté à la justice.', 'Albert Camus', '1942-06-15', '191', '50', '57' ),
+    ('Le Prophète', '', 'Une série de poèmes philosophiques sur la vie, l\'amour, le travail et la liberté.', 'Khalil Gibran', '1923-01-01', '128', '50', '57' ),
+    ('Ainsi parlait Zarathoustra', '', 'Un traité philosophique sous forme de récit où Nietzsche expose sa vision du Surhomme.', 'Friedrich Nietzsche', '1883-01-01', '336', '50', '57' ),
+    ('Siddhartha', '', 'Le voyage spirituel et philosophique d\'un homme en quête de sagesse et de sens.', 'Hermann Hesse', '1922-01-01', '152', '50', '57' ),
+
+    ('Le Chien des Baskerville', '', 'Sherlock Holmes enquête sur la légende d\'un chien monstrueux qui hanterait une famille noble.', 'Arthur Conan Doyle', '1902-04-01', '272', '50', '58' ),
+    ('Le Crime de l\'Orient-Express', '', 'Hercule Poirot enquête sur le meurtre d\'un riche homme d\'affaires à bord de l\'Orient-Express.', 'Agatha Christie', '1934-01-01', '256', '50', '58' ),
+    ('Da Vinci Code', '', 'Le professeur Robert Langdon découvre une série de mystères cachés dans les œuvres de Léonard de Vinci.', 'Dan Brown', '2003-03-18', '736', '50', '58' ),
+    ('Millénium, Tome 1 : Les Hommes qui n\'aimaient pas les femmes', '', 'Le journaliste Mikael Blomkvist et la hackeuse Lisbeth Salander enquêtent sur une disparition vieille de 40 ans.', 'Stieg Larsson', '2005-08-01', '672', '50', '58' ),
+    ('Le Nom de la rose', '', 'Le moine franciscain Guillaume de Baskerville mène une enquête dans une abbaye médiévale où se produisent des meurtres mystérieux.', 'Umberto Eco', '1980-01-01', '552', '50', '58' ),
+
+    ('1984', '', 'Un homme tente de survivre dans un régime totalitaire où Big Brother surveille tout.', 'George Orwell', '1949-06-08', '328', '50', '59' ),
+    ('Dune', '', 'L\'épopée de Paul Atréides sur la planète désertique Arrakis, où l\'épice mélangée est la substance la plus précieuse de l\'univers.', 'Frank Herbert', '1965-08-01', '688', '50', '59' ),
+    ('Le Meilleur des mondes', '', 'Un futur dystopique où les êtres humains sont conditionnés et contrôlés dès la naissance pour maintenir une société stable.', 'Aldous Huxley', '1932-01-01', '288', '50', '59' ),
+    ('Neuromancien', '', 'Un hacker sur le déclin est engagé pour réaliser une mission de piratage dans un univers cybernétique.', 'William Gibson', '1984-07-01', '271', '50', '59' ),
+    ('La Guerre des mondes', '', 'L\'invasion de la Terre par des extraterrestres martiens et la lutte de l\'humanité pour sa survie.', 'H.G. Wells', '1898-01-01', '192', '50', '59' ),
+
+    ('Orgueil et Préjugés', '', 'La relation tumultueuse entre Elizabeth Bennet et Mr. Darcy dans l\'Angleterre du début du XIXe siècle.', 'Jane Austen', '1813-01-28', '432', '50', '60' ),
+    ('Les Hauts de Hurlevent', '', 'L\'histoire d\'amour passionnée et destructrice entre Heathcliff et Catherine Earnshaw dans les landes du Yorkshire.', 'Emily Brontë', '1847-12-01', '416', '50', '60' ),
+    ('Outlander', '', 'Une infirmière de la Seconde Guerre mondiale se retrouve projetée dans l\'Écosse du XVIIIe siècle où elle rencontre un Highlander.', 'Diana Gabaldon', '1991-06-01', '896', '50', '60' ),
+    ('La Nuit des temps', '', 'La découverte d\'une civilisation ancienne et l\'amour impossible entre deux êtres séparés par des millénaires.', 'René Barjavel', '1968-09-25', '384', '50', '60' ),
+    ('P.S. I Love You', '', 'Une jeune veuve reçoit des lettres de son défunt mari pour l\'aider à surmonter son deuil et retrouver le bonheur.', 'Cecelia Ahern', '2004-01-01', '512', '50', '60' ),
+
+    ('Le Silence des agneaux', '', 'L\'agent du FBI Clarice Starling doit interroger le dangereux psychopathe Hannibal Lecter pour arrêter un tueur en série.', 'Thomas Harris', '1988-05-19', '367', '50', '61' ),
+    ('La Fille du train', '', 'Une femme dépressive et alcoolique devient obsédée par un couple qu\'elle observe depuis le train, jusqu\'à ce qu\'un crime se produise.', 'Paula Hawkins', '2015-01-13', '408', '50', '61' ),
+    ('Gone Girl', '', 'La disparition mystérieuse d\'une femme mène à une enquête complexe révélant de sombres secrets matrimoniaux.', 'Gillian Flynn', '2012-06-05', '432', '50', '61' ),
+    ('Shutter Island', '', 'Deux marshals enquêtent sur la disparition d\'une patiente dans un hôpital psychiatrique situé sur une île isolée.', 'Dennis Lehane', '2003-04-15', '368', '50', '61' ),
+    ('Le Da Vinci Code', '', 'Le professeur Robert Langdon découvre une série de mystères cachés dans les œuvres de Léonard de Vinci.', 'Dan Brown', '2003-03-18', '736', '50', '61' ),
+
+    ('Pulp Fiction', '', 'Un film culte de Quentin Tarantino composé de plusieurs histoires entrecroisées dans le monde du crime à Los Angeles.', 'Quentin Tarantino', '1994-05-21', '176', '50', '62' ),
+    ('Le Grand Bleu', '', 'Une histoire d\'amitié et de rivalité entre deux apnéistes de haut niveau.', 'Luc Besson', '1988-05-11', '188', '50', '62' ),
+    ('La Haine', '', 'Le quotidien de trois jeunes issus de banlieues parisiennes après une nuit d\'émeutes.', 'Mathieu Kassovitz', '1995-05-31', '98', '50', '62' ),
+    ('Inception', '', 'Un spécialiste du vol de secrets par le biais des rêves se voit confier une mission complexe d\'implanter une idée dans l\'esprit d\'un héritier.', 'Christopher Nolan', '2010-07-16', '148', '50', '62' ),
+    ('Les Enfants du paradis', '', 'Une fresque romantique et tragique se déroulant dans le monde du théâtre parisien au XIXe siècle.', 'Jacques Prévert', '1945-03-09', '195', '50', '62' );
 
 
 INSERT INTO

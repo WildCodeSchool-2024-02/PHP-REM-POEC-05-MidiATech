@@ -10,27 +10,35 @@ class BooksController extends AbstractController
     /**
      * List Books
      */
-    public function index(): string
+    public function index(?string $category = null): string
     {
         $categoriesManager = new CategoriesManager();
-
         $booksManager = new BooksManager();
-        $medias = $booksManager->selectAll('title');
+
+        if ($category && $category !== 'Tout') {
+            $categoryFullName = 'Book ' . $category;
+            $medias = $booksManager->selectByCategory($categoryFullName);
+        } else {
+            $medias = $booksManager->selectAll('title');
+        }
 
         foreach ($medias as &$media) {
             $media['categories'] = $categoriesManager->getCategoriesByBookId($media['id']);
         }
 
         $title = "Livres";
-        $filters = ['Roman', 'Policier', 'Science-fiction', 'Fantastique', 'Histoire', 'Essai'];
+        $filters = array_merge(['Tout'], $categoriesManager->getAllBookCategories());
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
             'filters' => $filters,
             'medias' => $medias,
-            'media_type' => 'books'
+            'media_type' => 'books',
+            'selected_category' => $category
         ]);
     }
+
+
 
     /**
      * Show informations for a specific book
@@ -67,12 +75,16 @@ class BooksController extends AbstractController
             }
 
             // Renvoyer le formulaire avec les erreurs et les données saisies
-            return $this->twig->render('Media/edit.html.twig', ['categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'books', 'isEdit' => true]);
+            return $this->twig->render('Media/edit.html.twig', [
+                'categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'books', 'isEdit' => true
+            ]);
         }
 
-        return $this->twig->render('Media/edit.html.twig', ['categories' => $categories, 'media' => $media,
-            'media_type' => 'books', 'isEdit' => true]);
+        return $this->twig->render('Media/edit.html.twig', [
+            'categories' => $categories, 'media' => $media,
+            'media_type' => 'books', 'isEdit' => true
+        ]);
     }
 
     /**
@@ -98,8 +110,10 @@ class BooksController extends AbstractController
             }
 
             // Renvoyer le formulaire avec les erreurs et les données saisies
-            return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'books']);
+            return $this->twig->render('Media/add.html.twig', [
+                'categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'books'
+            ]);
         }
 
         return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'books']);

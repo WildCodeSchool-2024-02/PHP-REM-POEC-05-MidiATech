@@ -10,27 +10,34 @@ class MusicsController extends AbstractController
     /**
      * List items
      */
-    public function index(): string
+    public function index(?string $category = null): string
     {
         $categoriesManager = new CategoriesManager();
-
         $musicsManager = new MusicsManager();
-        $medias = $musicsManager->selectAll('title');
+
+        if ($category && $category !== 'Tout') {
+            $categoryFullName = 'Music ' . $category;
+            $medias = $musicsManager->selectByCategory($categoryFullName);
+        } else {
+            $medias = $musicsManager->selectAll('title');
+        }
 
         foreach ($medias as &$media) {
             $media['categories'] = $categoriesManager->getCategoriesByMusicId($media['id']);
         }
 
-        $title = "Musiques";
-        $filters = ['Rap', 'R&b', 'Pop'];
+        $title = "Musics";
+        $filters = array_merge(['Tout'], $categoriesManager->getAllMusicCategories());
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
             'filters' => $filters,
             'medias' => $medias,
-            'media_type' => 'musics'
+            'media_type' => 'musics',
+            'selected_category' => $category
         ]);
     }
+
 
     /**
      * Show informations for a specific item
@@ -67,12 +74,16 @@ class MusicsController extends AbstractController
             }
 
             // Renvoyer le formulaire avec les erreurs et les données saisies
-            return $this->twig->render('Media/edit.html.twig', ['categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'musics', 'isEdit' => true]);
+            return $this->twig->render('Media/edit.html.twig', [
+                'categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'musics', 'isEdit' => true
+            ]);
         }
 
-        return $this->twig->render('Media/edit.html.twig', ['categories' => $categories, 'media' => $media,
-            'media_type' => 'musics', 'isEdit' => true]);
+        return $this->twig->render('Media/edit.html.twig', [
+            'categories' => $categories, 'media' => $media,
+            'media_type' => 'musics', 'isEdit' => true
+        ]);
     }
 
     /**
@@ -98,8 +109,10 @@ class MusicsController extends AbstractController
             }
 
             // Renvoyer le formulaire avec les erreurs et les données saisies
-            return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'musics']);
+            return $this->twig->render('Media/add.html.twig', [
+                'categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'musics'
+            ]);
         }
 
         return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'musics']);

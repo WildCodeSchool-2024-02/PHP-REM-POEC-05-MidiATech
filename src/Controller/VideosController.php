@@ -5,19 +5,25 @@ namespace App\Controller;
 use App\Model\TypesManager;
 use App\Model\VideosManager;
 use App\Model\CategoriesManager;
-use App\Services\FileUploadService;
 
 class VideosController extends AbstractController
 {
     /**
      * List Films
      */
-    public function index(): string
+
+    public function index(?string $category = null): string
     {
         $categoriesManager = new CategoriesManager();
         $typeManager = new TypesManager();
         $videosManager = new VideosManager();
-        $medias = $videosManager->selectAll('title');
+
+        if ($category && $category !== 'Tout') {
+            $categoryFullName = 'Video ' . $category;
+            $medias = $videosManager->selectByCategory($categoryFullName);
+        } else {
+            $medias = $videosManager->selectAll('title');
+        }
 
         foreach ($medias as &$media) {
             $media['categories'] = $categoriesManager->getCategoriesByVideoId($media['id']);
@@ -25,13 +31,14 @@ class VideosController extends AbstractController
         }
 
         $title = "Films - Séries - Jeunesses - Documentaires";
-        $filters = ['Action', 'Comédie', 'Drame', 'Documentaire', 'Science-fiction', 'Horreur'];
+        $filters = array_merge(['Tout'], $categoriesManager->getAllVideoCategories());
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
             'filters' => $filters,
             'medias' => $medias,
-            'media_type' => 'videos'
+            'media_type' => 'videos',
+            'selected_category' => $category
         ]);
     }
 
@@ -119,12 +126,16 @@ class VideosController extends AbstractController
             }
 
             // Renvoyer le formulaire avec les erreurs et les données saisies
-            return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'types' => $types,
-                'errors' => $errors, 'media' => $media, 'media_type' => 'videos']);
+            return $this->twig->render('Media/add.html.twig', [
+                'categories' => $categories, 'types' => $types,
+                'errors' => $errors, 'media' => $media, 'media_type' => 'videos'
+            ]);
         }
 
-        return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'types' => $types,
-            'media_type' => 'videos']);
+        return $this->twig->render('Media/add.html.twig', [
+            'categories' => $categories, 'types' => $types,
+            'media_type' => 'videos'
+        ]);
     }
 
     /**

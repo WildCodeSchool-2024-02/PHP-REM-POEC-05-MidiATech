@@ -9,9 +9,9 @@
 return [
     '' => ['HomeController', 'index',],
     'search' => ['HomeController', 'search',],
-    'books' => ['BooksController', 'index',],
-    'videos' => ['VideosController', 'index'],
-    'musics' => ['MusicsController', 'index'],
+    'books' => ['BooksController', 'index', ['category']],
+    'musics' => ['MusicsController', 'index', ['category']],
+    'videos' => ['VideosController', 'index', ['category']],
 
     'login' => ['UserController', 'login',],
     'inscription' => ['UserController', 'inscription',],
