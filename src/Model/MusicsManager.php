@@ -54,17 +54,16 @@ class MusicsManager extends AbstractManager
     }
 
     public function selectByCategory(string $category): array
-{
-    $statement = $this->pdo->prepare("
+    {
+        $statement = $this->pdo->prepare("
         SELECT m.*, TRIM(SUBSTRING_INDEX(c.name, 'Music ', -1)) AS category
         FROM musics m
         JOIN categories c ON m.id_category = c.id
         WHERE c.name = :category
     ");
-    $statement->bindValue(':category', $category, PDO::PARAM_STR);
-    $statement->execute();
+        $statement->bindValue(':category', $category, PDO::PARAM_STR);
+        $statement->execute();
 
-    return $statement->fetchAll(PDO::FETCH_ASSOC);
-}
-
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

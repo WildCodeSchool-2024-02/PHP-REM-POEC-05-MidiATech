@@ -37,7 +37,7 @@ class UserController extends AbstractController
                     'role_id' => $userRoleId,
                 ]);
 
-                
+
                 return $this->twig->render('Profile/login.html.twig');
             } else {
                 $error = 'Tous les champs sont obligatoires';

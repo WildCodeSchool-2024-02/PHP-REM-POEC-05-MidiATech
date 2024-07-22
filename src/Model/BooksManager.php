@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model;
 
 use PDO;
@@ -11,7 +12,7 @@ class BooksManager extends AbstractManager
     {
         $statement = $this->pdo->prepare(
             "INSERT INTO " . self::TABLE .
-            "(`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`)
+                "(`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`)
             VALUES (:title, :picture, :description, :author, :date, :pages, :quantities, :id_category)"
         );
 
@@ -51,20 +52,16 @@ class BooksManager extends AbstractManager
     }
 
     public function selectByCategory(string $category): array
-{
-    $statement = $this->pdo->prepare("
+    {
+        $statement = $this->pdo->prepare("
         SELECT b.*, TRIM(SUBSTRING_INDEX(c.name, 'Book ', -1)) AS category
         FROM books b
         JOIN categories c ON b.id_category = c.id
         WHERE c.name = :category
     ");
-    $statement->bindValue(':category', $category, PDO::PARAM_STR);
-    $statement->execute();
+        $statement->bindValue(':category', $category, PDO::PARAM_STR);
+        $statement->execute();
 
-    return $statement->fetchAll(PDO::FETCH_ASSOC);
-}
-
-
-
-    
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
