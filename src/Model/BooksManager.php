@@ -8,14 +8,11 @@ class BooksManager extends AbstractManager
 {
     public const TABLE = 'books';
 
-    /**
-     * Insert new item in database
-     */
     public function insert(array $item): int
     {
         $statement = $this->pdo->prepare(
             "INSERT INTO " . self::TABLE .
-            "(`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`)
+                "(`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`)
             VALUES (:title, :picture, :description, :author, :date, :pages, :quantities, :id_category)"
         );
 
@@ -32,9 +29,6 @@ class BooksManager extends AbstractManager
         return (int)$this->pdo->lastInsertId();
     }
 
-    /**
-     * Update item in database
-     */
     public function update(array $item): bool
     {
         $statement = $this->pdo->prepare(
@@ -55,5 +49,19 @@ class BooksManager extends AbstractManager
         $statement->bindValue(':id_category', $item['id_category'], PDO::PARAM_INT);
 
         return $statement->execute();
+    }
+
+    public function selectByCategory(string $category): array
+    {
+        $statement = $this->pdo->prepare("
+        SELECT b.*, TRIM(SUBSTRING_INDEX(c.name, 'Book ', -1)) AS category
+        FROM books b
+        JOIN categories c ON b.id_category = c.id
+        WHERE c.name = :category
+    ");
+        $statement->bindValue(':category', $category, PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }

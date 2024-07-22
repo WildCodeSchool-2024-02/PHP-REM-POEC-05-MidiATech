@@ -59,4 +59,32 @@ class VideosManager extends AbstractManager
 
         return $statement->execute();
     }
+
+    public function getCategoriesByVideoId(int $videoId): array
+    {
+        $statement = $this->pdo->prepare("
+            SELECT c.name
+            FROM categories c
+            JOIN videos v ON c.id = v.id_category
+            WHERE v.id = :video_id
+        ");
+        $statement->bindValue(':video_id', $videoId, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function selectByCategory(string $category): array
+    {
+        $statement = $this->pdo->prepare("
+        SELECT v.*, TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS category
+        FROM videos v
+        JOIN categories c ON v.id_category = c.id
+        WHERE c.name = :category
+    ");
+        $statement->bindValue(':category', $category, PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
