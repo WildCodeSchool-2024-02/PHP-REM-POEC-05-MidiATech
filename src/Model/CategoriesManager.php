@@ -8,49 +8,82 @@ class CategoriesManager extends AbstractManager
 {
     public const TABLE = 'categories';
 
-    public function getCategoriesByBookId($bookId): false|array
+    public function getCategoriesByBookId(int $bookId): array
     {
         $statement = $this->pdo->prepare("
-            SELECT c.*
-            FROM categories c
-            JOIN book_category bc ON c.id = bc.category_id
-            WHERE bc.book_id = :book_id
-        ");
-
+        SELECT TRIM(SUBSTRING_INDEX(c.name, 'Book ', -1)) AS name
+        FROM categories c
+        JOIN books b ON c.id = b.id_category
+        WHERE b.id = :book_id
+    ");
         $statement->bindValue(':book_id', $bookId, PDO::PARAM_INT);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
-    public function getCategoriesByVideoId($videoId): false|array
+
+
+
+    public function getAllBookCategories(): array
+    {
+        $statement = $this->pdo->query("
+        SELECT TRIM(SUBSTRING_INDEX(name, 'Book ', -1)) AS name
+        FROM " . self::TABLE . "
+        WHERE name LIKE 'Book %'
+    ");
+
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function getAllVideoCategories(): array
+    {
+        $statement = $this->pdo->query("
+        SELECT TRIM(SUBSTRING_INDEX(name, 'Video ', -1)) AS name
+        FROM " . self::TABLE . "
+        WHERE name LIKE 'Video %'
+    ");
+
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
+    }
+    public function getAllMusicCategories(): array
+    {
+        $statement = $this->pdo->query("
+        SELECT TRIM(SUBSTRING_INDEX(name, 'Music ', -1)) AS name
+        FROM " . self::TABLE . "
+        WHERE name LIKE 'Music %'
+    ");
+
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function getCategoriesByVideoId(int $videoId): array
     {
         $statement = $this->pdo->prepare("
-            SELECT c.*
-            FROM `midiATech`.`categories` c
-            JOIN `midiATech`.`videos` v ON c.id = v.id_category
-            WHERE v.id = :video_id
-        ");
-
+        SELECT TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS name
+        FROM categories c
+        JOIN videos v ON c.id = v.id_category
+        WHERE v.id = :video_id
+    ");
         $statement->bindValue(':video_id', $videoId, PDO::PARAM_INT);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
 
-    public function getCategoriesByMusicId($musicId): false|array
+    public function getCategoriesByMusicId(int $musicId): array
     {
         $statement = $this->pdo->prepare("
-            SELECT c.*
-            FROM `midiATech`.`categories` c
-            JOIN `midiATech`.`musics` m ON c.id = m.id_category
-            WHERE m.id = :music_id
-        ");
-
+        SELECT TRIM(SUBSTRING_INDEX(c.name, 'Music ', -1)) AS name
+        FROM categories c
+        JOIN musics m ON c.id = m.id_category
+        WHERE m.id = :music_id
+    ");
         $statement->bindValue(':music_id', $musicId, PDO::PARAM_INT);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
+
 
     /**
      * Insert new item in database

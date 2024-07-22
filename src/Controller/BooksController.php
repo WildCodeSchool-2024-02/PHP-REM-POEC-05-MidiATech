@@ -12,31 +12,32 @@ class BooksController extends AbstractController
      * List Books
      */
     public function index(?string $category = null): string
-    {
-        $categoriesManager = new CategoriesManager();
-        $booksManager = new BooksManager();
+{
+    $categoriesManager = new CategoriesManager();
+    $booksManager = new BooksManager();
 
-        if ($category) {
-            $medias = $booksManager->selectByCategory($category);
-        } else {
-            $medias = $booksManager->selectAll('title');
-        }
-
-        foreach ($medias as &$media) {
-            $media['categories'] = $categoriesManager->getCategoriesByBookId($media['id']);
-        }
-
-        $title = "Livres";
-        $filters = ['Roman', 'Policier', 'Science-fiction', 'Fantastique', 'Histoire', 'Essai'];
-
-        return $this->twig->render('Media/index.html.twig', [
-            'page_title' => $title,
-            'filters' => $filters,
-            'medias' => $medias,
-            'media_type' => 'books',
-            'selected_category' => $category
-        ]);
+    if ($category && $category !== 'Tout') {
+        $categoryFullName = 'Book ' . $category;
+        $medias = $booksManager->selectByCategory($categoryFullName);
+    } else {
+        $medias = $booksManager->selectAll('title');
     }
+
+    foreach ($medias as &$media) {
+        $media['categories'] = $categoriesManager->getCategoriesByBookId($media['id']);
+    }
+
+    $title = "Livres";
+    $filters = array_merge(['Tout'], $categoriesManager->getAllBookCategories());
+
+    return $this->twig->render('Media/index.html.twig', [
+        'page_title' => $title,
+        'filters' => $filters,
+        'medias' => $medias,
+        'media_type' => 'books',
+        'selected_category' => $category
+    ]);
+}
 
 
 

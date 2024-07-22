@@ -163,28 +163,120 @@ CREATE TABLE
     ) ENGINE = InnoDB;
 
 INSERT INTO
-    `categories` (`name`)
-VALUES
-    ('Roman'),
-    ('Policier'),
-    ('Science-fiction'),
-    ('Fantastique'),
-    ('Histoire'),
-    ('Essai'),
-    ('Action'),
-    ('Comédie'),
-    ('Drame'),
-    ('Documentaire'),
-    ('Science-fiction'),
-    ('Horreur');
-
-INSERT INTO
     types (name)
 VALUES
     ('Film'),
     ('Série'),
     ('Jeunesse'),
     ('Documentaire');
+
+INSERT INTO
+    categories (name)
+VALUES
+    ('Video Action'),
+    ('Video Animalier'),
+    ('Video Animation'),
+    ('Video Aventure'),
+    ('Video Biographie'),
+    ('Video Biopic'),
+    ('Video Catastrophe'),
+    ('Video Classique'),
+    ('Video Comédie'),
+    ('Video Comédie dramatique'),
+    ('Video Comédie musical'),
+    ('Video Comédie romantique'),
+    ('Video Court métrage'),
+    ('Video Drame'),
+    ('Video Fantastique'),
+    ('Video Géographique'),
+    ('Video Guerre'),
+    ('Video Historique'),
+    ('Video Horreur'),
+    ('Video Humaniste'),
+    ('Video Manga'),
+    ('Video Médical'),
+    ('Video Policier'),
+    ('Video Science-fiction'),
+    ('Video Thriller'),
+    ('Video Western'),
+    ('Book Auto-biographie'),
+    ('Book Bande-dessinée'),
+    ('Book Beaux-livres'),
+    ('Book Biographie.'),
+    ('Book Conte'),
+    ('Book Correspondances'),
+    ('Book Essai'),
+    ('Book Fable'),
+    ('Book Guide pratique'),
+    ('Book Livre religieux'),
+    ('Book Manga'),
+    ('Book Mémoires'),
+    ('Book Nouvelle'),
+    ('Book Pamphlet'),
+    ('Book Poésie en prose'),
+    ('Book Poésie en vers'),
+    ('Book Recettes de cuisine'),
+    ('Book Récits de voyage'),
+    ('Book Roman anticipation'),
+    ('Book Roman apprentissage'),
+    ('Book Roman aventure'),
+    ('Book Roman fantasy'),
+    ('Book Roman feel-good'),
+    ('Book Roman historique'),
+    ('Book Roman horreur'),
+    ('Book Roman humoristique'),
+    ('Book Roman jeunesse'),
+    ('Book Roman littérature contemporaine'),
+    ('Book Roman mœurs'),
+    ('Book Roman noir'),
+    ('Book Roman philosophique'),
+    ('Book Roman policier'),
+    ('Book Roman science-fiction'),
+    ('Book Roman sentimental'),
+    ('Book Roman thriller'),
+    ('Book Scénario'),
+    ('Music Afro'),
+    ('Music AnimeVerse'),
+    ('Music Blues'),
+    ('Music Bubble'),
+    ('Music Chill'),
+    ('Music Classique'),
+    ('Music Country'),
+    ('Music Culture Queer'),
+    ('Music Dance & EDM'),
+    ('Music Disco'),
+    ('Music Drag Race France'),
+    ('Music Films & Séries'),
+    ('Music Folk & Acoustique'),
+    ('Music Gaming'),
+    ('Music Gospel'),
+    ('Music Heavy Metal'),
+    ('Music Hip Hop'),
+    ('Music Indie & Alternative'),
+    ('Music Jazz'),
+    ('Music K-pop'),
+    ('Music Latino'),
+    ('Music Lofi'),
+    ('Music Metal'),
+    ('Music Musique brésilienne'),
+    ('Music Musique japonaise'),
+    ('Music Musiques du Monde'),
+    ('Music Opéra'),
+    ('Music Pop'),
+    ('Music Punk'),
+    ('Music R&B'),
+    ('Music Raï'),
+    ('Music Rap'),
+    ('Music Reggae'),
+    ('Music Reggaeton'),
+    ('Music Rock'),
+    ('Music Rock Alternatif'),
+    ('Music Salsa'),
+    ('Music Soul & Funk'),
+    ('Music Techno'),
+    ('Music Trance'),
+    ('Music Trap'),
+    ('Music Variété française');
 
 INSERT INTO
     `roles` (`name`)
@@ -198,10 +290,6 @@ ADD COLUMN `role_id` INT NOT NULL AFTER `temporary_password`,
 ADD INDEX `fk_users_roles_idx` (`role_id` ASC),
 ADD CONSTRAINT `fk_users_roles` FOREIGN KEY (`role_id`) REFERENCES `midiATech`.`roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
--- Insertion de deux utilisateurs
-
-
--- rôle user
 INSERT INTO
     videos (
         title,
@@ -223,7 +311,7 @@ VALUES
         '2010-07-16',
         148,
         12,
-        3,
+        24, -- Video Science-fiction
         1
     ),
     (
@@ -234,7 +322,7 @@ VALUES
         '1972-03-24',
         175,
         8,
-        2,
+        23, -- Video Policier
         1
     ),
     (
@@ -245,7 +333,7 @@ VALUES
         '2008-07-18',
         152,
         10,
-        7,
+        1, -- Video Action
         1
     ),
     (
@@ -256,7 +344,7 @@ VALUES
         '1994-10-14',
         154,
         9,
-        2,
+        9, -- Video Comédie
         1
     ),
     (
@@ -267,7 +355,7 @@ VALUES
         '1999-03-31',
         136,
         15,
-        3,
+        24, -- Video Science-fiction
         1
     ),
     (
@@ -278,7 +366,7 @@ VALUES
         '1999-10-15',
         139,
         7,
-        9,
+        14, -- Video Drame
         1
     ),
     (
@@ -289,7 +377,7 @@ VALUES
         '1994-07-06',
         142,
         11,
-        9,
+        14, -- Video Drame
         1
     ),
     (
@@ -300,7 +388,7 @@ VALUES
         '2014-11-07',
         169,
         13,
-        3,
+        24, -- Video Science-fiction
         1
     ),
     (
@@ -311,7 +399,7 @@ VALUES
         '2000-05-05',
         155,
         9,
-        5,
+        18, -- Video Historique
         1
     ),
     (
@@ -322,11 +410,121 @@ VALUES
         '1994-09-23',
         142,
         14,
+        14, -- Video Drame
+        1
+    ),
+    (
+        'The Lord of the Rings: The Fellowship of the Ring',
+        'lord_of_the_rings.jpg',
+        'Un film de fantasy réalisé par Peter Jackson.',
+        'Peter Jackson',
+        '2001-12-19',
+        178,
+        10,
+        15, -- Video Fantastique
+        1
+    ),
+    (
+        'The Lion King',
+        'lion_king.jpg',
+        'Un film animation réalisé par Roger Allers et Rob Minkoff.',
+        'Roger Allers, Rob Minkoff',
+        '1994-06-24',
+        88,
+        13,
+        3, -- Video Animation
+        1
+    ),
+    (
+        'Titanic',
+        'titanic.jpg',
+        'Un film de romance réalisé par James Cameron.',
+        'James Cameron',
+        '1997-12-19',
+        195,
+        12,
+        12, -- Video Comédie romantique
+        1
+    ),
+    (
+        'Jurassic Park',
+        'jurassic_park.jpg',
+        'Un film de science-fiction réalisé par Steven Spielberg.',
+        'Steven Spielberg',
+        '1993-06-11',
+        127,
+        14,
+        24, -- Video Science-fiction
+        1
+    ),
+    (
+        'The Avengers',
+        'the_avengers.jpg',
+        'Un film de super-héros réalisé par Joss Whedon.',
+        'Joss Whedon',
+        '2012-05-04',
+        143,
+        11,
+        1, -- Video Action
+        1
+    ),
+    (
+        'Star Wars: Episode IV - A New Hope',
+        'star_wars.jpg',
+        'Un film de science-fiction réalisé par George Lucas.',
+        'George Lucas',
+        '1977-05-25',
+        121,
+        15,
+        24, -- Video Science-fiction
+        1
+    ),
+    (
+        'The Silence of the Lambs',
+        'silence_of_the_lambs.jpg',
+        'Un film de thriller réalisé par Jonathan Demme.',
+        'Jonathan Demme',
+        '1991-02-14',
+        118,
+        10,
+        25, -- Video Thriller
+        1
+    ),
+    (
+        'Saving Private Ryan',
+        'saving_private_ryan.jpg',
+        'Un film de guerre réalisé par Steven Spielberg.',
+        'Steven Spielberg',
+        '1998-07-24',
+        169,
+        8,
+        17, -- Video Guerre
+        1
+    ),
+    (
+        'Schindler \ s List',
+        'schindlers_list.jpg',
+        'Un film dramatique réalisé par Steven Spielberg.',
+        'Steven Spielberg',
+        '1993-12-15',
+        195,
         9,
+        14, -- Video Drame
+        1
+    ),
+    (
+        'The Green Mile',
+        'the_green_mile.jpg',
+        'Un film dramatique réalisé par Frank Darabont.',
+        'Frank Darabont',
+        '1999-12-10',
+        189,
+        7,
+        14, -- Video Drame
         1
     );
 
-INSERT INTO
+    INSERT INTO
     books (
         title,
         picture,
@@ -346,7 +544,7 @@ VALUES
         '1942-05-01',
         123,
         10,
-        1
+        1 -- Roman
     ),
     (
         'Le Petit Prince',
@@ -356,7 +554,7 @@ VALUES
         '1943-04-06',
         96,
         15,
-        1
+        1 -- Roman
     ),
     (
         'Millénium : Les hommes qui n\'aimaient pas les femmes',
@@ -366,7 +564,7 @@ VALUES
         '2005-08-09',
         465,
         20,
-        2
+        2 -- Policier
     ),
     (
         'Dune',
@@ -376,17 +574,17 @@ VALUES
         '1965-08-01',
         412,
         8,
-        3
+        3 -- Science-fiction
     ),
     (
-        'Harry Potter à l \'école des sorciers',
+        'Harry Potter à l\'école des sorciers',
         'harry_potter.jpg',
         'Un roman fantastique écrit par J.K. Rowling.',
         'J.K. Rowling',
         '1997-06-26',
         309,
         12,
-        4
+        4 -- Fantastique
     ),
     (
         'Sapiens : Une brève histoire de l\'humanité',
@@ -396,7 +594,7 @@ VALUES
         '2011-06-04',
         498,
         10,
-        6
+        33 -- Essai
     ),
     (
         'Les Misérables',
@@ -406,7 +604,7 @@ VALUES
         '1862-01-14',
         1488,
         11,
-        5
+        50 -- Roman historique
     ),
     (
         '1984',
@@ -416,7 +614,7 @@ VALUES
         '1949-06-08',
         328,
         9,
-        3
+        59 -- Roman science-fiction
     ),
     (
         'Le Nom de la rose',
@@ -426,5 +624,205 @@ VALUES
         '1980-04-01',
         500,
         14,
-        2
+        58 -- Roman policier
+    ),
+    (
+        'La Quête d\'Ewilan : D\'un monde à l\'autre',
+        'ewilan.jpg',
+        'Un roman de fantasy jeunesse écrit par Pierre Bottero.',
+        'Pierre Bottero',
+        '2003-10-01',
+        320,
+        8,
+        53 -- Roman jeunesse
+    ),
+    (
+        'La Roue du Temps : L\'Œil du Monde',
+        'la_roue_du_temps.jpg',
+        'Un roman de fantasy écrit par Robert Jordan.',
+        'Robert Jordan',
+        '1990-01-15',
+        688,
+        10,
+        48 -- Roman fantasy
+    ),
+    (
+        'Outlander : Le Chardon et le Tartan',
+        'outlander.jpg',
+        'Un roman de romance historique écrit par Diana Gabaldon.',
+        'Diana Gabaldon',
+        '1991-06-01',
+        850,
+        12,
+        60 -- Roman sentimental
+    ),
+    (
+        'Le Seigneur des Anneaux : La Communauté de l\'Anneau',
+        'le_seigneur_des_anneaux.jpg',
+        'Un roman de fantasy écrit par J.R.R. Tolkien.',
+        'J.R.R. Tolkien',
+        '1954-07-29',
+        479,
+        15,
+        48 -- Roman fantasy
+    ),
+    (
+        'Pride and Prejudice',
+        'pride_and_prejudice.jpg',
+        'Un roman de romance écrit par Jane Austen.',
+        'Jane Austen',
+        '1813-01-28',
+        432,
+        11,
+        60 -- Roman sentimental
+    ),
+    (
+        'La Passe-Miroir : Les Fiancés de l\'hiver',
+        'la_passe_miroir.jpg',
+        'Un roman de fantasy jeunesse écrit par Christelle Dabos.',
+        'Christelle Dabos',
+        '2013-06-06',
+        528,
+        9,
+        53 -- Roman jeunesse
+    ),
+    (
+        'Le Labyrinthe',
+        'le_labyrinthe.jpg',
+        'Un roman dystopique jeunesse écrit par James Dashner.',
+        'James Dashner',
+        '2009-10-06',
+        375,
+        8,
+        53 -- Roman jeunesse
+    ),
+    (
+        'Les Chroniques de Narnia : Le Lion, la Sorcière blanche et l\'Armoire magique',
+        'narnia.jpg',
+        'Un roman de fantasy jeunesse écrit par C.S. Lewis.',
+        'C.S. Lewis',
+        '1950-10-16',
+        208,
+        14,
+        53 -- Roman jeunesse
+    ),
+    (
+        'Twilight : Fascination',
+        'twilight.jpg',
+        'Un roman de fantasy romantique écrit par Stephenie Meyer.',
+        'Stephenie Meyer',
+        '2005-10-05',
+        498,
+        10,
+        60 -- Roman sentimental
+    ),
+    (
+        'Roméo et Juliette',
+        'romeo_et_juliette.jpg',
+        'Un roman de romance tragique écrit par William Shakespeare.',
+        'William Shakespeare',
+        '1597-01-01',
+        128,
+        12,
+        60 -- Roman sentimental
+    ),
+    (
+        'Le Clan des Otori : Le Silence du Rossignol',
+        'le_clan_des_otori.jpg',
+        'Un roman de fantasy historique écrit par Lian Hearn.',
+        'Lian Hearn',
+        '2002-04-03',
+        287,
+        7,
+        50 -- Roman historique
+    ),
+    (
+        'Hunger Games',
+        'hunger_games.jpg',
+        'Un roman dystopique jeunesse écrit par Suzanne Collins.',
+        'Suzanne Collins',
+        '2008-09-14',
+        374,
+        13,
+        53 -- Roman jeunesse
+    ),
+    (
+        'Eragon',
+        'eragon.jpg',
+        'Un roman de fantasy jeunesse écrit par Christopher Paolini.',
+        'Christopher Paolini',
+        '2002-08-26',
+        503,
+        12,
+        53 -- Roman jeunesse
+    ),
+    (
+        'Orgueil et Préjugés et Zombies',
+        'orgueil_prejuges_zombies.jpg',
+        'Un roman de fantasy parodique écrit par Seth Grahame-Smith.',
+        'Seth Grahame-Smith',
+        '2009-04-01',
+        320,
+        9,
+        48 -- Roman fantasy
+    ),
+    (
+        'La Sélection',
+        'la_selection.jpg',
+        'Un roman de romance dystopique écrit par Kiera Cass.',
+        'Kiera Cass',
+        '2012-04-24',
+        336,
+        10,
+        60 -- Roman sentimental
+    ),
+    (
+        'Les Chevaliers d\'Émeraude',
+        'chevaliers_emeraude.jpg',
+        'Un roman de fantasy jeunesse écrit par Anne Robillard.',
+        'Anne Robillard',
+        '2002-10-01',
+        444,
+        12,
+        53 -- Roman jeunesse
+    ),
+    (
+        'Nos étoiles contraires',
+        'nos_etoiles_contraires.jpg',
+        'Un roman de romance jeunesse écrit par John Green.',
+        'John Green',
+        '2012-01-10',
+        336,
+        11,
+        60 -- Roman sentimental
+    ),
+    (
+        'Percy Jackson : Le Voleur de foudre',
+        'percy_jackson.jpg',
+        'Un roman de fantasy jeunesse écrit par Rick Riordan.',
+        'Rick Riordan',
+        '2005-06-28',
+        377,
+        15,
+        53 -- Roman jeunesse
+    ),
+    (
+        'Le Hobbit',
+        'le_hobbit.jpg',
+        'Un roman de fantasy écrit par J.R.R. Tolkien.',
+        'J.R.R. Tolkien',
+        '1937-09-21',
+        310,
+        14,
+        48 -- Roman fantasy
+    ),
+    (
+        'La Belle et la Bête',
+        'la_belle_et_la_bete.jpg',
+        'Un conte de fées écrit par Jeanne-Marie Leprince de Beaumont.',
+        'Jeanne-Marie Leprince de Beaumont',
+        '1756-01-01',
+        120,
+        12,
+        60 -- Roman sentimental
     );
