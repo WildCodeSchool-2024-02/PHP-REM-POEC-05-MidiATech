@@ -11,7 +11,7 @@ DROP SCHEMA IF EXISTS `midiATech`;
 -- Schema midiATech
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `midiATech` DEFAULT CHARACTER
-SET
+    SET
     utf8mb4 COLLATE utf8mb4_0900_as_ci;
 
 USE `midiATech`;
@@ -279,9 +279,8 @@ VALUES
     ('Music Trap'),
     ('Music Variété française');
 
-
 INSERT INTO `videos`
-(`title`, `picture`, `description`, `director`, `date`, `duration`, `quantities`, `id_category`, `id_types`)
+    (`title`, `picture`, `description`, `director`, `date`, `duration`, `quantities`, `id_category`, `id_types`)
 VALUES
     ('Die Hard', '', 'Un policier de New York tente de sauver un groupe de personnes pris en otage par des terroristes lors d\'une fête de Noël à Los Angeles.', 'John McTiernan', '1988-07-15', '7920', '50', '1', '1'),
     ('24 heures chrono', '', 'Un agent fédéral doit déjouer des complots terroristes en 24 heures.', 'Robert Cochran', '2001-11-06', '103680', '50', '1', '2'),
