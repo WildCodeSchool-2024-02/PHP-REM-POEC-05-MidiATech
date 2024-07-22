@@ -3,24 +3,127 @@
 {% block title %}{{ user.firstname }}{% endblock %}
 
 {% block stylesheet %}
-{% endblock %}
-
-{% block page_title %}
-    <h1> {{ user.firstname }}</h1>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" href="/assets/css/profile.css" />
 {% endblock %}
 
 {% block content %}
     {% if error %}
-        <p style="color: rgb(202, 106, 106)">{{ error }}</p>
+        <p class="text-danger">{{ error }}</p>
     {% endif %}
 
-    <div class="profile-details">
-        <p><strong>Nom :</strong> {{ user.lastname }}</p>
-        <p><strong>Prénom :</strong> {{ user.firstname }}</p>
-        <p><strong>Email :</strong> {{ user.email }}</p>
+    <div class="container emp-profile">
+        <form method="post">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img src="{{ user.image }}" alt="User-Profile-Image"/>
+                        
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="profile-head">
+                        <h5>{{ user.firstname }} {{ user.lastname }}</h5>
+                        <p class="proile-rating">Reservation : <span>{{ borrowings|length }}</span></p>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Information</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Mes reservations</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-8">
+                    <div class="tab-content profile-tab" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nom : </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ user.firstname }} </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Prénom : </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p> {{ user.lastname }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ user.email }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Phone</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ user.phone }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Adresse</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ user.address }}</p>
+                                </div>
+                            </div>
+                            
+                           
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            {% if borrowings is empty %}
+                                <p>Aucune réservation trouvée</p>
+                            {% else %}
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Id Media</th>
+                                                <th>Type de media</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for borrowing in borrowings %}
+                                                <tr>
+                                                    <td>{{ borrowing.id_borrowing }}</td>
+                                                    <td>{{ borrowing.id_media }}</td>
+                                                    <td>{{ borrowing.media_type }}</td>
+                                                    <td>{{ borrowing.date }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>           
     </div>
+{% endblock %}
 
-    <form method="post" action="/logout">
-        <button type="submit">Se déconnecter</button>
-    </form>
+{% block javascript %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 {% endblock %}
