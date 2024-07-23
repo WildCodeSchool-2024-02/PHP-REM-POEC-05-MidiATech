@@ -4,9 +4,12 @@ namespace App\Controller;
 
 use App\Model\MusicsManager;
 use App\Model\CategoriesManager;
+use App\Trait\MediasTrait;
 
 class MusicsController extends AbstractController
 {
+    use MediasTrait;
+
     /**
      * List items
      */

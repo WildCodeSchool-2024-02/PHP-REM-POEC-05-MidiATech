@@ -5,9 +5,12 @@ namespace App\Controller;
 use App\Model\TypesManager;
 use App\Model\VideosManager;
 use App\Model\CategoriesManager;
+use App\Trait\MediasTrait;
 
 class VideosController extends AbstractController
 {
+    use MediasTrait;
+
     /**
      * List Films
      */

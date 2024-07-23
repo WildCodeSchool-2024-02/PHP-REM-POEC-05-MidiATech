@@ -4,9 +4,12 @@ namespace App\Controller;
 
 use App\Model\BooksManager;
 use App\Model\CategoriesManager;
+use App\Trait\MediasTrait;
 
 class BooksController extends AbstractController
 {
+    use MediasTrait;
+
     /**
      * List Books
      */
