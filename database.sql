@@ -167,7 +167,7 @@ INSERT INTO
     `users`
     (`firstname`, `lastname`, `birthday`, `email`, `address`, `password`, `temporary_password`, `role_id`)
 VALUES
-    ('', '', '', 'admin@midiatech.fr', '', '$2y$10$oB3ljA/hwnVxlyg7CEHLJ.5beP.k/qlSxp.GDHk5ObFXq6PkqpM.q', NULL, '1');
+    ('admin', 'admin', '1900-01-01', 'admin@midiatech.fr', 'inconnu', '$2y$10$oB3ljA/hwnVxlyg7CEHLJ.5beP.k/qlSxp.GDHk5ObFXq6PkqpM.q', NULL, '1');
 
 
 INSERT INTO
@@ -685,11 +685,11 @@ VALUES
     ('Better Together', '', 'Jack Johnson', '2005-03-01', '207', '50', '67'),
     ('Gravity', '', 'John Mayer', '2006-09-12', '242', '50', '67'),
 
-    ('Clair de Lune', '', 'Claude Debussy', '1905-00-00', '300', '50', '68'),
-    ('Für Elise', '', 'Ludwig van Beethoven', '1810-00-00', '210', '50', '68'),
-    ('Symphony No. 5', '', 'Ludwig van Beethoven', '1808-00-00', '425', '50', '68'),
-    ('Nocturne Op. 9 No. 2', '', 'Frédéric Chopin', '1831-00-00', '240', '50', '68'),
-    ('Canon in D Major', '', 'Johann Pachelbel', '1680-00-00', '396', '50', '68'),
+    ('Clair de Lune', '', 'Claude Debussy', '1882-12-20', '180', '50', '68'),
+    ('Für Elise', '', 'Ludwig van Beethoven', '1810-08-14', '177', '50', '68'),
+    ('Symphony No. 5', '', 'Ludwig van Beethoven', '1808-12-22', '1980', '50', '68'),
+    ('Nocturne Op. 9 No. 2', '', 'Frédéric Chopin', '1831-01-01', '240', '50', '68'),
+    ('Canon in D Major', '', 'Johann Pachelbel', '1680-01-01', '356', '50', '68'),
 
     ('Jolene', '', 'Dolly Parton', '1973-10-15', '155', '50', '69'),
     ('Take Me Home, Country Roads', '', 'John Denver', '1971-04-12', '191', '50', '69'),
@@ -733,47 +733,47 @@ VALUES
     ('Fast Car', '', 'Tracy Chapman', '1988-04-06', '298', '50', '75'),
     ('Big Yellow Taxi', '', 'Joni Mitchell', '1970-03-01', '178', '50', '75'),
 
-    ('Megalovania', '', 'Toby Fox', '2015-09-15', 140, 50, 76),
-    ('Baba Yetu', '', 'Christopher Tin', '2005-07-19', 229, 50, 76),
-    ('Still Alive', '', 'GLaDOS, Jonathan Coulton', '2007-10-10', 178, 50, 76),
-    ('Lifelight', '', 'Hideki Sakamoto', '2018-11-01', 154, 50, 76),
-    ('Gerudo Valley', '', 'Koji Kondo', '1998-11-21', 142, 50, 76),
+    ('Megalovania', '', 'Toby Fox', '2015-09-15', '140', '50', '76'),
+    ('Baba Yetu', '', 'Christopher Tin', '2005-07-19', '229', '50', '76'),
+    ('Still Alive', '', 'GLaDOS, Jonathan Coulton', '2007-10-10', '178', '50', '76'),
+    ('Lifelight', '', 'Hideki Sakamoto', '2018-11-01', '154', '50', '76'),
+    ('Gerudo Valley', '', 'Koji Kondo', '1998-11-21', '142', '50', '76'),
 
-    ('Oh Happy Day', '', 'Edwin Hawkins Singers', '1969-03-02', 304, 50, 77),
-    ('Amazing Grace', '', 'Aretha Franklin', '1972-06-01', 246, 50, 77),
-    ('Take My Hand, Precious Lord', '', 'Mahalia Jackson', '1956-01-01', 216, 50, 77),
-    ('Shackles (Praise You)', '', 'Mary Mary', '2000-05-09', 210, 50, 77),
-    ('Revolution', '', 'Kirk Franklin', '1998-10-27', 321, 50, 77),
+    ('Oh Happy Day', '', 'Edwin Hawkins Singers', '1969-03-02', '304', '50', '77'),
+    ('Amazing Grace', '', 'Aretha Franklin', '1972-06-01', '246', '50', '77'),
+    ('Take My Hand, Precious Lord', '', 'Mahalia Jackson', '1956-01-01', '216', '50', '77'),
+    ('Shackles (Praise You)', '', 'Mary Mary', '2000-05-09', '210', '50', '77'),
+    ('Revolution', '', 'Kirk Franklin', '1998-10-27', '321', '50', '77'),
 
-    ('Enter Sandman', '', 'Metallica', '1991-07-29', 331, 50, 78),
-    ('Iron Man', '', 'Black Sabbath', '1970-10-07', 355, 50, 78),
-    ('Painkiller', '', 'Judas Priest', '1990-09-03', 367, 50, 78),
-    ('The Trooper', '', 'Iron Maiden', '1983-06-20', 244, 50, 78),
-    ('Breaking the Law', '', 'Judas Priest', '1980-04-14', 158, 50, 78),
+    ('Enter Sandman', '', 'Metallica', '1991-07-29', '331', '50', '78'),
+    ('Iron Man', '', 'Black Sabbath', '1970-10-07', '355', '50', '78'),
+    ('Painkiller', '', 'Judas Priest', '1990-09-03', '367', '50', '78'),
+    ('The Trooper', '', 'Iron Maiden', '1983-06-20', '244', '50', '78'),
+    ('Breaking the Law', '', 'Judas Priest', '1980-04-14', '158', '50', '78'),
 
-    ('Lose Yourself', '', 'Eminem', '2002-10-28', 326, 50, 79),
-    ('Juicy', '', 'The Notorious B.I.G.', '1994-08-09', 308, 50, 79),
-    ('Nuthin\' But a "G" Thang', '', 'Dr. Dre, Snoop Dogg', '1992-11-19', 242, 50, 79),
-    ('C.R.E.A.M.', '', 'Wu-Tang Clan', '1994-01-31', 252, 50, 79),
-    ('Fight The Power', '', 'Public Enemy', '1989-07-04', 320, 50, 79),
+    ('Lose Yourself', '', 'Eminem', '2002-10-28', '326', '50', '79'),
+    ('Juicy', '', 'The Notorious B.I.G.', '1994-08-09', '308', '50', '79'),
+    ('Nuthin\' But a "G" Thang', '', 'Dr. Dre, Snoop Dogg', '1992-11-19', '242', '50', '79'),
+    ('C.R.E.A.M.', '', 'Wu-Tang Clan', '1994-01-31', '252', '50', '79'),
+    ('Fight The Power', '', 'Public Enemy', '1989-07-04', '320', '50', '79'),
 
-    ('Mr. Brightside', '', 'The Killers', '2003-09-29', 222, 50, 80),
-    ('Take Me Out', '', 'Franz Ferdinand', '2004-02-09', 238, 50, 80),
-    ('Float On', '', 'Modest Mouse', '2004-02-14', 224, 50, 80),
-    ('Reptilia', '', 'The Strokes', '2004-02-09', 233, 50, 80),
-    ('Electric Feel', '', 'MGMT', '2007-10-02', 231, 50, 80),
+    ('Mr. Brightside', '', 'The Killers', '2003-09-29', '222', '50', '80'),
+    ('Take Me Out', '', 'Franz Ferdinand', '2004-02-09', '238', '50', '80'),
+    ('Float On', '', 'Modest Mouse', '2004-02-14', '224', '50', '80'),
+    ('Reptilia', '', 'The Strokes', '2004-02-09', '233', '50', '80'),
+    ('Electric Feel', '', 'MGMT', '2007-10-02', '231', '50', '80'),
 
-    ('So What', '', 'Miles Davis', '1959-08-17', 563, 50, 81),
-    ('Take Five', '', 'The Dave Brubeck Quartet', '1959-09-21', 324, 50, 81),
-    ('What a Wonderful World', '', 'Louis Armstrong', '1967-10-18', 139, 50, 81),
-    ('A Love Supreme', '', 'John Coltrane', '1965-02-01', 467, 50, 81),
-    ('Birdland', '', 'Weather Report', '1977-05-01', 331, 50, 81),
+    ('So What', '', 'Miles Davis', '1959-08-17', '563', '50', '81'),
+    ('Take Five', '', 'The Dave Brubeck Quartet', '1959-09-21', '324', '50', '81'),
+    ('What a Wonderful World', '', 'Louis Armstrong', '1967-10-18', '139', '50', '81'),
+    ('A Love Supreme', '', 'John Coltrane', '1965-02-01', '467', '50', '81'),
+    ('Birdland', '', 'Weather Report', '1977-05-01', '331', '50', '81'),
 
-    ('Dynamite', '', 'BTS', '2020-08-21', 199, 50, 82),
-    ('DDU-DU DDU-DU', '', 'BLACKPINK', '2018-06-15', 210, 50, 82),
-    ('Gangnam Style', '', 'PSY', '2012-07-15', 219, 50, 82),
-    ('FANCY', '', 'TWICE', '2019-04-22', 212, 50, 82),
-    ('Love Scenario', '', 'iKON', '2018-01-25', 198, 50, 82),
+    ('Dynamite', '', 'BTS', '2020-08-21', '199', '50', '82'),
+    ('DDU-DU DDU-DU', '', 'BLACKPINK', '2018-06-15', '210', '50', '82'),
+    ('Gangnam Style', '', 'PSY', '2012-07-15', '219', '50', '82'),
+    ('FANCY', '', 'TWICE', '2019-04-22', '212', '50', '82'),
+    ('Love Scenario', '', 'iKON', '2018-01-25', '198', '50', '82'),
 
     ('Despacito', '', 'Luis Fonsi, Daddy Yankee', '2017-01-13', '229', '50', '83'),
     ('Bailando', '', 'Enrique Iglesias, Gente de Zona, Descemer Bueno', '2014-04-11', '250', '50', '83'),
