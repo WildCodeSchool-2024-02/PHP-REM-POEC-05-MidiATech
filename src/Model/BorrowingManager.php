@@ -55,7 +55,7 @@ class BorrowingManager extends AbstractManager
         );
         $statement->bindParam(':id_users', $userId, PDO::PARAM_INT);
         $statement->execute();
-        
+
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Model\UserManager;
-use App\Model\BorrowingManager ;
+use App\Model\BorrowingManager;
 
 class UserController extends AbstractController
 {
@@ -102,12 +102,12 @@ class UserController extends AbstractController
         if ($this->isUserLoggedIn()) {
             $user = $this->getUser();
             $borrowingManager = new BorrowingManager();
-        $borrowings = $borrowingManager->getUserBorrowings($user['id']);       
+            $borrowings = $borrowingManager->getUserBorrowings($user['id']);
 
-        return $this->twig->render('Profile/profile.html.twig', [
-            'user' => $user,
-            'borrowings' => $borrowings,
-        ]);
+            return $this->twig->render('Profile/profile.html.twig', [
+                'user' => $user,
+                'borrowings' => $borrowings,
+            ]);
         } else {
             header('Location: /login');
             exit();
