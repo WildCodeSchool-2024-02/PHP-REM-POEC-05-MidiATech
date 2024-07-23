@@ -167,7 +167,7 @@ INSERT INTO
     `users`
     (`firstname`, `lastname`, `birthday`, `email`, `address`, `password`, `temporary_password`, `role_id`)
 VALUES
-    ('', '', '', 'admin@midiatech.fr', '', '$2y$10$oB3ljA/hwnVxlyg7CEHLJ.5beP.k/qlSxp.GDHk5ObFXq6PkqpM.q', NULL, '1');
+    ('admin', 'admin', '0000-00-00', 'admin@midiatech.fr', 'inconnu', '$2y$10$oB3ljA/hwnVxlyg7CEHLJ.5beP.k/qlSxp.GDHk5ObFXq6PkqpM.q', NULL, '1');
 
 
 INSERT INTO
