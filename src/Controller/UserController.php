@@ -7,7 +7,7 @@ use PDO;
 
 class UserController extends AbstractController
 {
-    public function inscription()
+    public function inscription(): string
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = trim($_POST['name']);
@@ -39,15 +39,15 @@ class UserController extends AbstractController
 
 
                 return $this->twig->render('Profile/login.html.twig');
-            } else {
-                $error = 'Tous les champs sont obligatoires';
-                return $this->twig->render('Profile/inscription.html.twig', ['error' => $error]);
             }
+
+            $error = 'Tous les champs sont obligatoires';
+            return $this->twig->render('Profile/inscription.html.twig', ['error' => $error]);
         }
         return $this->twig->render('Profile/inscription.html.twig');
     }
 
-    public function login()
+    public function login(): string
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = trim($_POST['email']);
@@ -61,33 +61,35 @@ class UserController extends AbstractController
                 setcookie('user_id', $user['id'], time() + (86400 * 3), "/"); // Cookie valable 3 jours
 
                 return $this->twig->render('Profile/profile.html.twig', ['user' => $user]);
-            } else {
-                $error = 'Email ou mot de passe invalide';
-                return $this->twig->render('Profile/login.html.twig', ['error' => $error]);
             }
+
+            $error = 'Email ou mot de passe invalide';
+            return $this->twig->render('Profile/login.html.twig', ['error' => $error]);
         }
 
         return $this->twig->render('Profile/login.html.twig');
     }
 
-    public function isUserLoggedIn()
+    public function isUserLoggedIn(): bool
     {
         return isset($_SESSION['user_id']) || isset($_COOKIE['user_id']);
     }
 
-    private function getUser()
+    private function getUser(): false|array|null
     {
         if (isset($_SESSION['user_id'])) {
             $userManager = new UserManager();
             return $userManager->selectOneById($_SESSION['user_id']);
-        } elseif (isset($_COOKIE['user_id'])) {
+        }
+
+        if (isset($_COOKIE['user_id'])) {
             $userManager = new UserManager();
             return $userManager->selectOneById($_COOKIE['user_id']);
         }
         return null;
     }
 
-    public function logout()
+    public function logout(): void
     {
         session_start();
         session_destroy();
@@ -102,9 +104,9 @@ class UserController extends AbstractController
         if ($this->isUserLoggedIn()) {
             $user = $this->getUser();
             return $this->twig->render('Profile/profile.html.twig', ['user' => $user]);
-        } else {
-            header('Location: /login');
-            exit();
         }
+
+        header('Location: /login');
+        exit();
     }
 }

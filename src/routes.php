@@ -10,8 +10,8 @@ return [
     '' => ['HomeController', 'index',],
     'search' => ['HomeController', 'search',],
     'books' => ['BooksController', 'index', ['category']],
+    'musics' => ['MusicsController', 'index', ['category']],
     'videos' => ['VideosController', 'index', ['category']],
-    'musics' => ['MusicsController', 'index'],
 
     'login' => ['UserController', 'login',],
     'inscription' => ['UserController', 'inscription',],
