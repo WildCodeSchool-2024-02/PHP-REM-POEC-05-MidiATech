@@ -58,4 +58,28 @@ class BorrowingManager extends AbstractManager
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Ceci est un test modifier pour tout media
+     */
+    public function addBorrowingsForUser(int $userId): void
+    {
+        $borrowings = [
+            ['id_users' => $userId, 'id_media' => 21, 'media_type' => 'book', 'date' => date('Y-m-d')],
+            ['id_users' => $userId, 'id_media' => 22, 'media_type' => 'book', 'date' => date('Y-m-d')],
+            ['id_users' => $userId, 'id_media' => 17, 'media_type' => 'video', 'date' => date('Y-m-d')],
+            ['id_users' => $userId, 'id_media' => 224, 'media_type' => 'music', 'date' => date('Y-m-d')],
+        ];
+
+        foreach ($borrowings as $borrowing) {
+            $this->insert($borrowing);
+        }
+    }
+
+    public function delete(int $id): void
+    {
+        $statement = $this->pdo->prepare("DELETE FROM " . self::TABLE . " WHERE id=:id");
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
+    }
 }

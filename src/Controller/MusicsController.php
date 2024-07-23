@@ -29,15 +29,17 @@ class MusicsController extends AbstractController
             $media['categories'] = $categoriesManager->getCategoriesByMusicId($media['id']);
         }
 
-        $title = "Musics";
+        $title = "Musiques";
         $filters = array_merge(['Tout'], $categoriesManager->getAllMusicCategories());
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
-            'filters' => $filters,
+            'categoryFilters' => $filters,
+            'typeFilters' => [],
             'medias' => $medias,
             'media_type' => 'musics',
-            'selected_category' => $category
+            'selected_category' => $category,
+            'selected_type' => null
         ]);
     }
 

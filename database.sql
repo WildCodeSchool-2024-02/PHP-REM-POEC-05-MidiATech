@@ -49,23 +49,23 @@ CREATE TABLE
 -- -----------------------------------------------------
 -- Table `midiATech`.`books`
 -- -----------------------------------------------------
+
 DROP TABLE IF EXISTS `midiATech`.`books`;
 
-CREATE TABLE
-    IF NOT EXISTS `midiATech`.`books` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `title` VARCHAR(255) NOT NULL,
-        `picture` VARCHAR(500) NULL,
-        `description` LONGTEXT NULL,
-        `author` VARCHAR(255) NOT NULL,
-        `date` DATE NOT NULL,
-        `pages` INT NOT NULL,
-        `quantities` INT NOT NULL,
-        `id_category` INT NOT NULL,
-        PRIMARY KEY (`id`),
-        INDEX `fk_books_categories1_idx` (`id_category` ASC) VISIBLE,
-        CONSTRAINT `fk_books_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-    ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `midiATech`.`books` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NOT NULL,
+    `picture` VARCHAR(500) NULL,
+    `description` LONGTEXT NULL,
+    `author` VARCHAR(255) NOT NULL,
+    `date` DATE NOT NULL,
+    `pages` INT NOT NULL,
+    `quantities` INT NOT NULL,
+    `id_category` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `fk_books_categories1_idx` (`id_category` ASC),
+    CONSTRAINT `fk_books_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`types`
@@ -162,12 +162,6 @@ INSERT INTO
 VALUES
     ('admin'),
     ('user');
-
-INSERT INTO
-    `users`
-    (`firstname`, `lastname`, `birthday`, `email`, `address`, `password`, `temporary_password`, `role_id`)
-VALUES
-    ('', '', '', 'admin@midiatech.fr', '', '$2y$10$oB3ljA/hwnVxlyg7CEHLJ.5beP.k/qlSxp.GDHk5ObFXq6PkqpM.q', NULL, '1');
 
 
 INSERT INTO
@@ -651,9 +645,7 @@ VALUES
     ('Inception', '', 'Un spécialiste du vol de secrets par le biais des rêves se voit confier une mission complexe d\'implanter une idée dans l\'esprit d\'un héritier.', 'Christopher Nolan', '2010-07-16', '148', '50', '62' ),
     ('Les Enfants du paradis', '', 'Une fresque romantique et tragique se déroulant dans le monde du théâtre parisien au XIXe siècle.', 'Jacques Prévert', '1945-03-09', '195', '50', '62' );
 
-
-INSERT INTO
-    `musics` (`title`, `picture`, `singer`, `date`, `duration`, `quantities`, `id_category`)
+INSERT INTO `musics` (`title`, `picture`, `singer`, `date`, `duration`, `quantities`, `id_category`)
 VALUES
     ('Ye', '', 'Burna Boy', '2018-08-06', '174', '50', '63'),
     ('Jerusalema', '', 'Master KG, Nomcebo Zikode', '2019-12-13', '232', '50', '63'),
@@ -685,11 +677,11 @@ VALUES
     ('Better Together', '', 'Jack Johnson', '2005-03-01', '207', '50', '67'),
     ('Gravity', '', 'John Mayer', '2006-09-12', '242', '50', '67'),
 
-    ('Clair de Lune', '', 'Claude Debussy', '1905-00-00', '300', '50', '68'),
-    ('Für Elise', '', 'Ludwig van Beethoven', '1810-00-00', '210', '50', '68'),
-    ('Symphony No. 5', '', 'Ludwig van Beethoven', '1808-00-00', '425', '50', '68'),
-    ('Nocturne Op. 9 No. 2', '', 'Frédéric Chopin', '1831-00-00', '240', '50', '68'),
-    ('Canon in D Major', '', 'Johann Pachelbel', '1680-00-00', '396', '50', '68'),
+    ('Clair de Lune', '', 'Claude Debussy', '1905-01-10', '300', '50', '68'),
+    ('Für Elise', '', 'Ludwig van Beethoven', '1810-01-10', '210', '50', '68'),
+    ('Symphony No. 5', '', 'Ludwig van Beethoven', '1808-01-10', '425', '50', '68'),
+    ('Nocturne Op. 9 No. 2', '', 'Frédéric Chopin', '1831-01-10', '240', '50', '68'),
+    ('Canon in D Major', '', 'Johann Pachelbel', '1680-01-10', '396', '50', '68'),
 
     ('Jolene', '', 'Dolly Parton', '1973-10-15', '155', '50', '69'),
     ('Take Me Home, Country Roads', '', 'John Denver', '1971-04-12', '191', '50', '69'),
@@ -897,9 +889,9 @@ VALUES
 
     ('Sicko Mode', '', 'Travis Scott', '2018-08-03', '312', '50', '103'),
     ('Goosebumps', '', 'Travis Scott', '2016-03-04', '210', '50', '103'),
-    ('Bad and Boujee', '', 'Migos, Lil Uzi Vert', '2016-10-28', '217', '50', '103'),
-    ('God\'s Plan', '', 'Drake', '2018-01-19', '198', '50', '103'),
-    ('Mask Off', '', 'Future', '2017-04-18', '203', '50', '103'),
+    ('Bad and Boujee', '', 'Migos, Lil Uzi Vert', '2016-10-28', 217, 50, 103),
+    ('God\'s Plan', '', 'Drake', '2018-01-19', 198, 50, 103),
+    ('Mask Off', '', 'Future', '2017-04-18', 203, 50, 103),
 
     ('Je te promets', '', 'Johnny Hallyday', '1986-11-01', '257', '50', '104'),
     ('La Vie en rose', '', 'Édith Piaf', '1947-05-01', '187', '50', '104'),

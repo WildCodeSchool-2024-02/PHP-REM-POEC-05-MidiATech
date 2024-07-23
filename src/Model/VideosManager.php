@@ -77,12 +77,63 @@ class VideosManager extends AbstractManager
     public function selectByCategory(string $category): array
     {
         $statement = $this->pdo->prepare("
-        SELECT v.*, TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS category
-        FROM videos v
-        JOIN categories c ON v.id_category = c.id
-        WHERE c.name = :category
-    ");
+            SELECT v.*, TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS category
+            FROM videos v
+            JOIN categories c ON v.id_category = c.id
+            WHERE c.name = :category
+        ");
         $statement->bindValue(':category', $category, PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTypesByVideoId(int $videoId): array
+    {
+        $statement = $this->pdo->prepare("
+            SELECT t.name
+            FROM types t
+            JOIN videos v ON t.id = v.id_types
+            WHERE v.id = :video_id
+        ");
+        $statement->bindValue(':video_id', $videoId, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function selectByType(string $type): array
+    {
+        $statement = $this->pdo->prepare("
+            SELECT v.*, t.name AS type
+            FROM videos v
+            JOIN types t ON v.id_types = t.id
+            WHERE t.name = :type
+        ");
+        $statement->bindValue(':type', $type, PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function selectByCategoryAndType(string $category, string $type): array
+    {
+        $typesManager = new TypesManager();
+        $typeId = $typesManager->getTypeIdByName($type);
+
+        if ($typeId === null) {
+            return [];
+        }
+
+        $statement = $this->pdo->prepare("
+            SELECT v.*, t.name AS type, TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS category
+            FROM videos v
+            JOIN categories c ON v.id_category = c.id
+            JOIN types t ON v.id_types = t.id
+            WHERE c.name = :category AND t.id = :type_id
+        ");
+        $statement->bindValue(':category', $category, PDO::PARAM_STR);
+        $statement->bindValue(':type_id', $typeId, PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);

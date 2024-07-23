@@ -35,12 +35,11 @@ class UserManager extends AbstractManager
      */
     public function update(array $item): bool
     {
-        $passwordHash = password_hash($item['password'], PASSWORD_DEFAULT);
 
         $statement = $this->pdo->prepare(
             "UPDATE " . self::TABLE . "
             SET `firstname` = :firstname, `lastname` = :lastname, `birthday` = :birthday, `email` = :email,
-            `address` = :address, `password` = :password, `role_id` = :role_id
+            `address` = :address
             WHERE id=:id"
         );
 
@@ -50,8 +49,6 @@ class UserManager extends AbstractManager
         $statement->bindParam(':birthday', $item['birthday'], PDO::PARAM_STR);
         $statement->bindParam(':email', $item['email'], PDO::PARAM_STR);
         $statement->bindParam(':address', $item['address'], PDO::PARAM_STR);
-        $statement->bindParam(':password', $passwordHash, PDO::PARAM_STR);
-        $statement->bindParam(':role_id', $item['role_id'], PDO::PARAM_INT);
 
         return $statement->execute();
     }

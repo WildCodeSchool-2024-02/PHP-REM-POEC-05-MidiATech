@@ -14,35 +14,74 @@ class VideosController extends AbstractController
     /**
      * List Films
      */
-
-    public function index(?string $category = null): string
+    public function index(?string $category = null, ?string $type = null): string
     {
         $categoriesManager = new CategoriesManager();
         $typeManager = new TypesManager();
         $videosManager = new VideosManager();
 
-        if ($category && $category !== 'Tout') {
+        $medias = $this->getMedias($videosManager, $category, $type);
+
+        $this->addCategoriesAndTypes($medias, $categoriesManager, $typeManager);
+
+        $title = "Films - Séries - Jeunesses - Documentaires";
+        $categoryFilters = array_merge(['Tout'], $categoriesManager->getAllVideoCategories());
+        $typeFilters = array_merge(['Tout'], $typeManager->getAllTypes());
+
+        return $this->twig->render('Media/index.html.twig', [
+            'page_title' => $title,
+            'categoryFilters' => $categoryFilters,
+            'typeFilters' => $typeFilters,
+            'medias' => $medias,
+            'media_type' => 'videos',
+            'selected_category' => $category,
+            'selected_type' => $type
+        ]);
+    }
+
+    private function getMedias(VideosManager $videosManager, ?string $category, ?string $type): array
+    {
+        if ($this->hasCategoryAndType($category, $type)) {
             $categoryFullName = 'Video ' . $category;
-            $medias = $videosManager->selectByCategory($categoryFullName);
-        } else {
-            $medias = $videosManager->selectAll('title');
+            return $videosManager->selectByCategoryAndType($categoryFullName, $type);
         }
 
+        if ($this->hasCategory($category)) {
+            $categoryFullName = 'Video ' . $category;
+            return $videosManager->selectByCategory($categoryFullName);
+        }
+
+        if ($this->hasType($type)) {
+            return $videosManager->selectByType($type);
+        }
+
+        return $videosManager->selectAll('title');
+    }
+
+    private function addCategoriesAndTypes(
+        array &$medias,
+        CategoriesManager $categoriesManager,
+        TypesManager $typeManager
+    ): void {
         foreach ($medias as &$media) {
             $media['categories'] = $categoriesManager->getCategoriesByVideoId($media['id']);
             $media['types'] = $typeManager->getTypesByVideoId($media['id']);
         }
+    }
 
-        $title = "Films - Séries - Jeunesses - Documentaires";
-        $filters = array_merge(['Tout'], $categoriesManager->getAllVideoCategories());
+    private function hasCategoryAndType(?string $category, ?string $type): bool
+    {
+        return $category && $category !== 'Tout' && $type && $type !== 'Tout';
+    }
 
-        return $this->twig->render('Media/index.html.twig', [
-            'page_title' => $title,
-            'filters' => $filters,
-            'medias' => $medias,
-            'media_type' => 'videos',
-            'selected_category' => $category
-        ]);
+    private function hasCategory(?string $category): bool
+    {
+        return $category && $category !== 'Tout';
+    }
+
+    private function hasType(?string $type): bool
+    {
+        return $type && $type !== 'Tout';
     }
 
     /**
@@ -161,7 +200,7 @@ class VideosController extends AbstractController
             }
 
             $videosManager->delete((int)$id);
-            header('Location:/books');
+            header('Location:/videos');
         }
     }
 }
