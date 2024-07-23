@@ -13,7 +13,7 @@
     <section class="media-details">
         <div class="picture">
             {% if media.picture %}
-                <img src="/assets/images/covers/{{ media.picture }}" alt="{{ media.title }}">
+                <img src="{{ media.picture }}" alt="{{ media.title }}">
             {% else %}
                 <img src="/assets/images/covers/couverture-livre.webp" alt="cover">
             {% endif %}
@@ -31,11 +31,11 @@
             {% elseif media_type == 'videos' %}
                 <p><strong>Réalisateur :</strong> {{ media.director }}</p>
             {% endif %}
-            <p><strong>Date de publication :</strong> {{ media.date|date('d M Y') }}</p>
+            <p><strong>Date de publication :</strong> {{ media.date|format_datetime('long', 'none', locale='fr') }}</p>
             {% if media_type == 'books' %}
                 <p><strong>Pages :</strong> {{ media.pages }}</p>
             {% else %}
-                <p><strong>Durées :</strong> {{ media.duration }}</p>
+                <p><strong>Durées :</strong> {{ media.duration|date('H:i:s') }}</p>
             {% endif %}
             <p><strong>Description :</strong><br> {{ media.description }}</p>
             <p><strong>Quantité disponible :</strong> {{ media.quantities }}</p>

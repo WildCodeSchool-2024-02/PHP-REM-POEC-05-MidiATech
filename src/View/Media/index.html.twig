@@ -6,6 +6,10 @@
     <link rel="stylesheet" href="/assets/css/medias.css">
 {% endblock %}
 
+{% block javascript %}
+    <script defer src="/assets/javascript/filters.js"></script>
+{% endblock %}
+
 {% block page_title %}
     <div class="header">
         {% include 'Base/_search.html.twig' %}
@@ -14,6 +18,8 @@
 {% endblock %}
 
 {% block content %}
+    <input type="hidden" id="media_type" value="{{ media_type }}">
+
     <section class="return">
         {% if media_type == 'books' %}
             <a href="/{{ media_type }}/add">Ajouter un livre</a>
@@ -26,7 +32,6 @@
 
     <div class="filters">
         <select id="categoryFilter" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
-            <option value="Tout">Tout</option>
             {% for filter in filters %}
                 <option value="{{ filter }}" {% if selected_category == filter %}selected{% endif %}>{{ filter }}</option>
             {% endfor %}
@@ -40,17 +45,20 @@
             {% for item in medias %}
                 <div class="card">
                     {% if item.picture %}
-                        <img src="/assets/images/covers/{{ item.picture }}" alt="{{ item.title }}">
+                        <img src="{{ item.picture }}" alt="{{ item.title }}">
                     {% else %}
-                        <img src="/assets/images/covers/couverture-livre.webp" alt="cover">
+                        <img src="/assets/images/covers/couverture-{{media_type}}.webp" alt="cover">
                     {% endif %}
                     <h2>{{ item.title }}</h2>
 
-                    <div class="categories">
-                        {% for category in item.categories %}
-                            <span class="category">{{ category }}</span>
-                        {% endfor %}
-                    </div>
+                <div class="categories">
+                    {% for type in item.types %}
+                        <span class="category">{{ type.name }}</span>
+                    {% endfor %}
+                    {% for category in item.categories %}
+                        <span class="category">{{ category }}</span>
+                    {% endfor %}
+                </div>
 
                     <a href="/{{media_type}}/show?id={{ item.id }}" class="btn">Voir Détails</a>
                 </div>
@@ -59,22 +67,4 @@
     </div>
 {% endblock %}
 
-{% block javascripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded and parsed');
-    
-    document.getElementById('categoryFilter').addEventListener('change', function() {
-        console.log('Category changed');
-        var selectedCategory = this.value;
-        var mediaType = "{{ media_type }}";
-        var url = '/' + mediaType;
-        if (selectedCategory !== 'Tout') {
-            url += '?category=' + encodeURIComponent(selectedCategory);
-        }
-        console.log('Redirecting to: ' + url);
-        window.location.href = url;
-    });
-});
-</script>
-{% endblock %}
+

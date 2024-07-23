@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Model\TypesManager;
 use App\Model\VideosManager;
 use App\Model\CategoriesManager;
-use App\Services\FileUploadService;
+use App\Trait\MediasTrait;
 
 class VideosController extends AbstractController
 {
+    use MediasTrait;
+
     /**
      * List Films
      */
@@ -16,6 +18,7 @@ class VideosController extends AbstractController
     public function index(?string $category = null): string
     {
         $categoriesManager = new CategoriesManager();
+        $typeManager = new TypesManager();
         $videosManager = new VideosManager();
 
         if ($category && $category !== 'Tout') {
@@ -27,9 +30,10 @@ class VideosController extends AbstractController
 
         foreach ($medias as &$media) {
             $media['categories'] = $categoriesManager->getCategoriesByVideoId($media['id']);
+            $media['types'] = $typeManager->getTypesByVideoId($media['id']);
         }
 
-        $title = "Videos";
+        $title = "Films - Séries - Jeunesses - Documentaires";
         $filters = array_merge(['Tout'], $categoriesManager->getAllVideoCategories());
 
         return $this->twig->render('Media/index.html.twig', [
@@ -40,9 +44,6 @@ class VideosController extends AbstractController
             'selected_category' => $category
         ]);
     }
-
-
-
 
     /**
      * Show informations for a specific item
@@ -82,14 +83,6 @@ class VideosController extends AbstractController
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $uploadService = new FileUploadService();
-                $fileName = $uploadService->uploadFile($errors);
-                if ($fileName !== "") {
-                    $media['picture'] = $fileName;
-                } else {
-                    $media['picture'] = null;
-                }
-
                 $videosManager->update($media);
                 header('Location:/videos/show?id=' . $id);
                 return null;
@@ -125,22 +118,14 @@ class VideosController extends AbstractController
             $errors = $this->validate($media);
 
             // Validation de la catégorie
-            if (empty($media['id_type'])) {
-                $errors['id_type'] = 'Le type est requis.';
-            } elseif (!is_numeric($media['id_type'])) {
-                $errors['id_type'] = 'Identifiant de type invalide.';
+            if (empty($media['id_types'])) {
+                $errors['id_types'] = 'Le type est requis.';
+            } elseif (!is_numeric($media['id_types'])) {
+                $errors['id_types'] = 'Identifiant de type invalide.';
             }
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $uploadService = new FileUploadService();
-                $fileName = $uploadService->uploadFile($errors);
-                if ($fileName !== "") {
-                    $media['picture'] = $fileName;
-                } else {
-                    $media['picture'] = null;
-                }
-
                 $videosManager = new VideosManager();
                 $id = $videosManager->insert($media);
                 header('Location:/videos/show?id=' . $id);

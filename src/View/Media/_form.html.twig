@@ -12,16 +12,8 @@
     <label for="title">Titre :</label>
     <input type="text" id="title" name="title" value="{{ media.title }}">
 
-    <label for="picture">Image :</label>
-    <input type="file" id="picture" name="picture">
-
-    {% if media.picture %}
-        <label for="delete_picture">Supprimer l'image
-            <input type="checkbox" id="delete_picture" name="delete_picture">
-        </label>
-        <input type="hidden" name="imageActual" value="{{ media.picture }}">
-        <img src="/assets/images/covers/{{ media.picture }}" alt="Image actuelle" style="width: 150px; height: auto; margin-bottom: 15px">
-    {% endif %}
+    <label for="picture">Lien de l'image :</label>
+    <input type="text" id="picture" name="picture" value="{{ media.picture }}">
 
     {% if media_type != 'musics' %}
         <label for="description">Description :</label>
@@ -66,8 +58,8 @@
     </select>
 
     {% if media_type == 'videos' %}
-    <label for="type">Type :</label>
-    <select id="type" name="id_types">
+    <label for="id_types">Type :</label>
+    <select id="id_types" name="id_types">
         <option value="" selected disabled></option>
         {% for type in types %}
             {% if media.id_types == type.id %}
