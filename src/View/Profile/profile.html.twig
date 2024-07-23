@@ -7,7 +7,6 @@
 {% block stylesheet %}
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="/assets/css/profile.css"/>
-   
 {% endblock %}
 
 {% block content %}
@@ -16,11 +15,11 @@
     {% endif %}
 
     <div class="container-profile emp-profile">
-        <form method="post">
-            <div class="row">
+        <form method="post" action="/logout" id="logoutForm">
+            <div class="row-first">
                 <div class="col-md-4">
                     <div class="profile-img">
-                        <img src="{{ user.image }}" alt="User-Profile-Image"/>
+                        <img src="assets/images/profile.jpg" alt="User-Profile-Image"/>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -39,6 +38,7 @@
                 </div>
                 <div class="col-md-2">
                     <a href="/profile/edit" class="profile-edit-btn btn btn-primary">Editer</a>
+                    <button type="button" class="btn-deconnecttion mt-2" onclick="document.getElementById('logoutForm').submit();">Se déconnecter</button>
                 </div>
             </div>
             <div class="row">
@@ -64,7 +64,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label>Email</label>
+                                    <label>Email : </label>
                                 </div>
                                 <div class="col-md-6">
                                     <p>{{ user.email }}</p>
@@ -72,7 +72,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label>Phone</label>
+                                    <label>Téléphone : </label>
                                 </div>
                                 <div class="col-md-6">
                                     <p>{{ user.phone }}</p>
@@ -80,7 +80,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label>Adresse</label>
+                                    <label>Adresse : </label>
                                 </div>
                                 <div class="col-md-6">
                                     <p>{{ user.address }}</p>
@@ -108,7 +108,6 @@
                                                     <td>{{ borrowing.media_type }}</td>
                                                     <td>{{ borrowing.date }}</td>
                                                     <td>
-                                                    {# TODO : a terminer :  #}
                                                         <button class="btn btn-danger" onclick="returnMedia({{ borrowing.id }})">Rendre</button>
                                                     </td>
                                                 </tr>
@@ -128,5 +127,20 @@
 {% block javascript %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    
+    <script>
+        function returnMedia(borrowingId) {
+            fetch(`/borrowings/return/${borrowingId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Erreur lors du rendu du média.');
+                }
+            });
+        }
+    </script>
 {% endblock %}
