@@ -62,18 +62,14 @@ class BorrowingManager extends AbstractManager
     /**
      * Ceci est un test modifier pour tout media
      */
-    public function addBorrowingsForUser(int $userId): void
+    public function addBorrowingsForUser(int $userId, int $idMedia, string $typeMedia): void
     {
-        $borrowings = [
-            ['id_users' => $userId, 'id_media' => 21, 'media_type' => 'book', 'date' => date('Y-m-d')],
-            ['id_users' => $userId, 'id_media' => 22, 'media_type' => 'book', 'date' => date('Y-m-d')],
-            ['id_users' => $userId, 'id_media' => 17, 'media_type' => 'video', 'date' => date('Y-m-d')],
-            ['id_users' => $userId, 'id_media' => 224, 'media_type' => 'music', 'date' => date('Y-m-d')],
-        ];
+        $borrowing = 
+            ['id_users' => $userId, 'id_media' => $idMedia, 'media_type' => $typeMedia, 'date' => date('Y-m-d')];
+        
 
-        foreach ($borrowings as $borrowing) {
             $this->insert($borrowing);
-        }
+        
     }
 
     public function delete(int $id): void
