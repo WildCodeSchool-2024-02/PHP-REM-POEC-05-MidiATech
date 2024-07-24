@@ -10,6 +10,5 @@ class BorrowingController extends AbstractController
     {
         $borrowingManager = new BorrowingManager();
         $borrowingManager->delete($id);
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 }
