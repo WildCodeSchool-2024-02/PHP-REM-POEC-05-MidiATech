@@ -64,12 +64,11 @@ class BorrowingManager extends AbstractManager
      */
     public function addBorrowingsForUser(int $userId, int $idMedia, string $typeMedia): void
     {
-        $borrowing = 
+        $borrowing =
             ['id_users' => $userId, 'id_media' => $idMedia, 'media_type' => $typeMedia, 'date' => date('Y-m-d')];
-        
 
-            $this->insert($borrowing);
-        
+
+        $this->insert($borrowing);
     }
 
     public function delete(int $id): void
