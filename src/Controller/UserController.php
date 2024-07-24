@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Model\UserManager;
-use PDO;
+use App\Model\BorrowingManager;
 
 class UserController extends AbstractController
 {
@@ -60,7 +60,15 @@ class UserController extends AbstractController
                 $_SESSION['user_id'] = $user['id'];
                 setcookie('user_id', $user['id'], time() + (86400 * 3), "/"); // Cookie valable 3 jours
 
-                return $this->twig->render('Profile/profile.html.twig', ['user' => $user]);
+
+
+                $borrowingManager = new BorrowingManager();
+                $borrowings = $borrowingManager->getUserBorrowings($user['id']);
+
+                return $this->twig->render('Profile/profile.html.twig', [
+                    'user' => $user,
+                    'borrowings' => $borrowings,
+                ]);
             }
 
             $error = 'Email ou mot de passe invalide';
@@ -103,10 +111,46 @@ class UserController extends AbstractController
     {
         if ($this->isUserLoggedIn()) {
             $user = $this->getUser();
-            return $this->twig->render('Profile/profile.html.twig', ['user' => $user]);
+            $borrowingManager = new BorrowingManager();
+            $borrowings = $borrowingManager->getUserBorrowings($user['id']);
+
+            return $this->twig->render('Profile/profile.html.twig', [
+                'user' => $user,
+                'borrowings' => $borrowings,
+            ]);
+        } else {
+            header('Location: /login');
+            exit();
+        }
+    }
+
+    public function editProfile(): ?string
+    {
+        if (isset($_COOKIE['user_id'])) {
+            $userId = $_COOKIE['user_id'];
+
+            $userManager = new UserManager();
+            $user = $userManager->selectOneById($userId);
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $updatedUser = [
+                    'id' => $userId,
+                    'firstname' => trim($_POST['firstname']),
+                    'lastname' => trim($_POST['lastname']),
+                    'email' => trim($_POST['email']),
+                    'address' => trim($_POST['address']),
+                    'birthday' => trim($_POST['birthday'])
+                ];
+
+                $userManager->update($updatedUser);
+                header('Location: /profile');
+                return null;
+            }
+
+            return $this->twig->render('Profile/editProfile.html.twig', ['user' => $user]);
         }
 
         header('Location: /login');
-        exit();
+        return null;
     }
 }

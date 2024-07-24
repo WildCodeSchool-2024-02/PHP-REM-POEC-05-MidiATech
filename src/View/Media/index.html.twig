@@ -26,21 +26,30 @@
         {% elseif media_type == 'musics' %}
             <a href="/{{ media_type }}/add">Ajouter une musique</a>
         {% elseif media_type == 'videos' %}
-            <a href="/{{ media_type }}/add">Ajouter une video</a>
+            <a href="/{{ media_type }}/add">Ajouter une vidéo</a>
         {% endif %}
     </section>
 
     <div class="filters">
+        <label for="categoryFilter">Catégorie:</label>
         <select id="categoryFilter" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
-            {% for filter in filters %}
+            {% for filter in categoryFilters %}
                 <option value="{{ filter }}" {% if selected_category == filter %}selected{% endif %}>{{ filter }}</option>
             {% endfor %}
         </select>
+        {% if media_type == 'videos' %}
+            <label for="typeFilter">Type:</label>
+            <select id="typeFilter" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
+                {% for filter in typeFilters %}
+                    <option value="{{ filter }}" {% if selected_type == filter %}selected{% endif %}>{{ filter }}</option>
+                {% endfor %}
+            </select>
+        {% endif %}
     </div>
 
     <div class="cards">
         {% if medias is empty %}
-            <p>Aucun média disponible dans cette catégorie.</p>
+            <p>Aucun média disponible dans cette catégorie ou type.</p>
         {% else %}
             {% for item in medias %}
                 <div class="card">
@@ -51,14 +60,14 @@
                     {% endif %}
                     <h2>{{ item.title }}</h2>
 
-                <div class="categories">
-                    {% for type in item.types %}
-                        <span class="category">{{ type.name }}</span>
-                    {% endfor %}
-                    {% for category in item.categories %}
-                        <span class="category">{{ category }}</span>
-                    {% endfor %}
-                </div>
+                    <div class="categories">
+                        {% for type in item.types %}
+                            <span class="category">{{ type }}</span>
+                        {% endfor %}
+                        {% for category in item.categories %}
+                            <span class="category">{{ category }}</span>
+                        {% endfor %}
+                    </div>
 
                     <a href="/{{media_type}}/show?id={{ item.id }}" class="btn">Voir Détails</a>
                 </div>
@@ -66,5 +75,3 @@
         {% endif %}
     </div>
 {% endblock %}
-
-

@@ -34,12 +34,15 @@ class BooksController extends AbstractController
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
-            'filters' => $filters,
+            'categoryFilters' => $filters,
+            'typeFilters' => [],
             'medias' => $medias,
             'media_type' => 'books',
-            'selected_category' => $category
+            'selected_category' => $category,
+            'selected_type' => null
         ]);
     }
+
 
 
 

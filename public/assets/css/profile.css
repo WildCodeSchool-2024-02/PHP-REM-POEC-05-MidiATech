@@ -1,0 +1,104 @@
+
+
+
+
+
+/* Profile Page */
+.container-profile {
+    padding: 50px;
+    background: #f7f7f7;
+}
+
+.emp-profile {
+    margin: 4rem 4rem ;
+    background: #fff;
+    border-radius: 10px;
+    padding: 3rem 2rem;
+    box-shadow: 0px 0px 20px 0px #b0b3b7;
+}
+
+.profile-img img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0px 0px 15px 0px #a3a3a3;
+}
+
+.profile-head h5 {
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.profile-head .proile-rating span {
+    color: #69a9ed;
+    font-size: 16px;
+}
+
+.profile-edit-btn , .btn-deconnecttion{
+    border: none;
+    border-radius: 1.5rem;
+    width: 100%;
+    padding: 8px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+}
+
+.profile-edit-btn.btn-primary , .btn-deconnecttion{
+    background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+}
+
+.profile-edit-btn.btn-secondary {
+    background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+    margin-top: 10px;
+}
+
+.nav-tabs {
+    margin-top: 20px;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+.nav-tabs .nav-link.active {
+    color: #0062cc;
+    border-bottom: 2px solid #0062cc;
+}
+
+.table-responsive {
+    margin-top: 20px;
+}
+
+.table-striped thead th {
+    background-color: #f2f2f2;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-striped tbody tr:hover {
+    background-color: #e2e2e2;
+}
+
+.table .btn {
+    padding: 5px 10px;
+    font-size: 14px;
+}
+.row-first{
+    display: flex;
+    justify-content: space-evenly;
+}
+@media (min-width: 768px) {
+    .col-md-4 {
+        -ms-flex: 0 0 33.333333%;
+        flex: 0 0 33.333333%;
+        max-width: 23.333333%;
+    }}
