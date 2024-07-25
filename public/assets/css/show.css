@@ -33,7 +33,7 @@
                 cursor: pointer;
             }
 
-            & .edit {
+            & .edit, .reserve {
                 background: green;
                 margin-right: 20px;
             }

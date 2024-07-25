@@ -64,31 +64,37 @@ class MusicsController extends AbstractController
         $media = $musicsManager->selectOneById($id);
         $categoriesManager = new CategoriesManager();
         $categories = $categoriesManager->selectAll();
+        $userRole = $this->getUserRole();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // clean $_POST data
-            $media = array_map('trim', $_POST);
+        if ($userRole === 'admin') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // clean $_POST data
+                $media = array_map('trim', $_POST);
 
-            $errors = $this->validate($media);
+                $errors = $this->validate($media);
 
-            // Si aucune erreur, procéder à l'insertion
-            if (empty($errors)) {
-                $musicsManager->update($media);
-                header('Location:/musics/show?id=' . $id);
-                return null;
+                // Si aucune erreur, procéder à l'insertion
+                if (empty($errors)) {
+                    $musicsManager->update($media);
+                    header('Location:/musics/show?id=' . $id);
+                    return null;
+                }
+
+                // Renvoyer le formulaire avec les erreurs et les données saisies
+                return $this->twig->render('Media/edit.html.twig', [
+                    'categories' => $categories, 'errors' => $errors,
+                    'media' => $media, 'media_type' => 'musics', 'isEdit' => true
+                ]);
             }
 
-            // Renvoyer le formulaire avec les erreurs et les données saisies
             return $this->twig->render('Media/edit.html.twig', [
-                'categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'musics', 'isEdit' => true
+                'categories' => $categories, 'media' => $media,
+                'media_type' => 'musics', 'isEdit' => true
             ]);
         }
 
-        return $this->twig->render('Media/edit.html.twig', [
-            'categories' => $categories, 'media' => $media,
-            'media_type' => 'musics', 'isEdit' => true
-        ]);
+        header('Location:/musics');
+        return null;
     }
 
     /**
@@ -98,29 +104,35 @@ class MusicsController extends AbstractController
     {
         $categoriesManager = new CategoriesManager();
         $categories = $categoriesManager->selectAll();
+        $userRole = $this->getUserRole();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Nettoyer les données POST
-            $media = array_map('trim', $_POST);
+        if ($userRole === 'admin') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Nettoyer les données POST
+                $media = array_map('trim', $_POST);
 
-            $errors = $this->validate($media);
+                $errors = $this->validate($media);
 
-            // Si aucune erreur, procéder à l'insertion
-            if (empty($errors)) {
-                $musicsManager = new MusicsManager();
-                $id = $musicsManager->insert($media);
-                header('Location:/musics/show?id=' . $id);
-                return null;
+                // Si aucune erreur, procéder à l'insertion
+                if (empty($errors)) {
+                    $musicsManager = new MusicsManager();
+                    $id = $musicsManager->insert($media);
+                    header('Location:/musics/show?id=' . $id);
+                    return null;
+                }
+
+                // Renvoyer le formulaire avec les erreurs et les données saisies
+                return $this->twig->render('Media/add.html.twig', [
+                    'categories' => $categories, 'errors' => $errors,
+                    'media' => $media, 'media_type' => 'musics'
+                ]);
             }
 
-            // Renvoyer le formulaire avec les erreurs et les données saisies
-            return $this->twig->render('Media/add.html.twig', [
-                'categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'musics'
-            ]);
+            return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'musics']);
         }
 
-        return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'musics']);
+        header('Location:/musics');
+        return null;
     }
 
     /**
@@ -128,18 +140,24 @@ class MusicsController extends AbstractController
      */
     public function delete(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = trim($_POST['id']);
-            $musicsManager = new MusicsManager();
-            $music = $musicsManager->selectOneById((int)$id);
-            $fileName = "../public/assets/images/covers/" . $music['picture'];
+        $userRole = $this->getUserRole();
 
-            if ($music['picture'] && file_exists($fileName)) {
-                unlink($fileName);  // Supprime le fichier image
+        if ($userRole === 'admin') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $id = trim($_POST['id']);
+                $musicsManager = new MusicsManager();
+                $music = $musicsManager->selectOneById((int)$id);
+                $fileName = "../public/assets/images/covers/" . $music['picture'];
+
+                if ($music['picture'] && file_exists($fileName)) {
+                    unlink($fileName);  // Supprime le fichier image
+                }
+
+                $musicsManager->delete((int)$id);
+                header('Location:/musics');
             }
-
-            $musicsManager->delete((int)$id);
-            header('Location:/musics');
         }
+
+        header('Location:/musics');
     }
 }

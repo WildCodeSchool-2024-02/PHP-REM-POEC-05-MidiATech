@@ -17,6 +17,8 @@ abstract class AbstractController
 
     public function __construct()
     {
+        $this->startSessionIfNotStarted();
+
         $loader = new FilesystemLoader(APP_VIEW_PATH);
         $this->twig = new Environment(
             $loader,
@@ -27,20 +29,44 @@ abstract class AbstractController
         );
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addExtension(new IntlExtension());
-        $this->twig->addGlobal('app', ['user' => $this->getUser()]);
+        $this->twig->addGlobal('app', ['user' => $this->getUser(), 'userRole' => $this->getUserRole()]);
     }
 
-    private function getUser(): false|array|null
+    protected function getUser(): ?array
     {
         if (isset($_SESSION['user_id'])) {
-            $userManager = new UserManager();
-            return $userManager->selectOneById($_SESSION['user_id']);
-        }
-
-        if (isset($_COOKIE['user_id'])) {
-            $userManager = new UserManager();
-            return $userManager->selectOneById($_COOKIE['user_id']);
+            return (new UserManager())->selectOneById($_SESSION['user_id']);
         }
         return null;
+    }
+
+    protected function getUserRole()
+    {
+
+        if (isset($_SESSION['user_id'])) {
+            return (new UserManager())->getUserRole($_SESSION['user_id']);
+        }
+        return null;
+    }
+
+    protected function isUserLoggedIn(): bool
+    {
+        $this->startSessionIfNotStarted();
+        return isset($_SESSION['user_id']);
+    }
+
+    public function logout(): void
+    {
+        $this->startSessionIfNotStarted();
+        session_destroy();
+        header('Location: /login');
+        exit();
+    }
+
+    protected function startSessionIfNotStarted(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 }

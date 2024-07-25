@@ -21,12 +21,14 @@
     <input type="hidden" id="media_type" value="{{ media_type }}">
 
     <section class="return">
-        {% if media_type == 'books' %}
-            <a href="/{{ media_type }}/add">Ajouter un livre</a>
-        {% elseif media_type == 'musics' %}
-            <a href="/{{ media_type }}/add">Ajouter une musique</a>
-        {% elseif media_type == 'videos' %}
-            <a href="/{{ media_type }}/add">Ajouter une vidéo</a>
+        {% if app.userRole == 'admin' %}
+            {% if media_type == 'books' %}
+                <a href="/{{ media_type }}/add">Ajouter un livre</a>
+            {% elseif media_type == 'musics' %}
+                <a href="/{{ media_type }}/add">Ajouter une musique</a>
+            {% elseif media_type == 'videos' %}
+                <a href="/{{ media_type }}/add">Ajouter une vidéo</a>
+            {% endif %}
         {% endif %}
     </section>
 
