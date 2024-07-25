@@ -13,8 +13,9 @@ return [
     'musics' => ['MusicsController', 'index', ['category']],
     'videos' => ['VideosController', 'index', ['category', 'type']],
     'login' => ['UserController', 'login'],
-    'inscription' => ['UserController', 'inscription'],
-    'profile' => ['UserController', 'profile'],
+    'register' => ['UserController', 'register'],
+    'account' => ['UserController', 'index'],
+    'admin' => ['AdminController', 'index'],
     'logout' => ['UserController', 'logout'],
     'books/show' => ['BooksController', 'show', ['id']],
     'musics/show' => ['MusicsController', 'show', ['id']],
@@ -31,6 +32,4 @@ return [
     'profile/edit' => ['UserController', 'editProfile'],
 
     'borrowings/return/{id}' => ['BorrowingController', 'return', ['id']]
-
-
 ];

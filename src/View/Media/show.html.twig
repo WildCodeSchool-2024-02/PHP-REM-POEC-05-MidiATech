@@ -15,7 +15,7 @@
             {% if media.picture %}
                 <img src="{{ media.picture }}" alt="{{ media.title }}">
             {% else %}
-                <img src="/assets/images/covers/couverture-livre.webp" alt="cover">
+                <img src="/assets/images/covers/couverture-{{media_type}}.webp" alt="cover">
             {% endif %}
         </div>
 
@@ -41,11 +41,18 @@
             <p><strong>Quantité disponible :</strong> {{ media.quantities }}</p>
             <p><strong>Catégorie :</strong> {{ media.category }}</p>
             <div class="button">
-                <a class="edit" href="/{{media_type}}/edit?id={{ media.id }}">Modifier</a>
-                <form action="/{{media_type}}/delete" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer {{ media.title }} ?')">
-                    <input type="hidden" name="id" value="{{ media.id }}">
-                    <input type="submit" class="delete" value="Supprimer">
-                </form>
+                {% if app.userRole == 'admin' %}
+                    <a class="edit" href="/{{media_type}}/edit?id={{ media.id }}">Modifier</a>
+                    <form action="/{{media_type}}/delete" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer {{ media.title }} ?')">
+                        <input type="hidden" name="id" value="{{ media.id }}">
+                        <input type="submit" class="delete" value="Supprimer">
+                    </form>
+                {% elseif app.userRole == 'user' %}
+                    <form action="" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir réserver {{ media.title }} ?')">
+                        <input type="hidden" name="id" value="{{ media.id }}">
+                        <input type="submit" class="reserve" value="Réserver">
+                    </form>
+                {% endif %}
             </div>
         </div>
     </section>

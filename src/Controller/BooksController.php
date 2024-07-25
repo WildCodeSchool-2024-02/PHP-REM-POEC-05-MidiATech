@@ -66,31 +66,37 @@ class BooksController extends AbstractController
         $media = $booksManager->selectOneById($id);
         $categoriesManager = new CategoriesManager();
         $categories = $categoriesManager->selectAll();
+        $userRole = $this->getUserRole();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // clean $_POST data
-            $media = array_map('trim', $_POST);
+        if ($userRole === 'admin') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // clean $_POST data
+                $media = array_map('trim', $_POST);
 
-            $errors = $this->validate($media);
+                $errors = $this->validate($media);
 
-            // Si aucune erreur, procéder à l'insertion
-            if (empty($errors)) {
-                $booksManager->update($media);
-                header('Location:/books/show?id=' . $id);
-                return null;
+                // Si aucune erreur, procéder à l'insertion
+                if (empty($errors)) {
+                    $booksManager->update($media);
+                    header('Location:/books/show?id=' . $id);
+                    return null;
+                }
+
+                // Renvoyer le formulaire avec les erreurs et les données saisies
+                return $this->twig->render('Media/edit.html.twig', [
+                    'categories' => $categories, 'errors' => $errors,
+                    'media' => $media, 'media_type' => 'books', 'isEdit' => true
+                ]);
             }
 
-            // Renvoyer le formulaire avec les erreurs et les données saisies
             return $this->twig->render('Media/edit.html.twig', [
-                'categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'books', 'isEdit' => true
+                'categories' => $categories, 'media' => $media,
+                'media_type' => 'books', 'isEdit' => true
             ]);
         }
 
-        return $this->twig->render('Media/edit.html.twig', [
-            'categories' => $categories, 'media' => $media,
-            'media_type' => 'books', 'isEdit' => true
-        ]);
+        header('Location:/books');
+        return null;
     }
 
     /**
@@ -100,29 +106,35 @@ class BooksController extends AbstractController
     {
         $categoriesManager = new CategoriesManager();
         $categories = $categoriesManager->selectAll();
+        $userRole = $this->getUserRole();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Nettoyer les données POST
-            $media = array_map('trim', $_POST);
+        if ($userRole === 'admin') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Nettoyer les données POST
+                $media = array_map('trim', $_POST);
 
-            $errors = $this->validate($media);
+                $errors = $this->validate($media);
 
-            // Si aucune erreur, procéder à l'insertion
-            if (empty($errors)) {
-                $booksManager = new BooksManager();
-                $id = $booksManager->insert($media);
-                header('Location:/books/show?id=' . $id);
-                return null;
+                // Si aucune erreur, procéder à l'insertion
+                if (empty($errors)) {
+                    $booksManager = new BooksManager();
+                    $id = $booksManager->insert($media);
+                    header('Location:/books/show?id=' . $id);
+                    return null;
+                }
+
+                // Renvoyer le formulaire avec les erreurs et les données saisies
+                return $this->twig->render('Media/add.html.twig', [
+                    'categories' => $categories, 'errors' => $errors,
+                    'media' => $media, 'media_type' => 'books'
+                ]);
             }
 
-            // Renvoyer le formulaire avec les erreurs et les données saisies
-            return $this->twig->render('Media/add.html.twig', [
-                'categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'books'
-            ]);
+            return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'books']);
         }
 
-        return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'books']);
+        header('Location:/books');
+        return null;
     }
 
     /**
@@ -130,7 +142,9 @@ class BooksController extends AbstractController
      */
     public function delete(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $userRole = $this->getUserRole();
+
+        if (($userRole === 'admin') && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = trim($_POST['id']);
             $booksManager = new BooksManager();
             $book = $booksManager->selectOneById((int)$id);
@@ -143,5 +157,7 @@ class BooksController extends AbstractController
             $booksManager->delete((int)$id);
             header('Location:/books');
         }
+
+        header('Location:/books');
     }
 }
