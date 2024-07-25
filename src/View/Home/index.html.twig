@@ -12,49 +12,63 @@
 {% include 'Base/_search.html.twig' %}
 
 <main>
-    <section>
-        <div class="mise-en-avant">
-            <article class="recommandations">
-                <h2>Recommandations</h2>
+    
+            <section class="caroussel">
 
-                <section class ="caroussel">
+                <button class="fleche" id="fleche_gauche">
+                    &#8249;
+                </button>
 
-                    <button class="fleche" id="fleche-gauche">
-                        &#8249;
-                      </button>
-                      
-                      <button class="fleche" id="fleche-droite">
-                        &#8250;
-                      </button>
-                    <ul class="slides-container" id="slides-container">
-                        <li class="slide"><img src="/assets/images/{{ carrouselImg.0.picture }}" alt=></li>
-                        <li class="slide"><img src="/assets/images/{{ carrouselImg.1.picture }}" alt=></li>
-                        <li class="slide"><img src="/assets/images/{{ carrouselImg.2.picture }}" alt=></li>
-                    </ul>
-                </section>
+                <button class="fleche" id="fleche_droite">
+                    &#8250;
+                </button>
+                <ul class="slides_container" id="slides_container">
+                    <li class="slide">
+                        <h2>Dernier livre</h2>
+                        <img class="slide_picture" src="/assets/images/{{ carrouselImg.0.picture }}" alt=>
+                    </li>
+                    <li class="slide">
+                        <h2>Derniere musique</h2>
+                        <img class="slide_picture" src="/assets/images/{{ carrouselImg.1.picture }}" alt=>
+                    </li>
+                    <li class="slide">
+                        <h2>Derniere video</h2>
+                        <img class="slide_picture" src="/assets/images/{{ carrouselImg.2.picture }}" alt=>
+                    </li>
+                </ul>
+            </section>
 
-                {# <h3 class="button">Voir plus</h3>
-            </article>
-            <article class="collection-populaire">
-                <h2>Collection Populaire</h2>
+            <article class="article recommandations">
+                <h2>RECOMMANDATIONS</h2>
                 <ul>
-                    <li><img src="" alt=""></li>
-                    <li><img src="" alt=""></li>
-                    <li><img src="" alt=""></li>
+                    <li><img class="article_img" src="/assets/images/echoes_of_the_eye.jpg" alt=""></li>
+                    <li><img class="article_img" src="/assets/images/echoes_of_the_eye.jpg" alt=""></li>
+                    <li><img class="article_img" src="/assets/images/echoes_of_the_eye.jpg" alt=""></li>
                 </ul>
                 <h3 class="button">Voir plus</h3>
             </article>
-            <article class="informations">
-                <h2>Informations</h2>
+
+            <article class="article populaire">
+                <h2>POPULAIRE</h2>
                 <ul>
-                    <li><img src="" alt=""></li>
-                    <li><img src="" alt=""></li>
-                    <li><img src="" alt=""></li>
+                    <li><img class="article_img" src="/assets/images/echoes_of_the_eye.jpg" alt=""></li>
+                    <li><img class="article_img" src="/assets/images/echoes_of_the_eye.jpg" alt=""></li>
+                    <li><img class="article_img" src="/assets/images/echoes_of_the_eye.jpg" alt=""></li>
                 </ul>
-                <h3 class="button">En savoir plus</h3>
-            </article> #}
-        </div>
-    </section>
+                <h3 class="button">Voir plus</h3>
+            </article>
+
+            <article class="article informations">
+                <h2>INFORMATIONS</h2>
+                <ul>
+                    <li><h6>HORAIRES</h6></li>
+                    <li><p>9h-18h</p></li>
+                    <li><h6>ADRESSE</h6></li>
+                    <li><p>123 Rue Wild School Code</p></li>
+                    <li><p>59000 Lille</p></li>
+                </ul>
+
+            </article>
 </main>
 
 
