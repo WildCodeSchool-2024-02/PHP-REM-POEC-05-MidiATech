@@ -4,8 +4,6 @@ for (let i = 0; i < img.length; i++) {
   if (img[i].width < img[i].height) {
     img[i].style.height = "70vh";
     img[i].style.width = "auto";
-    // img[i].style.max-width = "70vw";
-    // img[i].style.max-height = "70vw";
   }
 }
 
