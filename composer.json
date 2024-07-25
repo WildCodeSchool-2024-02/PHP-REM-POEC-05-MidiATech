@@ -11,7 +11,8 @@
     "require": {
         "twig/twig": "^3.5.1",
         "ext-pdo": "*",
-        "ramsey/uuid": "^4.7"
+        "ramsey/uuid": "^4.7",
+        "twig/intl-extra": "^3.10"
     },
     "require-dev": {
         "filp/whoops": "^2.15",

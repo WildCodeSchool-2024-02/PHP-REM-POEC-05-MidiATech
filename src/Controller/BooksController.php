@@ -4,34 +4,47 @@ namespace App\Controller;
 
 use App\Model\BooksManager;
 use App\Model\CategoriesManager;
-use App\Services\FileUploadService;
+use App\Trait\MediasTrait;
 
 class BooksController extends AbstractController
 {
+    use MediasTrait;
+
     /**
      * List Books
      */
-    public function index(): string
+    public function index(?string $category = null): string
     {
         $categoriesManager = new CategoriesManager();
-
         $booksManager = new BooksManager();
-        $medias = $booksManager->selectAll('title');
+
+        if ($category && $category !== 'Tout') {
+            $categoryFullName = 'Book ' . $category;
+            $medias = $booksManager->selectByCategory($categoryFullName);
+        } else {
+            $medias = $booksManager->selectAll('title');
+        }
 
         foreach ($medias as &$media) {
             $media['categories'] = $categoriesManager->getCategoriesByBookId($media['id']);
         }
 
         $title = "Livres";
-        $filters = ['Roman', 'Policier', 'Science-fiction', 'Fantastique', 'Histoire', 'Essai'];
+        $filters = array_merge(['Tout'], $categoriesManager->getAllBookCategories());
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
-            'filters' => $filters,
+            'categoryFilters' => $filters,
+            'typeFilters' => [],
             'medias' => $medias,
-            'media_type' => 'books'
+            'media_type' => 'books',
+            'selected_category' => $category,
+            'selected_type' => null
         ]);
     }
+
+
+
 
     /**
      * Show informations for a specific book
@@ -62,26 +75,22 @@ class BooksController extends AbstractController
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $uploadService = new FileUploadService();
-                $fileName = $uploadService->uploadFile($errors);
-                if ($fileName !== "") {
-                    $media['picture'] = $fileName;
-                } else {
-                    $media['picture'] = null;
-                }
-
                 $booksManager->update($media);
                 header('Location:/books/show?id=' . $id);
                 return null;
             }
 
             // Renvoyer le formulaire avec les erreurs et les données saisies
-            return $this->twig->render('Media/edit.html.twig', ['categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'books', 'isEdit' => true]);
+            return $this->twig->render('Media/edit.html.twig', [
+                'categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'books', 'isEdit' => true
+            ]);
         }
 
-        return $this->twig->render('Media/edit.html.twig', ['categories' => $categories, 'media' => $media,
-            'media_type' => 'books', 'isEdit' => true]);
+        return $this->twig->render('Media/edit.html.twig', [
+            'categories' => $categories, 'media' => $media,
+            'media_type' => 'books', 'isEdit' => true
+        ]);
     }
 
     /**
@@ -100,14 +109,6 @@ class BooksController extends AbstractController
 
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
-                $uploadService = new FileUploadService();
-                $fileName = $uploadService->uploadFile($errors);
-                if ($fileName !== "") {
-                    $media['picture'] = $fileName;
-                } else {
-                    $media['picture'] = null;
-                }
-
                 $booksManager = new BooksManager();
                 $id = $booksManager->insert($media);
                 header('Location:/books/show?id=' . $id);
@@ -115,8 +116,10 @@ class BooksController extends AbstractController
             }
 
             // Renvoyer le formulaire avec les erreurs et les données saisies
-            return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'books']);
+            return $this->twig->render('Media/add.html.twig', [
+                'categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'books'
+            ]);
         }
 
         return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'books']);
