@@ -102,6 +102,8 @@ class VideosManager extends AbstractManager
         return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
 
+
+
     public function selectByType(string $type): array
     {
         $statement = $this->pdo->prepare("

@@ -14,22 +14,42 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateFilter() {
+
         const selectedCategory = categoryFilter.value;
+
+
         let url = '/' + mediaType;
 
         if (mediaType === 'videos') {
             const selectedType = typeFilter.value;
+
+
+
             if (selectedCategory !== 'Tout' || selectedType !== 'Tout') {
                 url += '?';
+
                 if (selectedCategory !== 'Tout') {
                     url += 'category=' + encodeURIComponent(selectedCategory);
-                }
-                if (selectedType !== 'Tout') {
-                    if (selectedCategory !== 'Tout') {
-                        url += '&';
+                    if (selectedType !== 'Tout') {
+
+        
+                        url += '&type=' + encodeURIComponent(selectedType) ;
                     }
-                    url += 'type=' + encodeURIComponent(selectedType);
+
                 }
+                else{
+                    url+= 'category=Tout&' ;
+                    if (selectedType !== 'Tout') {
+
+        
+                        url += 'type=' + encodeURIComponent(selectedType) ;
+                    }
+
+
+                }
+
+
+                
             }
         } else {
             if (selectedCategory !== 'Tout') {
