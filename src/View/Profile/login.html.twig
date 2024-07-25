@@ -1,0 +1,34 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="/assets/css/login.css" />
+{% endblock %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-box">
+        <h2>Connexion</h2>
+        <form method="post" action="/login" class="login-form" id="loginForm">
+            <div class="login-input-container">
+                <label for="email"></label>
+                <input type="text" class="login-input" id="email" name="email" placeholder="Email" required>
+            </div>
+            
+            <div class="login-input-container">
+                <label for="password"></label>
+                <input type="password" class="login-input" id="password" name="password" placeholder="Mot de passe" required>
+            </div>
+
+            <button type="submit" id="loginButton" class="login-button">Se connecter</button>
+        </form>
+        {% if session.login_error %}
+            <div id="loginError" class="login-error-message">{{ session.login_error }}</div>
+        {% endif %}
+        <div class="login-register-prompt">
+            <p>Pas encore inscrit ? <a href="/inscription">Créez un compte</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

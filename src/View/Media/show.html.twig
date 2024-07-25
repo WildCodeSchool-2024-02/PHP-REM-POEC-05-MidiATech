@@ -1,0 +1,52 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ media.title }}{% endblock %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/assets/css/show.css">
+{% endblock %}
+
+{% block content %}
+    <section class="return">
+        <a href="/{{ media_type }}">Retour aux résultats</a>
+    </section>
+    <section class="media-details">
+        <div class="picture">
+            {% if media.picture %}
+                <img src="{{ media.picture }}" alt="{{ media.title }}">
+            {% else %}
+                <img src="/assets/images/covers/couverture-livre.webp" alt="cover">
+            {% endif %}
+        </div>
+
+        <div class="media-info">
+            <h1>{{ media.title }}</h1>
+            {% if media_type == 'videos' %}
+                <p><strong>Type :</strong> {{ media.type }}</p>
+            {% endif %}
+            {% if media_type == 'books' %}
+                <p><strong>Auteur :</strong> {{ media.author }}</p>
+            {% elseif media_type == 'musics' %}
+                <p><strong>Chanteur :</strong> {{ media.singer }}</p>
+            {% elseif media_type == 'videos' %}
+                <p><strong>Réalisateur :</strong> {{ media.director }}</p>
+            {% endif %}
+            <p><strong>Date de publication :</strong> {{ media.date|format_datetime('long', 'none', locale='fr') }}</p>
+            {% if media_type == 'books' %}
+                <p><strong>Pages :</strong> {{ media.pages }}</p>
+            {% else %}
+                <p><strong>Durées :</strong> {{ media.duration|date('H:i:s') }}</p>
+            {% endif %}
+            <p><strong>Description :</strong><br> {{ media.description }}</p>
+            <p><strong>Quantité disponible :</strong> {{ media.quantities }}</p>
+            <p><strong>Catégorie :</strong> {{ media.category }}</p>
+            <div class="button">
+                <a class="edit" href="/{{media_type}}/edit?id={{ media.id }}">Modifier</a>
+                <form action="/{{media_type}}/delete" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer {{ media.title }} ?')">
+                    <input type="hidden" name="id" value="{{ media.id }}">
+                    <input type="submit" class="delete" value="Supprimer">
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

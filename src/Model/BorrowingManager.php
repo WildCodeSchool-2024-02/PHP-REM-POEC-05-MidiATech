@@ -34,7 +34,7 @@ class BorrowingManager extends AbstractManager
         $statement = $this->pdo->prepare(
             "UPDATE " . self::TABLE . "
             SET id_media = :id_media, media_type = :media_type, date = :date
-            id_borrowing = :id_borrowing"
+            WHERE id_borrowing = :id_borrowing"
         );
 
         $statement->bindParam(':id_borrowing', $item['id_borrowing'], PDO::PARAM_INT);
@@ -43,5 +43,38 @@ class BorrowingManager extends AbstractManager
         $statement->bindParam(':date', $item['date'], PDO::PARAM_STR);
 
         return $statement->execute();
+    }
+
+    /**
+     * Get borrowings for a specific user
+     */
+    public function getUserBorrowings(int $userId): array
+    {
+        $statement = $this->pdo->prepare(
+            "SELECT * FROM " . self::TABLE . " WHERE id_users = :id_users"
+        );
+        $statement->bindParam(':id_users', $userId, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Ceci est un test modifier pour tout media
+     */
+    public function addBorrowingsForUser(int $userId, int $idMedia, string $typeMedia): void
+    {
+        $borrowing =
+            ['id_users' => $userId, 'id_media' => $idMedia, 'media_type' => $typeMedia, 'date' => date('Y-m-d')];
+
+
+        $this->insert($borrowing);
+    }
+
+    public function delete(int $id): void
+    {
+        $statement = $this->pdo->prepare("DELETE FROM " . self::TABLE . " WHERE id=:id");
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
     }
 }

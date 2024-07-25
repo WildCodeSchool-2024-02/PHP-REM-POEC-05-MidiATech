@@ -5,9 +5,6 @@ namespace App\Controller;
 use App\Model\BooksManager;
 use App\Model\MusicsManager;
 use App\Model\VideosManager;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 class HomeController extends AbstractController
 {

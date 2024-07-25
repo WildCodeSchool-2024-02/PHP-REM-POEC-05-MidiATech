@@ -7,12 +7,30 @@
 //          3. (optional) array of query string keys to send as parameter to the method
 // e.g route '/item/edit?id=1' will execute $itemController->edit(1)
 return [
-    '' => ['HomeController', 'index',],
-    'search' => ['HomeController', 'search',],
-    'books' => ['BooksController', 'index',],
-    'videos' => ['VideosController', 'index'],
-    'musics' => ['MusicsController', 'index'],
-    'books/details/show' => ['BooksController', 'show', ['id']],
-    'musics/details/show' => ['MusicsController', 'show', ['id']],
-    'videos/details/show' => ['VideosController', 'show', ['id']],
+    '' => ['HomeController', 'index'],
+    'search' => ['HomeController', 'search'],
+    'books' => ['BooksController', 'index', ['category']],
+    'musics' => ['MusicsController', 'index', ['category']],
+    'videos' => ['VideosController', 'index', ['category', 'type']],
+    'login' => ['UserController', 'login'],
+    'inscription' => ['UserController', 'inscription'],
+    'profile' => ['UserController', 'profile'],
+    'logout' => ['UserController', 'logout'],
+    'books/show' => ['BooksController', 'show', ['id']],
+    'musics/show' => ['MusicsController', 'show', ['id']],
+    'videos/show' => ['VideosController', 'show', ['id']],
+    'books/add' => ['BooksController', 'add'],
+    'videos/add' => ['VideosController', 'add'],
+    'musics/add' => ['MusicsController', 'add'],
+    'books/edit' => ['BooksController', 'edit', ['id']],
+    'musics/edit' => ['MusicsController', 'edit', ['id']],
+    'videos/edit' => ['VideosController', 'edit', ['id']],
+    'books/delete' => ['BooksController', 'delete', ['id']],
+    'musics/delete' => ['MusicsController', 'delete', ['id']],
+    'videos/delete' => ['VideosController', 'delete', ['id']],
+    'profile/edit' => ['UserController', 'editProfile'],
+
+    'borrowings/return/{id}' => ['BorrowingController', 'return', ['id']]
+
+
 ];
