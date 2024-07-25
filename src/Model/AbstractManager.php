@@ -155,7 +155,7 @@ abstract class AbstractManager
 
     public function selectImgMostRecent()
     {
-        $query = "SELECT picture FROM " . static::TABLE . " ORDER BY date DESC limit 1";
+        $query = "SELECT picture, title FROM " . static::TABLE . " ORDER BY date DESC limit 1";
 
         return $this->pdo->query($query)->fetch();
     }

@@ -22,7 +22,9 @@ class HomeController extends AbstractController
         $videoImg = $videosManager->selectImgMostRecent();
 
         $carrouselImg = [$bookImg, $musicImg, $videoImg];
-        return $this->twig->render('Home/index.html.twig', ['carrouselImg' => $carrouselImg,]);
+        $mediaType = ['books', 'musics', 'videos'];
+        return $this->twig->render('Home/index.html.twig', ['carrouselImg' => $carrouselImg,
+        'media_type' => $mediaType]);
     }
 
     public function search(): string|false
