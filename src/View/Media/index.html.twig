@@ -1,77 +1,81 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}{{ page_title }}{% endblock %}
+{% block title %}
+	{{ page_title }}
+{% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="/assets/css/medias.css">
+	<link rel="stylesheet" href="/assets/css/medias.css">
 {% endblock %}
 
 {% block javascript %}
-    <script defer src="/assets/javascript/filters.js"></script>
+	<script defer src="/assets/javascript/filters.js"></script>
 {% endblock %}
 
 {% block page_title %}
-    <div class="header">
-        {% include 'Base/_search.html.twig' %}
-        <h1>{{ page_title }}</h1>
-    </div>
+	<div class="header">
+		{% include 'Base/_search.html.twig' %}
+		<h1>{{ page_title }}</h1>
+	</div>
 {% endblock %}
 
 {% block content %}
-    <input type="hidden" id="media_type" value="{{ media_type }}">
+	<input type="hidden" id="media_type" value="{{ media_type }}">
 
-    <section class="return">
-        {% if media_type == 'books' %}
-            <a href="/{{ media_type }}/add">Ajouter un livre</a>
-        {% elseif media_type == 'musics' %}
-            <a href="/{{ media_type }}/add">Ajouter une musique</a>
-        {% elseif media_type == 'videos' %}
-            <a href="/{{ media_type }}/add">Ajouter une vidéo</a>
-        {% endif %}
-    </section>
+	<section class="return">
+		{% if media_type == 'books' %}
+			<a href="/{{ media_type }}/add">Ajouter un livre</a>
+		{% elseif media_type == 'musics' %}
+			<a href="/{{ media_type }}/add">Ajouter une musique</a>
+		{% elseif media_type == 'videos' %}
+			<a href="/{{ media_type }}/add">Ajouter une vidéo</a>
+		{% endif %}
+	</section>
 
-    <div class="filters">
-        <label for="categoryFilter">Catégorie:</label>
-        <select id="categoryFilter" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
-            {% for filter in categoryFilters %}
-                <option value="{{ filter }}" {% if selected_category == filter %}selected{% endif %}>{{ filter }}</option>
+	<div class="filters">
+    <label for="categoryFilter">Catégorie :</label>
+    <select id="categoryFilter" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
+        {% for filter in categoryFilters %}
+            <option value="{{ filter }}" {% if selected_category == filter %}selected{% endif %}>{{ filter }}</option>
+        {% endfor %}
+    </select>
+
+    {% if media_type == 'videos' %}
+        <label for="typeFilter">Type :</label>
+        <select id="typeFilter" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
+            {% for filter in typeFilters %}
+                <option value="{{ filter }}" {% if selected_type == filter %}selected{% endif %}>{{ filter }}</option>
             {% endfor %}
         </select>
-        {% if media_type == 'videos' %}
-            <label for="typeFilter">Type:</label>
-            <select id="typeFilter" class="selectpicker form-control border-0 mb-1 px-4 py-4 rounded shadow">
-                {% for filter in typeFilters %}
-                    <option value="{{ filter }}" {% if selected_type == filter %}selected{% endif %}>{{ filter }}</option>
-                {% endfor %}
-            </select>
-        {% endif %}
-    </div>
+    {% endif %}
+</div>
 
-    <div class="cards">
-        {% if medias is empty %}
-            <p>Aucun média disponible dans cette catégorie ou type.</p>
-        {% else %}
-            {% for item in medias %}
-                <div class="card">
-                    {% if item.picture %}
-                        <img src="{{ item.picture }}" alt="{{ item.title }}">
-                    {% else %}
-                        <img src="/assets/images/covers/couverture-{{media_type}}.webp" alt="cover">
-                    {% endif %}
-                    <h2>{{ item.title }}</h2>
 
-                    <div class="categories">
-                        {% for type in item.types %}
-                            <span class="category">{{ type }}</span>
-                        {% endfor %}
-                        {% for category in item.categories %}
-                            <span class="category">{{ category }}</span>
-                        {% endfor %}
-                    </div>
+	<div class="cards">
+		{% if medias is empty %}
+			<p>Aucun média disponible dans cette catégorie ou type.</p>
+		{% else %}
+			{% for item in medias %}
+				<div class="card">
+					{% if item.picture %}
+						<img src="{{ item.picture }}" alt="{{ item.title }}">
+					{% else %}
+						<img src="/assets/images/covers/couverture-{{media_type}}.webp" alt="cover">
+					{% endif %}
+					<h2>{{ item.title }}</h2>
 
-                    <a href="/{{media_type}}/show?id={{ item.id }}" class="btn">Voir Détails</a>
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
+					<div class="categories">
+						{% for type in item.types %}
+							<span class="category">{{ type }}</span>
+						{% endfor %}
+						{% for category in item.categories %}
+							<span class="category">{{ category }}</span>
+						{% endfor %}
+					</div>
+
+					<a href="/{{media_type}}/show?id={{ item.id }}" class="btn">Voir Détails</a>
+				</div>
+			{% endfor %}
+		{% endif %}
+	</div>
 {% endblock %}

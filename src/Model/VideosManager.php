@@ -116,7 +116,7 @@ class VideosManager extends AbstractManager
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function selectByCategoryAndType(string $category, string $type): array
+    public function selectByCategoryAndType(?string $category, string $type): array
     {
         $typesManager = new TypesManager();
         $typeId = $typesManager->getTypeIdByName($type);
@@ -125,17 +125,29 @@ class VideosManager extends AbstractManager
             return [];
         }
 
-        $statement = $this->pdo->prepare("
+        if ($category === null || $category === 'Tout') {
+            // Si la catégorie est "Tout", renvoie tous les médias de ce type
+            $statement = $this->pdo->prepare("
+            SELECT v.*, t.name AS type, TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS category
+            FROM videos v
+            JOIN categories c ON v.id_category = c.id
+            JOIN types t ON v.id_types = t.id
+            WHERE t.id = :type_id
+        ");
+            $statement->bindValue(':type_id', $typeId, PDO::PARAM_INT);
+        } else {
+            $statement = $this->pdo->prepare("
             SELECT v.*, t.name AS type, TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS category
             FROM videos v
             JOIN categories c ON v.id_category = c.id
             JOIN types t ON v.id_types = t.id
             WHERE c.name = :category AND t.id = :type_id
         ");
-        $statement->bindValue(':category', $category, PDO::PARAM_STR);
-        $statement->bindValue(':type_id', $typeId, PDO::PARAM_INT);
-        $statement->execute();
+            $statement->bindValue(':category', 'Video ' . $category, PDO::PARAM_STR);
+            $statement->bindValue(':type_id', $typeId, PDO::PARAM_INT);
+        }
 
+        $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
