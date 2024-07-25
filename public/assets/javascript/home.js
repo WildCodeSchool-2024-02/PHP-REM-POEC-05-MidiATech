@@ -8,7 +8,6 @@ for (let i = 0; i < img.length; i++) {
     // img[i].style.max-height = "70vw";
   }
 }
-console.log(img);
 
 
 // carrousel
