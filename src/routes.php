@@ -11,21 +11,20 @@ use Gitonomy\Git\Admin;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 return [
-    '' => ['HomeController', 'index',],
-    'search' => ['HomeController', 'search',],
-    'books' => ['BooksController', 'index',],
-    'videos' => ['VideosController', 'index'],
-    'musics' => ['MusicsController', 'index'],
-
-    'login' => ['UserController', 'login',],
-    'inscription' => ['UserController', 'inscription',],
-    'profile' => ['UserController', 'profile'],
+    '' => ['HomeController', 'index'],
+    'search' => ['HomeController', 'search'],
+    'books' => ['BooksController', 'index', ['category']],
+    'musics' => ['MusicsController', 'index', ['category']],
+    'videos' => ['VideosController', 'index', ['category', 'type']],
+    'login' => ['UserController', 'login'],
+    'register' => ['UserController', 'register'],
+    'account' => ['UserController', 'index'],
+    'admin' => ['AdminController', 'index'],
     'logout' => ['UserController', 'logout'],
-
     'books/show' => ['BooksController', 'show', ['id']],
     'musics/show' => ['MusicsController', 'show', ['id']],
     'videos/show' => ['VideosController', 'show', ['id']],
-    'books/add' => ['BooksController', 'add',],
+    'books/add' => ['BooksController', 'add'],
     'videos/add' => ['VideosController', 'add'],
     'musics/add' => ['MusicsController', 'add'],
     'books/edit' => ['BooksController', 'edit', ['id']],
@@ -34,8 +33,10 @@ return [
     'books/delete' => ['BooksController', 'delete', ['id']],
     'musics/delete' => ['MusicsController', 'delete', ['id']],
     'videos/delete' => ['VideosController', 'delete', ['id']],
-    'admin' => ['AdminController', 'Admin'],
     'admin/reservations' => ['AdminController', 'reservations'],
     'admin/collections' => ['AdminController', 'collections'],
-    'admin/stocks' => ['AdminController', 'stocks']
+    'admin/stocks' => ['AdminController', 'stocks'],
+    'profile/edit' => ['UserController', 'editProfile'],
+    'borrowings/add' => ['BorrowingController', 'addBorrowing'],
+    'borrowings/return/{id}' => ['BorrowingController', 'return', ['id']],
 ];
