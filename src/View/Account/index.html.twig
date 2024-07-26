@@ -95,7 +95,7 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Id Media</th>
+                                                <th>Nom du media</th>
                                                 <th>Type de media</th>
                                                 <th>A rendre avant :</th>
                                                 <th>Action</th>
@@ -104,11 +104,13 @@
                                         <tbody>
                                             {% for borrowing in borrowings %}
                                                 <tr>
-                                                    <td>{{ borrowing.id_media }}</td>
+                                                    <td>{{ borrowing.media_title }}</td>
                                                     <td>{{ borrowing.media_type }}</td>
                                                     <td>{{ borrowing.date }}</td>
                                                     <td>
-                                                        <button class="btn btn-danger" onclick="returnMedia({{ borrowing.id }})">Rendre</button>
+                                                        <form method="post" action="/borrowings/return/{{ borrowing.borrowing_id }}">
+                                                            <button type="submit" class="btn btn-danger">Rendre</button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -127,20 +129,4 @@
 {% block javascript %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script>
-        function returnMedia(borrowingId) {
-            fetch(`/borrowings/return/${borrowingId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
-                    window.location.reload();
-                } else {
-                    alert('Erreur lors du rendu du média.');
-                }
-            });
-        }
-    </script>
-{% endblock %}
+    {% endblock %}
