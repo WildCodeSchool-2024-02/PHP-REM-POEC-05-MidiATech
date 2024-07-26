@@ -31,5 +31,5 @@ return [
     'videos/delete' => ['VideosController', 'delete', ['id']],
     'profile/edit' => ['UserController', 'editProfile'],
 
-    'borrowings/return/{id}' => ['BorrowingController', 'return', ['id']]
-];
+    'borrowings/add' => ['BorrowingController', 'addBorrowing'],
+    'borrowings/return/{id}' => ['BorrowingController', 'return', ['id']],];
