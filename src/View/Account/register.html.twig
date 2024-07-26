@@ -1,0 +1,70 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheet %}
+	<link rel="stylesheet" href="/assets/css/inscription.css"/>
+{% endblock %}
+
+{% block title %}Inscription
+{% endblock %}
+
+{% block content %}
+    {% if errors %}
+        <div class="errors">
+            <h3>Erreur :</h3>
+            {% for error in errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+	<section class="form-container">
+		<div class="form-wrapper">
+			<form method="post" action="/register" enctype="multipart/form-data" class="form">
+				<h1 class="form-title">Inscription</h1>
+				{% if error %}
+					<p class="error">{{ error }}</p>
+				{% endif %}
+				<div class="input-container">
+					<label for="firstname" class="label-title">Prénom</label>
+					<input type="text" id="firstname" class="inputField"
+                           name="firstname" placeholder="Tapez votre prénom" value="{{ user['firstname'] }}">
+				</div>
+				<div class="input-container">
+					<label for="lastname" class="label-title">Nom</label>
+					<input type="text" id="lastname" class="inputField"
+                           name="lastname" placeholder="Tapez votre nom" value="{{ user['lastname'] }}">
+				</div>
+				<div class="input-container">
+					<label for="email" class="label-title">Email</label>
+					<input type="email" id="email" name="email"
+                           class="inputField" placeholder="Tapez votre Email" value="{{ user['email'] }}">
+				</div>
+				<div class="input-container">
+					<label for="password" class="label-title">Mot de passe</label>
+					<input type="password" id="password" class="inputField"
+                           name="password" placeholder="Tapez votre mot de passe" value="">
+				</div>
+                <div class="input-container">
+                    <label for="confirmPassword" class="label-title">Confirmer le mot de passe</label>
+                    <input type="password" id="confirmPassword" class="inputField"
+                           name="confirmPassword" placeholder="Répéter votre mot de passe" value="">
+                </div>
+				<div class="input-container">
+					<label for="address" class="label-title">Adresse</label>
+					<input type="text" id="address" name="address"
+                           class="inputField" placeholder="Tapez votre adresse" value="{{ user['address'] }}">
+				</div>
+				<div class="input-container">
+					<label for="birthday" class="label-title">Date de naissance</label>
+					<input type="date" id="birthday" name="birthday"
+                           class="inputField" placeholder="Tapez votre date de naissance" value="{{ user['birthday'] }}">
+				</div>
+				<button type="submit" class="submit">S'inscrire</button>
+
+			</form>
+
+            <div class="login-register-prompt">
+                <p>Déja inscrit ? <a href="/login">Se connecter</a></p>
+            </div>
+		</div>
+	</section>
+{% endblock %}
