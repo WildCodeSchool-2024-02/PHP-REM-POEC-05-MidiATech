@@ -13,84 +13,103 @@
 {% include 'Base/_search.html.twig' %}
 
 <main>
-
-    <section class="caroussel">
-
-        <button class="fleche" id="fleche_gauche">
-            &#8249;
-        </button>
-
-        <button class="fleche" id="fleche_droite">
-            &#8250;
-        </button>
-        <ul class="slides_container" id="slides_container">
-            <li class="slide">
-                <h2>Dernier livre</h2>
-                {% if carrouselImg.picture %}
+ <section class="caroussel">
+    <button class="fleche" id="fleche_gauche">&#8249;</button>
+    <button class="fleche" id="fleche_droite">&#8250;</button>
+    <ul class="slides_container" id="slides_container">
+        <li class="slide">
+            <h2>Dernier livre : {{ carrouselImg.0.title }}</h2>
+            {% if carrouselImg.0.picture %}
+                <a href="/books/show?id={{ carrouselImg.0.id }}">
                     <img class="slide_picture" src="{{ carrouselImg.0.picture }}" alt="{{ carrouselImg.0.title }}">
-                {% else %}
-                    <img  class="slide_picture" src="/assets/images/covers/couverture-{{media_type.0}}.webp" alt="cover">
-                {% endif %}
-            </li>
-            <li class="slide">
-                <h2>Derniere musique</h2>
-                {% if carrouselImg.picture %}
-                    <img class="slide_picture" src="{{ carrouselImg.1.picture }}" alt="{{ carrouselImg.0.title }}">
-                {% else %}
-                    <img  class="slide_picture" src="/assets/images/covers/couverture-{{media_type.1}}.webp" alt="cover">
-                {% endif %}
-            </li>
-            <li class="slide">
-                <h2>Derniere video</h2>
-                {% if carrouselImg.picture %}
-                    <img class="slide_picture" src="{{ carrouselImg.2.picture }}" alt="{{ carrouselImg.0.title }}">
-                {% else %}
-                    <img  class="slide_picture" src="/assets/images/covers/couverture-{{media_type.2}}.webp" alt="cover">
-                {% endif %}
-            </li>
-        </ul>
-    </section>
+                </a>
+            {% else %}
+                <img class="slide_picture" src="/assets/images/covers/couverture-{{media_type.0}}.webp" alt="cover">
+            {% endif %}
+        </li>
+        <li class="slide">
+            <h2>Dernière musique : {{ carrouselImg.1.title }}</h2>
+            {% if carrouselImg.1.picture %}
+                <a href="/musics/show?id={{ carrouselImg.1.id }}">
+                    <img class="slide_picture" src="{{ carrouselImg.1.picture }}" alt="{{ carrouselImg.1.title }}">
+                </a>
+            {% else %}
+                <img class="slide_picture" src="/assets/images/covers/couverture-{{media_type.1}}.webp" alt="cover">
+            {% endif %}
+        </li>
+        <li class="slide">
+            <h2>Dernière vidéo : {{ carrouselImg.2.title }}</h2>
+            {% if carrouselImg.2.picture %}
+                <a href="/videos/show?id={{ carrouselImg.2.id }}">
+                    <img class="slide_picture" src="{{ carrouselImg.2.picture }}" alt="{{ carrouselImg.2.title }}">
+                </a>
+            {% else %}
+                <img class="slide_picture" src="/assets/images/covers/couverture-{{media_type.2}}.webp" alt="cover">
+            {% endif %}
+        </li>
+    </ul>
+</section>
+
+
 
     <article class="article recommandations">
         <h2>RECOMMANDATIONS</h2>
         <ul>
-            <li><img class="article_img" src="https://i.pinimg.com/originals/8a/c7/ca/8ac7ca28a33e990718a07303fe8cf48e.jpg" alt="recommandation book"></li>
-            <li><img class="article_img" src="https://vignette3.wikia.nocookie.net/pinkfloyd/images/4/45/The_Dark_Side_Of_The_Moon.jpg/revision/latest?cb=20060830125611" alt="recommandation music"></li>
-            <li><img class="article_img" src="https://image.tmdb.org/t/p/w440_and_h660_face/eTYBrL8lVcaG6AySocVe4eNltih.jpg" alt="recommandation video"></li>
+            <li>
+                <a href="/books/show?id=125">
+                    <img class="article_img" src="https://s1.qwant.com/thumbr/474x640/1/f/d97f78445495cb4f0636b7e153a3bf998826a7f16825926220618f678f87a6/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP._LkrGZrdRirNI5TTyce0OgHaKA%26pid%3DApi&q=0&b=1&p=0&a=0" alt="recommandation book">
+                </a>
+            </li>
+            <li>
+                <a href="/musics/show?id=154">
+                    <img class="article_img" src="https://s1.qwant.com/thumbr/474x474/a/a/16109fa88cdfc4250f53ce87478b3687950503a1e921b4a3356aa11837e48a/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP.gIUeovEDT0IhEQudu-TqYAHaHa%26pid%3DApi&q=0&b=1&p=0&a=0" alt="recommandation music">
+                </a>
+            </li>
+            <li>
+                <a href="/videos/show?id=3">
+                    <img class="article_img" src="https://s2.qwant.com/thumbr/474x615/7/0/3e69f17f3cb730aa45054a0a8155173c18a90ce052f0ca3c76c9ca15ce730d/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP.wp1GjgnB_IF50Wket59cuQHaJn%26pid%3DApi&q=0&b=1&p=0&a=0" alt="recommandation video">
+                </a>
+            </li>
         </ul>
-        <h3 class="button">Voir plus</h3>
     </article>
 
     <article class="article populaire">
         <h2>POPULAIRE</h2>
         <ul>
-            <li><img class="article_img" src="https://images.leslibraires.ca/books/9782892616019/front/9782892616019_large.jpg" alt="populaire book"></li>
-            <li><img class="article_img" src="https://i0.wp.com/www.scienceofnoise.net/wp-content/uploads/2021/11/the-pick-of-destiny-4e0fa734efce5.jpg" alt="populaire music"></li>
-            <li><img class="article_img" src="https://flxt.tmsimg.com/assets/p19396843_b_v10_ae.jpg" alt="populaire video"></li>
-        </ul>
-        <h3 class="button">Voir plus</h3>
-    </article>
-
-    <article class="article informations">
-        <h2>INFORMATIONS</h2>
-        <ul>
             <li>
-                <h6>HORAIRES</h6>
+                <a href="/books/show?id=4">
+                    <img class="article_img" src="https://s1.qwant.com/thumbr/474x654/2/0/fc4e69611916bceedb29d3a308f03c434218561b453c0f6248376be3c159fa/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP.BiMMOjDrzbTC418N8HgvTAHaKO%26pid%3DApi&q=0&b=1&p=0&a=0" alt="populaire book">
+                </a>
             </li>
             <li>
-                <p>9h-18h</p>
+                <a href="/musics/show?id=81">
+                    <img class="article_img" src="https://s2.qwant.com/thumbr/474x474/d/9/1d5e03360caf4ffaa3d6565cd5df823fa98b3341f639707f66834b773a9673/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP.mKBT1nEhCqbE5Gq5jtBv2QHaHa%26pid%3DApi&q=0&b=1&p=0&a=0" alt="populaire music">
+                </a>
             </li>
             <li>
-                <h6>ADRESSE</h6>
-            </li>
-            <li>
-                <p>123 Rue Wild School Code</p>
-            </li>
-            <li>
-                <p>59000 Lille</p>
+                <a href="/videos/show?id=19">
+                    <img class="article_img" src="https://s2.qwant.com/thumbr/474x631/4/b/7df12a624e9cea5461647c10adc8de0c88d00669b8b9271b261c6f5bd6535f/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP.cjjqH0c_l9Bhu_SMtR-2iAHaJ3%26pid%3DApi&q=0&b=1&p=0&a=0" alt="populaire video">
+                </a>
             </li>
         </ul>
-
     </article>
+<article class="article informations">
+    <h2>INFORMATIONS</h2>
+    <ul class="info-list">
+        <li class="info-item">
+            <h6>HORAIRES</h6>
+            <p>9h-18h</p>
+        </li>
+        <li class="info-item">
+            <h6>ADRESSE</h6>
+            <p>123 Rue Wild School Code</p>
+        </li>
+        <li class="info-item">
+            <p>59000 Lille</p>
+        </li>
+    </ul>
+</article>
+
+
 </main>
 {% endblock %}

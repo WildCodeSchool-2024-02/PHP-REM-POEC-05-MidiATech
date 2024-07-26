@@ -97,8 +97,8 @@
                                             <tr>
                                                 <th>Nom du media</th>
                                                 <th>Type de media</th>
-                                                <th>A rendre avant :</th>
-                                                <th>Action</th>
+                                                <th>Date de reservation :</th>
+                                                {# <th>Action</th> #}
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -106,12 +106,12 @@
                                                 <tr>
                                                     <td>{{ borrowing.media_title }}</td>
                                                     <td>{{ borrowing.media_type }}</td>
-                                                    <td>{{ borrowing.date }}</td>
-                                                    <td>
+                                                    <td>{{ borrowing.date  }}</td>
+                                                    {# <td>
                                                         <form method="post" action="/borrowings/return/{{ borrowing.borrowing_id }}">
                                                             <button type="submit" class="btn btn-danger">Rendre</button>
                                                         </form>
-                                                    </td>
+                                                    </td> #}
                                                 </tr>
                                             {% endfor %}
                                         </tbody>

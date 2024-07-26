@@ -30,6 +30,6 @@ return [
     'musics/delete' => ['MusicsController', 'delete', ['id']],
     'videos/delete' => ['VideosController', 'delete', ['id']],
     'profile/edit' => ['UserController', 'editProfile'],
-
     'borrowings/add' => ['BorrowingController', 'addBorrowing'],
-    'borrowings/return/{id}' => ['BorrowingController', 'return', ['id']],];
+    'borrowings/return/{id}' => ['BorrowingController', 'return', ['id']],
+];
