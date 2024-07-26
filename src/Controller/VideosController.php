@@ -42,8 +42,7 @@ class VideosController extends AbstractController
     private function getMedias(VideosManager $videosManager, ?string $category, ?string $type): array
     {
         if ($this->hasCategoryAndType($category, $type)) {
-            $categoryFullName = 'Video ' . $category;
-            return $videosManager->selectByCategoryAndType($categoryFullName, $type);
+            return $videosManager->selectByCategoryAndType($category, $type);
         }
 
         if ($this->hasCategory($category)) {
@@ -57,6 +56,7 @@ class VideosController extends AbstractController
 
         return $videosManager->selectAll('title');
     }
+
 
     private function addCategoriesAndTypes(
         array &$medias,

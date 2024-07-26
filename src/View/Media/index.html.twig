@@ -1,24 +1,26 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}{{ page_title }}{% endblock %}
+{% block title %}
+	{{ page_title }}
+{% endblock %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="/assets/css/medias.css">
+	<link rel="stylesheet" href="/assets/css/medias.css">
 {% endblock %}
 
 {% block javascript %}
-    <script defer src="/assets/javascript/filters.js"></script>
+	<script defer src="/assets/javascript/filters.js"></script>
 {% endblock %}
 
 {% block page_title %}
-    <div class="header">
-        {% include 'Base/_search.html.twig' %}
-        <h1>{{ page_title }}</h1>
-    </div>
+	<div class="header">
+		{% include 'Base/_search.html.twig' %}
+		<h1>{{ page_title }}</h1>
+	</div>
 {% endblock %}
 
 {% block content %}
-    <input type="hidden" id="media_type" value="{{ media_type }}">
+	<input type="hidden" id="media_type" value="{{ media_type }}">
 
     <section class="return">
         {% if app.userRole == 'admin' %}
@@ -49,31 +51,31 @@
         {% endif %}
     </div>
 
-    <div class="cards">
-        {% if medias is empty %}
-            <p>Aucun média disponible dans cette catégorie ou type.</p>
-        {% else %}
-            {% for item in medias %}
-                <div class="card">
-                    {% if item.picture %}
-                        <img src="{{ item.picture }}" alt="{{ item.title }}">
-                    {% else %}
-                        <img src="/assets/images/covers/couverture-{{media_type}}.webp" alt="cover">
-                    {% endif %}
-                    <h2>{{ item.title }}</h2>
+	<div class="cards">
+		{% if medias is empty %}
+			<p>Aucun média disponible dans cette catégorie ou type.</p>
+		{% else %}
+			{% for item in medias %}
+				<div class="card">
+					{% if item.picture %}
+						<img src="{{ item.picture }}" alt="{{ item.title }}">
+					{% else %}
+						<img src="/assets/images/covers/couverture-{{media_type}}.webp" alt="cover">
+					{% endif %}
+					<h2>{{ item.title }}</h2>
 
-                    <div class="categories">
-                        {% for type in item.types %}
-                            <span class="category">{{ type }}</span>
-                        {% endfor %}
-                        {% for category in item.categories %}
-                            <span class="category">{{ category }}</span>
-                        {% endfor %}
-                    </div>
+					<div class="categories">
+						{% for type in item.types %}
+							<span class="category">{{ type }}</span>
+						{% endfor %}
+						{% for category in item.categories %}
+							<span class="category">{{ category }}</span>
+						{% endfor %}
+					</div>
 
-                    <a href="/{{media_type}}/show?id={{ item.id }}" class="btn">Voir Détails</a>
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
+					<a href="/{{media_type}}/show?id={{ item.id }}" class="btn">Voir Détails</a>
+				</div>
+			{% endfor %}
+		{% endif %}
+	</div>
 {% endblock %}
