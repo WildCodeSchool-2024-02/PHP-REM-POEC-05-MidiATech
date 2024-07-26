@@ -49,9 +49,9 @@ class BooksController extends AbstractController
     /**
      * Show informations for a specific book
      */
-    public function show( $id): string
+    public function show($id): string
     {
-        $id = (int) $id; 
+        $id = (int) $id;
         $booksManager = new BooksManager();
         $media = $booksManager->selectOneById($id);
 
