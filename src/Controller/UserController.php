@@ -32,7 +32,6 @@ class UserController extends AbstractController
         return $this->twig->render('Account/register.html.twig');
     }
 
-
     public function login(): string
     {
         $isUserLoggedIn = $this->isUserLoggedIn();
