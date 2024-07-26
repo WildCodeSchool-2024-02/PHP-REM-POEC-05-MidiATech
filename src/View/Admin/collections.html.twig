@@ -1,0 +1,52 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/assets/css/collections.css"/>
+{% endblock %}
+
+{% block title %}Gestion des Collections{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Gestion des Collections</h1>
+        
+        <div class="search-filter">
+            <input type="text" placeholder="Rechercher un média...">
+            <select>
+                <option value="all">Tous</option>
+                <option value="books">Livres</option>
+                <option value="music">Musique</option>
+                <option value="videos">Films</option>
+            </select>
+        </div>
+
+        <a href="/collections/add" class="add-media-btn">Ajouter un média</a>
+
+        <h2>Liste des Médias</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Titre</th>
+                    <th>Auteur/Artiste</th>
+                    <th>Catégorie</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for media in medias %}
+                    <tr>
+                        <td>{{ media.type }}</td>
+                        <td>{{ media.titre }}</td>
+                        <td>{{ media.auteur }}</td>
+                        <td>{{ media.categorie }}</td>
+                        <td class="options">
+                            <button>Modifier</button>
+                            <button>Supprimer</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

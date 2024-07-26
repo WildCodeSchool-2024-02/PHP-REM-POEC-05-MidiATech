@@ -6,6 +6,10 @@
 //          2. method name
 //          3. (optional) array of query string keys to send as parameter to the method
 // e.g route '/item/edit?id=1' will execute $itemController->edit(1)
+
+use Gitonomy\Git\Admin;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+
 return [
     '' => ['HomeController', 'index',],
     'search' => ['HomeController', 'search',],
@@ -29,5 +33,9 @@ return [
     'videos/edit' => ['VideosController', 'edit', ['id']],
     'books/delete' => ['BooksController', 'delete', ['id']],
     'musics/delete' => ['MusicsController', 'delete', ['id']],
-    'videos/delete' => ['VideosController', 'delete', ['id']]
+    'videos/delete' => ['VideosController', 'delete', ['id']],
+    'admin' => ['AdminController', 'Admin'],
+    'admin/reservations' => ['AdminController', 'reservations'],
+    'admin/collections' => ['AdminController', 'collections'],
+    'admin/stocks' => ['AdminController', 'stocks']
 ];

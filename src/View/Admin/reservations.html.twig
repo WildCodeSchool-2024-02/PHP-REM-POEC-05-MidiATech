@@ -1,0 +1,42 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/assets/css/reservations.css"/>
+{% endblock %}
+
+{% block title %}Gestion des Réservations{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Gestion des Réservations</h1>
+        
+        <h2>Liste des Réservations</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type Média</th>
+                    <th>Utilisateur</th>
+                    <th>Date de Réservation</th>
+                    <th>Statut</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.document }}</td>
+                        <td>{{ reservation.user }}</td>
+                        <td>{{ reservation.date }}</td>
+                        <td>{{ reservation.status }}</td>
+                        <td class="options">
+                            <button>Accepter</button>
+                            <button>Refuser</button>
+                            <button>Planifier</button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
