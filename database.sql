@@ -49,7 +49,10 @@ CREATE TABLE
 -- -----------------------------------------------------
 -- Table `midiATech`.`books`
 -- -----------------------------------------------------
+<<<<<<< HEAD
+=======
 
+>>>>>>> dev
 DROP TABLE IF EXISTS `midiATech`.`books`;
 
 CREATE TABLE IF NOT EXISTS `midiATech`.`books` (
@@ -156,6 +159,14 @@ ALTER TABLE `midiATech`.`users`
     ADD INDEX `fk_users_roles_idx` (`role_id` ASC),
     ADD CONSTRAINT `fk_users_roles` FOREIGN KEY (`role_id`) REFERENCES `midiATech`.`roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
+-- -----------------------------------------------------
+-- Table `midiATech`.`roles`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `midiATech`.`roles` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
 
 INSERT INTO
     `roles` (`name`)
@@ -169,6 +180,7 @@ INSERT INTO
 VALUES
     ('admin', 'admin', '1900-01-01', 'admin@midiatech.fr', 'inconnu', '$2y$10$oB3ljA/hwnVxlyg7CEHLJ.5beP.k/qlSxp.GDHk5ObFXq6PkqpM.q', NULL, '1');
 
+INSERT INTO `roles` (`name`) VALUES ('admin'), ('user');
 
 INSERT INTO
     types (name)
@@ -432,6 +444,7 @@ VALUES
     ('Mindhunter', '', 'Deux agents du FBI interrogent des tueurs en série pour comprendre leurs motivations.', 'Joe Penhall', '2017-10-13', '20400', '50', '25', '2'),
     ('Prisoners', '', 'Après la disparition de sa fille et de son amie, un père désespéré prend les choses en main.', 'Denis Villeneuve', '2013-09-20', '9180', '50', '25', '1');
 
+-- Insertion de deux utilisateurs
 
 INSERT INTO
     `books` (`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`)
