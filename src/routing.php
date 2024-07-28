@@ -1,5 +1,8 @@
 <?php
 
+// Includes index.php wich contains the DI Container
+require_once __DIR__ . '/../public/index.php';
+
 // Get the required route (without query string) and remove trailing slashes
 $route = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '', '/');
 
@@ -32,8 +35,13 @@ foreach ($matchingRoute[2] ?? [] as $parameter) {
 // instance the controller, call the method with given parameters
 // controller method will return a twig template (HTML string) which is displayed here
 try {
-    // execute the controller
-    echo (new $controller())->$method(...$parameters);
+    // Check if $container is defined
+    if (!isset($container)) {
+        throw new Exception("Container not defined.");
+    }
+
+    // Fetch the controller from the DI Container and execute the method
+    echo $container->get($controller)->$method(...$parameters);
 } catch (Exception $e) {
     // if an exception is thrown during controller execution
     if (isset($whoops)) {
