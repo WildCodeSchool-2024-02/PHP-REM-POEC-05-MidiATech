@@ -7,29 +7,46 @@
 /* Style pour les filtres */
 .filters {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
     gap: 10px;
     margin-bottom: 20px;
 }
 
-.chip {
-    background-color: #cfe8e4;
-    border-radius: 16px;
-    padding: 10px 20px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.filters label {
+    font-size: 16px;
+    margin-right: 10px;
+    color: var(--quaternaryColor);
 }
 
-.chip:hover {
-    background-color: #b0d4d0;
+.selectpicker {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 14px;
+    color: #4a4a4a;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.selectpicker:focus {
+    border-color: var(--quaternaryColor);
+    box-shadow: 0 0 5px rgba(0, 128, 0, 0.3);
+}
+
+.selectpicker option {
+    padding: 10px;
+    background-color: #fff;
+    color: #4a4a4a;
 }
 
 /* Style pour les cartes */
 .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
     margin: 0 20px 30px;
 }
@@ -46,6 +63,8 @@
     transition: transform 0.3s, box-shadow 0.3s;
     padding-bottom: 15px;
     max-width: 400px;
+    flex: 1 1 200px; /* Permet d'étirer les cartes pour occuper l'espace disponible */
+    margin: 10px; /* Ajoute un espace entre les cartes */
 }
 
 .card img {
@@ -97,4 +116,9 @@
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+a {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.707);
 }

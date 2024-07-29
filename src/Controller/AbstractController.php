@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use Exception;
-use Ramsey\Uuid\Uuid;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
+use Twig\Extra\Intl\IntlExtension;
 use Twig\Loader\FilesystemLoader;
 use App\Model\UserManager;
 
@@ -18,6 +17,8 @@ abstract class AbstractController
 
     public function __construct()
     {
+        $this->startSessionIfNotStarted();
+
         $loader = new FilesystemLoader(APP_VIEW_PATH);
         $this->twig = new Environment(
             $loader,
@@ -27,56 +28,45 @@ abstract class AbstractController
             ]
         );
         $this->twig->addExtension(new DebugExtension());
-        $this->twig->addGlobal('app', ['user' => $this->getUser()]);
+        $this->twig->addExtension(new IntlExtension());
+        $this->twig->addGlobal('app', ['user' => $this->getUser(), 'userRole' => $this->getUserRole()]);
     }
 
-    private function getUser()
+    protected function getUser(): ?array
     {
         if (isset($_SESSION['user_id'])) {
-            $userManager = new UserManager();
-            return $userManager->selectOneById($_SESSION['user_id']);
-        } elseif (isset($_COOKIE['user_id'])) {
-            $userManager = new UserManager();
-            return $userManager->selectOneById($_COOKIE['user_id']);
+            return (new UserManager())->selectOneById($_SESSION['user_id']);
         }
         return null;
     }
 
-    public function validate($media): array
+    protected function getUserRole()
     {
-        // Définir les erreurs
-        $errors = [];
 
-        // Validation de l'image
-        if (isset($_FILES['picture'])) {
-            if (
-                ($_FILES['picture']['error'] !== UPLOAD_ERR_OK)
-                && ($_FILES['picture']['error'] !== UPLOAD_ERR_NO_FILE)
-            ) {
-                $errors['picture'] = "Impossible d'uploader l'image";
-            }
+        if (isset($_SESSION['user_id'])) {
+            return (new UserManager())->getUserRole($_SESSION['user_id']);
         }
+        return null;
+    }
 
-        // Validation du titre
-        if (empty($media['title'])) {
-            $errors['title'] = 'Le titre est requis.';
-        } elseif (strlen($media['title']) > 255) {
-            $errors['title'] = 'Le titre ne doit pas dépasser 255 caractères.';
+    protected function isUserLoggedIn(): bool
+    {
+        $this->startSessionIfNotStarted();
+        return isset($_SESSION['user_id']);
+    }
+
+    public function logout(): void
+    {
+        $this->startSessionIfNotStarted();
+        session_destroy();
+        header('Location: /login');
+        exit();
+    }
+
+    protected function startSessionIfNotStarted(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
-
-        // Validation de la catégorie
-        if (empty($media['id_category'])) {
-            $errors['id_category'] = 'La catégorie est requise.';
-        } elseif (!is_numeric($media['id_category'])) {
-            $errors['id_category'] = 'Identifiant de catégorie invalide.';
-        }
-
-        // Validation de la date de publication
-        $publishDate = $media['date'];
-        if (empty($publishDate)) {
-            $errors['date'] = 'La date de publication est requise.';
-        }
-
-        return $errors;
     }
 }

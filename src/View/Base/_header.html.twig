@@ -19,18 +19,25 @@
                 <li><a href="/musics">Musiques</a></li>
                 <li><a href="/videos">Vidéos</a></li>
                 <li class="mobile">
-                    <a href="{% if app.user %}/profile{% else %}/login{% endif %}">
-                        {% if app.user %}
-                        Profil
-                        {% else %}
-                        Connexion
-                        {% endif %}
-                    </a>
+                    {% if app.userRole == 'user' %}
+                        <a href="/account">Mon compte</a>
+                    {% elseif app.userRole == 'admin' %}
+                        <a href="/admin">Administration</a>
+                    {% else %}
+                        <a href="/login">Connexion</a>
+                    {% endif %}
+                </li>
+                <li class="desktop">
+                    {% if app.userRole == 'user' %}
+                        <a href="/account"><i class="fa-regular fa-circle-user"></i></a>
+                    {% elseif app.userRole == 'admin' %}
+                        <a href="/admin"><i class="fa-regular fa-circle-user"></i></a>
+                    {% else %}
+                        <a href="/login"><i class="fa-regular fa-circle-user"></i></a>
+                    {% endif %}
                 </li>
             </ul>
-            <a class="desktop" href="{% if app.user %}/profile{% else %}/login{% endif %}" id="accountIcon">
-                <i class="fa-regular fa-circle-user"></i>
-            </a>
+
         </nav>
     </div>
 </header>

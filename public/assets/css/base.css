@@ -20,7 +20,7 @@ body {
     }
 
     .desktop {
-        display: none;
+        display: none !important;
     }
 }
 
@@ -67,8 +67,6 @@ header {
 /* Style pour la barre de navigation */
 nav {
     position: relative;
-    display: flex;
-    align-items: center;
 
     /* Style pour la liste de navigation */
     & ul {
@@ -76,6 +74,7 @@ nav {
         margin: 0;
         padding: 0 30px;
         display: flex;
+        align-items: center;
         background: var(--secondaryColor);
         border: 1px solid var(--tertiaryColor);
         border-radius: 10px;

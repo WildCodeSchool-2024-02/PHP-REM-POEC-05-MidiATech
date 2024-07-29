@@ -4,8 +4,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f8f9fd;
-    background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
+    background: #f8f9fd linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
 }
 
 .login-box {

@@ -13,7 +13,18 @@ class HomeController extends AbstractController
      */
     public function index(): string
     {
-        return $this->twig->render('Home/index.html.twig');
+        $booksManager = new BooksManager();
+        $musicsManager = new MusicsManager();
+        $videosManager = new VideosManager();
+
+        $bookImg = $booksManager->selectImgMostRecent();
+        $musicImg = $musicsManager->selectImgMostRecent();
+        $videoImg = $videosManager->selectImgMostRecent();
+
+        $carrouselImg = [$bookImg, $musicImg, $videoImg];
+        $mediaType = ['books', 'musics', 'videos'];
+        return $this->twig->render('Home/index.html.twig', ['carrouselImg' => $carrouselImg,
+        'media_type' => $mediaType]);
     }
 
     public function search(): string|false

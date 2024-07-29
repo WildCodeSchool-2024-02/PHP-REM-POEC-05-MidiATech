@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use InvalidArgumentException;
 use PDO;
 
 class BorrowingManager extends AbstractManager
@@ -26,6 +27,32 @@ class BorrowingManager extends AbstractManager
         return (int)$this->pdo->lastInsertId();
     }
 
+    public function getUserBorrowings(int $userId): array
+    {
+        $statement = $this->pdo->prepare("
+            SELECT
+                b.id AS borrowing_id,
+                b.id_media,
+                b.media_type,
+                b.date,
+                CASE
+                    WHEN b.media_type = 'book' THEN bk.title
+                    WHEN b.media_type = 'music' THEN ms.title
+                    WHEN b.media_type = 'video' THEN vd.title
+                END AS media_title
+            FROM
+                " . self::TABLE . " b
+            LEFT JOIN books bk ON b.id_media = bk.id AND b.media_type = 'book'
+            LEFT JOIN musics ms ON b.id_media = ms.id AND b.media_type = 'music'
+            LEFT JOIN videos vd ON b.id_media = vd.id AND b.media_type = 'video'
+            WHERE b.id_users = :id_users
+        ");
+        $statement->bindParam(':id_users', $userId, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /**
      * Update item in database
      */
@@ -34,7 +61,7 @@ class BorrowingManager extends AbstractManager
         $statement = $this->pdo->prepare(
             "UPDATE " . self::TABLE . "
             SET id_media = :id_media, media_type = :media_type, date = :date
-            id_borrowing = :id_borrowing"
+            WHERE id_borrowing = :id_borrowing"
         );
 
         $statement->bindParam(':id_borrowing', $item['id_borrowing'], PDO::PARAM_INT);
@@ -43,5 +70,58 @@ class BorrowingManager extends AbstractManager
         $statement->bindParam(':date', $item['date'], PDO::PARAM_STR);
 
         return $statement->execute();
+    }
+
+
+
+    public function getAllBorrowings(): false|array
+    {
+        $statement = $this->pdo->query("
+        SELECT
+        b.id AS borrowing_id,
+        u.firstname,
+        u.lastname,
+        u.birthday,
+        u.email,
+        u.address,
+        CASE
+            WHEN b.media_type = 'book' THEN bk.title
+            WHEN b.media_type = 'music' THEN ms.title
+            WHEN b.media_type = 'video' THEN vd.title
+        END AS title,
+        CASE
+            WHEN b.media_type = 'book' THEN bk.author
+            WHEN b.media_type = 'music' THEN ms.singer
+            WHEN b.media_type = 'video' THEN vd.director
+        END AS media_creator,
+        b.date AS borrowing_date
+        FROM
+        borrowing b
+        JOIN users u ON b.id_users = u.id
+        LEFT JOIN books bk ON b.id_media = bk.id AND b.media_type = 'book'
+        LEFT JOIN musics ms ON b.id_media = ms.id AND b.media_type = 'music'
+        LEFT JOIN videos vd ON b.id_media = vd.id AND b.media_type = 'video';
+        ");
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Ceci est un test modifier pour tout media
+     */
+    public function addBorrowingsForUser(int $userId, int $idMedia, string $typeMedia): void
+    {
+        $borrowing =
+            ['id_users' => $userId, 'id_media' => $idMedia, 'media_type' => $typeMedia, 'date' => date('Y-m-d')];
+
+
+        $this->insert($borrowing);
+    }
+
+    public function delete(int $id): void
+    {
+        $statement = $this->pdo->prepare("DELETE FROM " . self::TABLE . " WHERE id=:id");
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
     }
 }

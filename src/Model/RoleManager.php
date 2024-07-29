@@ -11,13 +11,13 @@ class RoleManager extends AbstractManager
     public function isUserAdmin($id): bool
     {
         $statement = $this->pdo->prepare("SELECT id FROM " . self::TABLE . " WHERE name = :name");
-        $statement->execute([':name' => 'ADMIN']);
+        $statement->execute([':name' => 'admin']);
         $adminId = $statement->fetchColumn();
 
         if ($adminId === false) {
             return false;
         }
 
-        return $id == $adminId;
+        return $id === $adminId;
     }
 }

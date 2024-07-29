@@ -3,51 +3,56 @@
 namespace App\Controller;
 
 use App\Model\UserManager;
-use PDO;
+use App\Model\BorrowingManager;
+use App\Trait\UsersTrait;
 
 class UserController extends AbstractController
 {
-    public function inscription()
+    use UsersTrait;
+
+    public function register(): ?string
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = trim($_POST['name']);
-            $lastname = trim($_POST['lastname']);
-            $mail = trim($_POST['mail']);
-            $password = $_POST['password'];
-            $address = trim($_POST['address']);
-            $birthday = trim($_POST['birthday']);
-            $profilePicture = $_FILES['profile_picture']['name'] ?? null;
+            $user = array_map('trim', $_POST);
+            $errors = $this->validate($user);
 
-            if ($name && $lastname && $mail && $password && $address && $birthday) {
+            if (empty($errors)) {
                 $userManager = new UserManager();
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                $userRoleId = 2;
+                $user['password'] = password_hash($user['password'], PASSWORD_DEFAULT);
+                $user['role_id'] = 2;
 
-                if ($profilePicture) {
-                    //gestion photo
-                }
-
-                $userManager->insert([
-                    'firstname' => $name,
-                    'lastname' => $lastname,
-                    'birthday' => $birthday,
-                    'email' => $mail,
-                    'address' => $address,
-                    'password' => $hashedPassword,
-                    'role_id' => $userRoleId,
-                ]);
-
-                return $this->twig->render('Profile/profile.html.twig');
-            } else {
-                $error = 'Tous les champs sont obligatoires';
-                return $this->twig->render('Profile/inscription.html.twig', ['error' => $error]);
+                $userManager->insert($user);
+                header('Location:/account');
+                return null;
             }
+
+            return $this->twig->render('Account/register.html.twig', ['errors' => $errors, 'user' => $user]);
         }
-        return $this->twig->render('Profile/inscription.html.twig');
+
+        return $this->twig->render('Account/register.html.twig');
     }
 
-    public function login()
+    public function login(): string
     {
+        $isUserLoggedIn = $this->isUserLoggedIn();
+
+        if ($isUserLoggedIn) {
+            $userRole = $this->getUserRole();
+
+            if ($userRole === "admin") {
+                header('Location: /admin');
+                exit();
+            }
+
+            if ($userRole === "user") {
+                header('Location: /account');
+                exit();
+            }
+
+            header('Location: /login');
+            exit();
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = trim($_POST['email']);
             $password = trim($_POST['password']);
@@ -56,54 +61,75 @@ class UserController extends AbstractController
             $user = $userManager->selectOneByEmail($email);
 
             if ($user && password_verify($password, $user['password'])) {
-                $_SESSION['user_id'] = $user['id'];
-                setcookie('user_id', $user['id'], time() + (86400 * 3), "/"); // Cookie valable 3 jours
+                $this->startSessionIfNotStarted();
 
-                return $this->twig->render('Profile/profile.html.twig', ['user' => $user]);
-            } else {
-                $error = 'Email ou mot de passe invalide';
-                return $this->twig->render('Profile/login.html.twig', ['error' => $error]);
+                $_SESSION['user_id'] = $user['id'];
+
+                $userRole = $this->getUserRole();
+
+                if ($userRole === "admin") {
+                    header('Location: /admin');
+                    exit();
+                }
+
+                header('Location: /account');
+                exit();
+            }
+
+            $error = 'Email ou mot de passe invalide';
+            return $this->twig->render('Account/login.html.twig', ['error' => $error]);
+        }
+
+        return $this->twig->render('Account/login.html.twig');
+    }
+
+    public function index()
+    {
+        if ($this->isUserLoggedIn()) {
+            $user = $this->getUser();
+            $userRole = $this->getUserRole();
+
+            if ($user && $userRole === 'user') {
+                $borrowingManager = new BorrowingManager();
+                $borrowings = $borrowingManager->getUserBorrowings($user['id']);
+
+                return $this->twig->render('Account/index.html.twig', [
+                    'user' => $user,
+                    'borrowings' => $borrowings,
+                ]);
             }
         }
 
-        return $this->twig->render('Profile/login.html.twig');
-    }
-
-    public function isUserLoggedIn()
-    {
-        return isset($_SESSION['user_id']) || isset($_COOKIE['user_id']);
-    }
-
-    private function getUser()
-    {
-        if (isset($_SESSION['user_id'])) {
-            $userManager = new UserManager();
-            return $userManager->selectOneById($_SESSION['user_id']);
-        } elseif (isset($_COOKIE['user_id'])) {
-            $userManager = new UserManager();
-            return $userManager->selectOneById($_COOKIE['user_id']);
-        }
-        return null;
-    }
-
-    public function logout()
-    {
-        session_start();
-        session_destroy();
-        setcookie('user_id', '', time() - 3600, "/");
         header('Location: /login');
         exit();
     }
 
-
-    public function profile()
+    public function editProfile(): ?string
     {
-        if ($this->isUserLoggedIn()) {
-            $user = $this->getUser();
-            return $this->twig->render('Profile/profile.html.twig', ['user' => $user]);
-        } else {
-            header('Location: /login');
-            exit();
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
+            $userManager = new UserManager();
+            $user = $userManager->selectOneById($userId);
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $updatedUser = [
+                    'id' => $userId,
+                    'firstname' => trim($_POST['firstname']),
+                    'lastname' => trim($_POST['lastname']),
+                    'email' => trim($_POST['email']),
+                    'address' => trim($_POST['address']),
+                    'birthday' => trim($_POST['birthday'])
+                ];
+
+                $userManager->update($updatedUser);
+                header('Location: /account');
+                return null;
+            }
+
+            return $this->twig->render('Account/editProfile.html.twig', ['user' => $user]);
         }
+
+        header('Location: /login');
+        return null;
     }
 }
