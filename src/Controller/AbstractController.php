@@ -2,17 +2,7 @@
 
 namespace App\Controller;
 
-use AllowDynamicProperties;
 use Twig\Environment;
-use App\Model\SessionManager;
-use App\Model\UserManager;
-use App\Model\RoleManager;
-use App\Model\TypesManager;
-use App\Model\CategoriesManager;
-use App\Model\BooksManager;
-use App\Model\MusicsManager;
-use App\Model\VideosManager;
-use App\Model\BorrowingManager;
 use App\Service\ManagerRegistry;
 
 /**
@@ -67,7 +57,7 @@ abstract class AbstractController
         return null;
     }
 
-    public function redirect(string $url)
+    public function redirect(string $url): void
     {
         header('Location: ' . $url);
         exit();

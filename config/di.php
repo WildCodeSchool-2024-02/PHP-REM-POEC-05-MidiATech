@@ -1,5 +1,6 @@
 <?php
 
+use App\Controller\AbstractController;
 use App\Model\BooksManager;
 use App\Model\BorrowingManager;
 use App\Model\CategoriesManager;
@@ -16,6 +17,7 @@ use Twig\Loader\FilesystemLoader;
 
 return [
     // Liaisons de vos classes vont ici
+    AbstractController::class => DI\create(AbstractController::class)->constructor(),
     SessionManager::class => DI\create(SessionManager::class),
     UserManager::class => DI\create(UserManager::class),
     RoleManager::class => DI\create(RoleManager::class),
