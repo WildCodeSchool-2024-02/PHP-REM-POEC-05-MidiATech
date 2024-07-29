@@ -4,6 +4,8 @@
 	{{ page_title }}
 {% endblock %}
 
+{% block page %}{% if media_type == 'books' %}books{% elseif media_type == 'musics' %}musics{% elseif media_type == 'videos' %}videos{% endif %}{% endblock %}
+
 {% block stylesheet %}
 	<link rel="stylesheet" href="/assets/css/medias.css">
 {% endblock %}

@@ -35,6 +35,8 @@ function topFunction()
 document.getElementById("searchInput").addEventListener("input", function () {
     const searchTerm = this.value.trim();
     const resultsDiv = document.getElementById("results");
+    const currentPageMetaTag = document.getElementById('page');
+    const currentPage = currentPageMetaTag.getAttribute('content');
 
     if (searchTerm.length > 1) {
         fetch(`/search?term=${encodeURIComponent(searchTerm)}`)
@@ -55,7 +57,7 @@ document.getElementById("searchInput").addEventListener("input", function () {
                     resultsDiv.removeChild(resultsDiv.firstChild);
                 }
 
-                if (data.musics) {
+                if ((currentPage == 'home' || currentPage == 'musics') && (data.musics)) {
                     data.musics.forEach((item) => {
                         let paragraph = document.createElement("p");
                         let link = document.createElement("a");
@@ -69,7 +71,7 @@ document.getElementById("searchInput").addEventListener("input", function () {
                         resultsDiv.appendChild(paragraph);
                     });
                 }
-                if (data.books) {
+                if ((currentPage === 'home' || currentPage === 'books') && (data.books)) {
                     data.books.forEach((item) => {
                         let paragraph = document.createElement("p");
                         let link = document.createElement("a");
@@ -83,7 +85,7 @@ document.getElementById("searchInput").addEventListener("input", function () {
                         resultsDiv.appendChild(paragraph);
                     });
                 }
-                if (data.videos) {
+                if ((currentPage === 'home' || currentPage === 'videos') && (data.videos)) {
                     data.videos.forEach((item) => {
                         let paragraph = document.createElement("p");
                         let link = document.createElement("a");
