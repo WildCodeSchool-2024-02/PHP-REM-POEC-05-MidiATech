@@ -156,16 +156,6 @@ ALTER TABLE `midiATech`.`users`
     ADD INDEX `fk_users_roles_idx` (`role_id` ASC),
     ADD CONSTRAINT `fk_users_roles` FOREIGN KEY (`role_id`) REFERENCES `midiATech`.`roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-CREATE TABLE `reservations` (
-  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `document_type` enum('livre','musique','film') NOT NULL,
-  `document_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `reservation_date` date NOT NULL,
-  `status` enum('en attente','accepté','refusé','planifié') DEFAULT 'en attente',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Index pour les tables déchargées
@@ -174,13 +164,7 @@ CREATE TABLE `reservations` (
 --
 -- Index pour la table `reservations`
 --
-ALTER TABLE `reservations`
-  ADD KEY `document_id` (`document_id`),
-  ADD KEY `user_id` (`user_id`);
-ALTER TABLE `reservations`
-  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`document_id`) REFERENCES `documents` (`id`),
-  ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
--- -----------------------------------------------------
+
 -- Table `midiATech`.`roles`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `midiATech`.`roles` (

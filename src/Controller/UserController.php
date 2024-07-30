@@ -32,19 +32,17 @@ class UserController extends AbstractController
         return $this->twig->render('Account/register.html.twig');
     }
 
-    public function login(): string
+    public function login(): ?string
     {
-        $isUserLoggedIn = $this->isUserLoggedIn();
-
-        if ($isUserLoggedIn) {
+        if ($this->isUserLoggedIn()) {
             $userRole = $this->getUserRole();
 
-            if ($userRole === "admin") {
+            if ($userRole === 'admin') {
                 header('Location: /admin');
                 exit();
             }
 
-            if ($userRole === "user") {
+            if ($userRole === 'user') {
                 header('Location: /account');
                 exit();
             }
@@ -67,7 +65,7 @@ class UserController extends AbstractController
 
                 $userRole = $this->getUserRole();
 
-                if ($userRole === "admin") {
+                if ($userRole === 'admin') {
                     header('Location: /admin');
                     exit();
                 }
@@ -82,6 +80,9 @@ class UserController extends AbstractController
 
         return $this->twig->render('Account/login.html.twig');
     }
+
+
+
 
     public function index()
     {

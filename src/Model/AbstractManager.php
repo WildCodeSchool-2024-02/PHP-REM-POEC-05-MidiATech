@@ -58,7 +58,7 @@ abstract class AbstractManager
     /**
      * Get one row from database by ID.
      */
-    public function selectOneById(int $id): array|false
+    public function selectOneById(int $id): ?array
     {
         // prepared request
         $statement = match (static::TABLE) {
@@ -98,8 +98,11 @@ abstract class AbstractManager
         $statement->bindValue(':id', $id, \PDO::PARAM_INT);
         $statement->execute();
 
-        return $statement->fetch();
+        $result = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        return $result ?: null;
     }
+
 
     /**
      * Delete row form an ID

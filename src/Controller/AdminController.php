@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\BooksManager;
+use App\Model\BorrowingManager;
 use App\Model\MusicsManager;
 use App\Model\VideosManager;
 use App\Model\CollectionsManager;
@@ -36,31 +37,34 @@ class AdminController extends AbstractController
 
     public function reservations(): string
     {
-        $reservationsManager = new ReservationsManager();
-        $reservations = $reservationsManager->selectAll();
+        $borrowingManager = new BorrowingManager();
+        $reservations = $borrowingManager->getAllBorrowings();
 
         return $this->twig->render('Admin/reservations.html.twig', [
             'reservations' => $reservations
         ]);
     }
 
+
+
+
     public function accept($id)
     {
-        $reservationsManager = new ReservationsManager();
+        $reservationsManager = new BorrowingManager();
         $reservationsManager->acceptReservation($id);
         header('Location: /admin/reservations');
     }
 
     public function refuse($id)
     {
-        $reservationsManager = new ReservationsManager();
+        $reservationsManager = new BorrowingManager();
         $reservationsManager->refuseReservation($id);
         header('Location: /admin/reservations');
     }
 
     public function schedule($id, $date)
     {
-        $reservationsManager = new ReservationsManager();
+        $reservationsManager = new BorrowingManager();
         $reservationsManager->scheduleReservation($id, $date);
         header('Location: /admin/reservations');
     }

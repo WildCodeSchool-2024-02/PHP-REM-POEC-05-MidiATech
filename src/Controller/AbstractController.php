@@ -15,6 +15,8 @@ abstract class AbstractController
 {
     protected Environment $twig;
 
+
+
     public function __construct()
     {
         $this->startSessionIfNotStarted();
@@ -32,19 +34,22 @@ abstract class AbstractController
         $this->twig->addGlobal('app', ['user' => $this->getUser(), 'userRole' => $this->getUserRole()]);
     }
 
+
     protected function getUser(): ?array
     {
+        $this->startSessionIfNotStarted();
+
         if (isset($_SESSION['user_id'])) {
-            return (new UserManager())->selectOneById($_SESSION['user_id']);
+            return (new UserManager())->selectOneById((int) $_SESSION['user_id']);
         }
         return null;
     }
 
-    protected function getUserRole()
+    protected function getUserRole(): ?string
     {
-
+        $this->startSessionIfNotStarted();
         if (isset($_SESSION['user_id'])) {
-            return (new UserManager())->getUserRole($_SESSION['user_id']);
+            return (new UserManager())->getUserRole((int) $_SESSION['user_id']);
         }
         return null;
     }
