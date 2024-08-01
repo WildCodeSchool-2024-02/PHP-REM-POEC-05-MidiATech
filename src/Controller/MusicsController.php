@@ -2,35 +2,38 @@
 
 namespace App\Controller;
 
-use App\Model\MusicsManager;
-use App\Model\CategoriesManager;
 use App\Trait\MediasTrait;
+use RuntimeException;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class MusicsController extends AbstractController
 {
     use MediasTrait;
 
+
     /**
-     * List items
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function index(?string $category = null): string
     {
-        $categoriesManager = new CategoriesManager();
-        $musicsManager = new MusicsManager();
 
         if ($category && $category !== 'Tout') {
             $categoryFullName = 'Music ' . $category;
-            $medias = $musicsManager->selectByCategory($categoryFullName);
+            $medias = $this->managers->musicsManager->selectByCategory($categoryFullName);
         } else {
-            $medias = $musicsManager->selectAll('title');
+            $medias = $this->managers->musicsManager->selectAll();
         }
 
         foreach ($medias as &$media) {
-            $media['categories'] = $categoriesManager->getCategoriesByMusicId($media['id']);
+            $media['categories'] = $this->managers->categoriesManager->getCategoriesByMusicId($media['id']);
         }
 
         $title = "Musiques";
-        $filters = array_merge(['Tout'], $categoriesManager->getAllMusicCategories());
+        $filters = array_merge(['Tout'], $this->managers->categoriesManager->getAllMusicCategories());
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
@@ -45,119 +48,117 @@ class MusicsController extends AbstractController
 
 
     /**
-     * Show informations for a specific item
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function show(int $id): string
     {
-        $musicsManager = new MusicsManager();
-        $media = $musicsManager->selectOneById($id);
+        $media = $this->managers->musicsManager->selectOneById($id);
 
         return $this->twig->render('Media/show.html.twig', ['media' => $media, 'media_type' => 'musics']);
     }
 
+
     /**
-     * Edit a specific item
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function edit(int $id): ?string
     {
-        $musicsManager = new MusicsManager();
-        $media = $musicsManager->selectOneById($id);
-        $categoriesManager = new CategoriesManager();
-        $categories = $categoriesManager->selectAll();
+        $media = $this->managers->musicsManager->selectOneById($id);
+        $categories = $this->managers->categoriesManager->selectAll();
         $userRole = $this->getUserRole();
 
-        if ($userRole === 'admin') {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // clean $_POST data
-                $media = array_map('trim', $_POST);
 
-                $errors = $this->validate($media);
+        if ($userRole !== self::ADMIN) {
+            $this->redirect('/musics');
+            return null;
+        }
 
-                // Si aucune erreur, procéder à l'insertion
-                if (empty($errors)) {
-                    $musicsManager->update($media);
-                    header('Location:/musics/show?id=' . $id);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // clean $_POST data
+            $media = array_map('trim', $_POST);
+
+            $errors = $this->validate($media);
+
+            // Si aucune erreur, procéder à l'insertion
+            if (empty($errors)) {
+                try {
+                    $id = $this->managers->musicsManager->insert($media);
+                    $this->redirect('/musics/show?id=' . $id);
                     return null;
+                } catch (RunTimeException $e) {
+                    return 'Error: ' . $e->getMessage();
                 }
-
-                // Renvoyer le formulaire avec les erreurs et les données saisies
-                return $this->twig->render('Media/edit.html.twig', [
-                    'categories' => $categories, 'errors' => $errors,
-                    'media' => $media, 'media_type' => 'musics', 'isEdit' => true
-                ]);
             }
 
+            // Renvoyer le formulaire avec les erreurs et les données saisies
             return $this->twig->render('Media/edit.html.twig', [
-                'categories' => $categories, 'media' => $media,
-                'media_type' => 'musics', 'isEdit' => true
+                'categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'musics', 'isEdit' => true
             ]);
         }
 
-        header('Location:/musics');
-        return null;
+        return $this->twig->render('Media/edit.html.twig', [
+            'categories' => $categories, 'media' => $media,
+            'media_type' => 'musics', 'isEdit' => true
+        ]);
     }
 
+
     /**
-     * Add a new item
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function add(): ?string
     {
-        $categoriesManager = new CategoriesManager();
-        $categories = $categoriesManager->selectAll();
+        $categories = $this->managers->categoriesManager->selectAll();
         $userRole = $this->getUserRole();
 
-        if ($userRole === 'admin') {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // Nettoyer les données POST
-                $media = array_map('trim', $_POST);
 
-                $errors = $this->validate($media);
-
-                // Si aucune erreur, procéder à l'insertion
-                if (empty($errors)) {
-                    $musicsManager = new MusicsManager();
-                    $id = $musicsManager->insert($media);
-                    header('Location:/musics/show?id=' . $id);
-                    return null;
-                }
-
-                // Renvoyer le formulaire avec les erreurs et les données saisies
-                return $this->twig->render('Media/add.html.twig', [
-                    'categories' => $categories, 'errors' => $errors,
-                    'media' => $media, 'media_type' => 'musics'
-                ]);
-            }
-
-            return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'musics']);
+        if ($userRole !== self::ADMIN) {
+            $this->redirect('/musics');
+            return null;
         }
 
-        header('Location:/musics');
-        return null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $media = array_map('trim', $_POST);
+            $errors = $this->validate($media);
+
+            if (empty($errors)) {
+                try {
+                    $id = $this->managers->musicsManager->insert($media);
+                    $this->redirect('/musics/show?id=' . $id);
+                    return null;
+                } catch (RunTimeException $e) {
+                    return 'Error: ' . $e->getMessage();
+                }
+            }
+
+            return $this->twig->render('Media/add.html.twig', [
+                'categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'musics'
+            ]);
+        }
+
+        return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'musics']);
     }
 
-    /**
-     * Delete a specific item
-     */
     public function delete(): void
     {
         $userRole = $this->getUserRole();
 
-        if ($userRole === 'admin') {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $id = trim($_POST['id']);
-                $musicsManager = new MusicsManager();
-                $music = $musicsManager->selectOneById((int)$id);
-                $fileName = "../public/assets/images/covers/" . $music['picture'];
+        if (($userRole === self::ADMIN) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = trim($_POST['id']);
 
-                if ($music['picture'] && file_exists($fileName)) {
-                    unlink($fileName);  // Supprime le fichier image
-                }
-
-                $musicsManager->delete((int)$id);
-                header('Location:/musics');
-            }
+            $this->managers->musicsManager->delete((int)$id);
+            $this->redirect('/musics');
         }
 
-        header('Location:/musics');
+        $this->redirect('/musics');
     }
 }

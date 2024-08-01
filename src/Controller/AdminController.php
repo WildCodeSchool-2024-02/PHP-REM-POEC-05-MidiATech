@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use App\Model\BooksManager;
 use App\Model\BorrowingManager;
 use App\Model\MusicsManager;
@@ -12,9 +15,23 @@ use App\Model\StocksManager;
 
 class AdminController extends AbstractController
 {
-    public function index(): string
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function index(): ?string
     {
-        return $this->twig->render('Admin/index.html.twig');
+        if ($this->isUserLoggedIn()) {
+            $userRole = $this->getUserRole();
+
+            if ($userRole && $userRole === self::ADMIN) {
+                $borrowings = $this->managers->borrowingManager->getAllBorrowings();
+                return $this->twig->render('Admin/index.html.twig', ['borrowings' => $borrowings]);
+            }
+        }
+        return $this->twig->render('Home/index.html.twig');
+
     }
 
     public function collections(): string
@@ -27,6 +44,7 @@ class AdminController extends AbstractController
 
         $videosManager = new VideosManager();
         $videos = $videosManager->selectAll();
+
 
         return $this->twig->render('Admin/collections.html.twig', [
             'books' => $books,

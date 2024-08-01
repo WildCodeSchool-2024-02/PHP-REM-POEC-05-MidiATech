@@ -2,31 +2,31 @@
 
 namespace App\Controller;
 
-use App\Model\TypesManager;
-use App\Model\VideosManager;
-use App\Model\CategoriesManager;
 use App\Trait\MediasTrait;
+use RuntimeException;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class VideosController extends AbstractController
 {
     use MediasTrait;
 
+
     /**
-     * List Films
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
      */
     public function index(?string $category = null, ?string $type = null): string
     {
-        $categoriesManager = new CategoriesManager();
-        $typeManager = new TypesManager();
-        $videosManager = new VideosManager();
+        $medias = $this->getMedias($this->managers->videosManager, $category, $type);
 
-        $medias = $this->getMedias($videosManager, $category, $type);
-
-        $this->addCategoriesAndTypes($medias, $categoriesManager, $typeManager);
+        $this->addCategoriesAndTypes($medias, $this->managers->categoriesManager, $this->managers->typesManager);
 
         $title = "Films - Séries - Jeunesses - Documentaires";
-        $categoryFilters = array_merge(['Tout'], $categoriesManager->getAllVideoCategories());
-        $typeFilters = array_merge(['Tout'], $typeManager->getAllTypes());
+        $categoryFilters = array_merge(['Tout'], $this->managers->categoriesManager->getAllVideoCategories());
+        $typeFilters = array_merge(['Tout'], $this->managers->typesManager->getAllTypes());
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
@@ -39,7 +39,7 @@ class VideosController extends AbstractController
         ]);
     }
 
-    private function getMedias(VideosManager $videosManager, ?string $category, ?string $type): array
+    private function getMedias($videosManager, ?string $category, ?string $type): array
     {
         if ($this->hasCategoryAndType($category, $type)) {
             return $videosManager->selectByCategoryAndType($category, $type);
@@ -60,8 +60,8 @@ class VideosController extends AbstractController
 
     private function addCategoriesAndTypes(
         array &$medias,
-        CategoriesManager $categoriesManager,
-        TypesManager $typeManager
+        $categoriesManager,
+        $typeManager
     ): void {
         foreach ($medias as &$media) {
             $media['categories'] = $categoriesManager->getCategoriesByVideoId($media['id']);
@@ -84,116 +84,125 @@ class VideosController extends AbstractController
         return $type && $type !== 'Tout';
     }
 
+
     /**
-     * Show informations for a specific item
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
      */
     public function show(int $id): string
     {
-        $videosManager = new VideosManager();
-        $media = $videosManager->selectOneById($id);
+        $media = $this->managers->videosManager->selectOneById($id);
 
         return $this->twig->render('Media/show.html.twig', ['media' => $media, 'media_type' => 'videos']);
     }
 
+
     /**
-     * Edit a specific item
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function edit(int $id): ?string
     {
-        $videosManager = new VideosManager();
-        $media = $videosManager->selectOneById($id);
-        $categoriesManager = new CategoriesManager();
-        $categories = $categoriesManager->selectAll();
-        $typeManager = new TypesManager();
-        $types = $typeManager->selectAll();
+        $media = $this->managers->videosManager->selectOneById($id);
+        $categories = $this->managers->categoriesManager->selectAll();
+        $types = $this->managers->typesManager->selectAll();
         $userRole = $this->getUserRole();
 
-        if ($userRole === 'admin') {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // clean $_POST data
-                $media = array_map('trim', $_POST);
 
-                $errors = $this->validate($media);
+        if ($userRole !== self::ADMIN) {
+            $this->redirect('/musics');
+            return null;
+        }
 
-                // Validation de la catégorie
-                if (empty($media['id_types'])) {
-                    $errors['id_types'] = 'Le type est requis.';
-                } elseif (!is_numeric($media['id_types'])) {
-                    $errors['id_types'] = 'Identifiant de type invalide.';
-                }
 
-                // Si aucune erreur, procéder à l'insertion
-                if (empty($errors)) {
-                    $videosManager->update($media);
-                    header('Location:/videos/show?id=' . $id);
-                    return null;
-                }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // clean $_POST data
+            $media = array_map('trim', $_POST);
 
-                // Renvoyer le formulaire avec les erreurs et les données saisies
-                return $this->twig->render('Media/edit.html.twig', [
-                    'categories' => $categories, 'types' => $types,
-                    'errors' => $errors, 'media' => $media, 'media_type' => 'videos', 'isEdit' => true
-                ]);
+            $errors = $this->validate($media);
+
+            // Validation de la catégorie
+            if (empty($media['id_types'])) {
+                $errors['id_types'] = 'Le type est requis.';
+            } elseif (!is_numeric($media['id_types'])) {
+                $errors['id_types'] = 'Identifiant de type invalide.';
             }
 
+            // Si aucune erreur, procéder à l'insertion
+            if (empty($errors)) {
+                try {
+                    $this->managers->videosManager->update($media);
+                    $this->redirect('/videos/show?id=' . $id);
+                    return null;
+                } catch (RunTimeException $e) {
+                    return 'Error: ' . $e->getMessage();
+                }
+            }
+
+            // Renvoyer le formulaire avec les erreurs et les données saisies
             return $this->twig->render('Media/edit.html.twig', [
                 'categories' => $categories, 'types' => $types,
-                'media' => $media, 'media_type' => 'videos', 'isEdit' => true
+                'errors' => $errors, 'media' => $media, 'media_type' => 'videos', 'isEdit' => true
             ]);
         }
 
-        header('Location:/videos');
-        return null;
+        return $this->twig->render('Media/edit.html.twig', [
+            'categories' => $categories, 'types' => $types,
+            'media' => $media, 'media_type' => 'videos', 'isEdit' => true
+        ]);
     }
 
+
     /**
-     * Add a new item
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function add(): ?string
     {
-        $categoriesManager = new CategoriesManager();
-        $categories = $categoriesManager->selectAll();
-        $typeManager = new TypesManager();
-        $types = $typeManager->selectAll();
+        $categories = $this->managers->categoriesManager->selectAll();
+        $types = $this->managers->typesManager->selectAll();
         $userRole = $this->getUserRole();
 
-        if ($userRole === 'admin') {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // Nettoyer les données POST
-                $media = array_map('trim', $_POST);
 
-                $errors = $this->validate($media);
+        if ($userRole !== self::ADMIN) {
+            $this->redirect('/videos');
+            return null;
+        }
 
-                // Validation de la catégorie
-                if (empty($media['id_types'])) {
-                    $errors['id_types'] = 'Le type est requis.';
-                } elseif (!is_numeric($media['id_types'])) {
-                    $errors['id_types'] = 'Identifiant de type invalide.';
-                }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $media = array_map('trim', $_POST);
+            $errors = $this->validate($media);
 
-                // Si aucune erreur, procéder à l'insertion
-                if (empty($errors)) {
-                    $videosManager = new VideosManager();
-                    $id = $videosManager->insert($media);
-                    header('Location:/videos/show?id=' . $id);
+            // Validation de la catégorie
+            if (empty($media['id_types'])) {
+                $errors['id_types'] = 'Le type est requis.';
+            } elseif (!is_numeric($media['id_types'])) {
+                $errors['id_types'] = 'Identifiant de type invalide.';
+            }
+
+            if (empty($errors)) {
+                try {
+                    $id = $this->managers->videosManager->insert($media);
+                    $this->redirect('/videos/show?id=' . $id);
                     return null;
+                } catch (RunTimeException $e) {
+                    return 'Error: ' . $e->getMessage();
                 }
-
-                // Renvoyer le formulaire avec les erreurs et les données saisies
-                return $this->twig->render('Media/add.html.twig', [
-                    'categories' => $categories, 'types' => $types,
-                    'errors' => $errors, 'media' => $media, 'media_type' => 'videos'
-                ]);
             }
 
             return $this->twig->render('Media/add.html.twig', [
                 'categories' => $categories, 'types' => $types,
-                'media_type' => 'videos'
+                'errors' => $errors, 'media' => $media, 'media_type' => 'videos'
             ]);
         }
 
-        header('Location:/videos');
-        return null;
+        return $this->twig->render('Media/add.html.twig', [
+            'categories' => $categories, 'types' => $types,
+            'media_type' => 'videos'
+        ]);
     }
 
     /**
@@ -203,22 +212,13 @@ class VideosController extends AbstractController
     {
         $userRole = $this->getUserRole();
 
-        if ($userRole === 'admin') {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $id = trim($_POST['id']);
-                $videosManager = new VideosManager();
-                $video = $videosManager->selectOneById((int)$id);
-                $fileName = "../public/assets/images/covers/" . $video['picture'];
+        if (($userRole === self::ADMIN) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = trim($_POST['id']);
 
-                if ($video['picture'] && file_exists($fileName)) {
-                    unlink($fileName);  // Supprime le fichier image
-                }
-
-                $videosManager->delete((int)$id);
-                header('Location:/videos');
-            }
+            $this->managers->videosManager->delete((int)$id);
+            $this->redirect('/videos');
         }
 
-        header('Location:/videos');
+        $this->redirect('/videos');
     }
 }

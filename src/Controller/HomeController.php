@@ -2,60 +2,28 @@
 
 namespace App\Controller;
 
-use App\Model\BooksManager;
-use App\Model\MusicsManager;
-use App\Model\VideosManager;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class HomeController extends AbstractController
 {
     /**
-     * Display home page
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function index(): string
     {
-        $booksManager = new BooksManager();
-        $musicsManager = new MusicsManager();
-        $videosManager = new VideosManager();
 
-        $bookImg = $booksManager->selectImgMostRecent();
-        $musicImg = $musicsManager->selectImgMostRecent();
-        $videoImg = $videosManager->selectImgMostRecent();
+        $book = $this->managers->booksManager->selectMostRecent();
+        $book['mediaType'] = 'books';
+        $music = $this->managers->musicsManager->selectMostRecent();
+        $music['mediaType'] = 'musics';
+        $video = $this->managers->videosManager->selectMostRecent();
+        $video['mediaType'] = 'videos';
 
-        $carrouselImg = [$bookImg, $musicImg, $videoImg];
-        $mediaType = ['books', 'musics', 'videos'];
-        return $this->twig->render('Home/index.html.twig', ['carrouselImg' => $carrouselImg,
-        'media_type' => $mediaType]);
-    }
-
-    public function search(): string|false
-    {
-        $searchTerm = $_GET['term'] ?? '';
-        $results = [];
-
-        // Musics
-        $musicsManager = new MusicsManager();
-        $musics = $musicsManager->search($searchTerm);
-        if ($musics) {
-            $results['musics'] = $musics;
-        }
-
-        // Books
-        $booksManager = new BooksManager();
-        $books = $booksManager->search($searchTerm);
-        if ($books) {
-            $results['books'] = $books;
-        }
-
-        // Videos
-        $videosManager = new VideosManager();
-        $videos = $videosManager->search($searchTerm);
-        if ($videos) {
-            $results['videos'] = $videos;
-        }
-
-        header('Content-Type: application/json');
-
-        echo json_encode($results, JSON_THROW_ON_ERROR);
-        exit;
+        $medias = [$book, $music, $video];
+        return $this->twig->render('Home/index.html.twig', ['medias' => $medias]);
     }
 }

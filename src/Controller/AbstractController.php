@@ -3,75 +3,63 @@
 namespace App\Controller;
 
 use Twig\Environment;
-use Twig\Extension\DebugExtension;
-use Twig\Extra\Intl\IntlExtension;
-use Twig\Loader\FilesystemLoader;
-use App\Model\UserManager;
+use App\Service\ManagerRegistry;
 
 /**
  * Initialized some Controller common features (Twig...)
  */
 abstract class AbstractController
 {
+    public const USER = 'user';
+    public const ADMIN = 'admin';
+
     protected Environment $twig;
+    protected ManagerRegistry $managers;
 
+    public function __construct(
+        ManagerRegistry $managers,
+        Environment $twig
+    ) {
+        $this->managers = $managers;
+        $this->twig = $twig;
 
-
-    public function __construct()
-    {
-        $this->startSessionIfNotStarted();
-
-        $loader = new FilesystemLoader(APP_VIEW_PATH);
-        $this->twig = new Environment(
-            $loader,
-            [
-                'cache' => false,
-                'debug' => true,
-            ]
-        );
-        $this->twig->addExtension(new DebugExtension());
-        $this->twig->addExtension(new IntlExtension());
+        $this->managers->sessionManager->start();
         $this->twig->addGlobal('app', ['user' => $this->getUser(), 'userRole' => $this->getUserRole()]);
     }
 
+    protected function isUserLoggedIn(): bool
+    {
+        return $this->managers->sessionManager->isset('user_id');
+    }
+
+    protected function getUserId(): ?int
+    {
+        if ($this->isUserLoggedIn()) {
+            return $this->managers->sessionManager->get('user_id');
+        }
+        return null;
+    }
 
     protected function getUser(): ?array
     {
-        $this->startSessionIfNotStarted();
-
-        if (isset($_SESSION['user_id'])) {
-            return (new UserManager())->selectOneById((int) $_SESSION['user_id']);
+        if ($this->isUserLoggedIn()) {
+            return $this->managers->userManager->selectOneById($this->getUserId());
         }
         return null;
     }
 
     protected function getUserRole(): ?string
     {
-        $this->startSessionIfNotStarted();
-        if (isset($_SESSION['user_id'])) {
-            return (new UserManager())->getUserRole((int) $_SESSION['user_id']);
+
+        if ($this->isUserLoggedIn()) {
+            return $this->managers->userManager->getUserRole($this->getUserId());
         }
         return null;
     }
 
-    protected function isUserLoggedIn(): bool
+    public function redirect(string $url): void
     {
-        $this->startSessionIfNotStarted();
-        return isset($_SESSION['user_id']);
-    }
-
-    public function logout(): void
-    {
-        $this->startSessionIfNotStarted();
-        session_destroy();
-        header('Location: /login');
+        header('Location: ' . $url);
         exit();
-    }
-
-    protected function startSessionIfNotStarted(): void
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
     }
 }
