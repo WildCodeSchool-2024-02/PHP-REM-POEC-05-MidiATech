@@ -3,25 +3,24 @@
 namespace App\Controller;
 
 use InvalidArgumentException;
+use App\Model\BorrowingManager;
 
 class BorrowingController extends AbstractController
 {
-    public function return(): void
+    public function return(int $id): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $this->isUserLoggedIn()) {
-            $borrowingId = $this->getBorrowingIdFromURI($_SERVER['REQUEST_URI']);
-            $this->managers->borrowingManager->delete($borrowingId);
+        $id = 0;
+        if (($_SERVER['REQUEST_METHOD'] === 'POST') && $this->isUserLoggedIn()) {
+            $borrowingId = $_GET['id'] ?? null;
+
+            if ($borrowingId) {
+                $borrowingManager = new BorrowingManager();
+                $borrowingManager->requestReturn((int)$borrowingId);
+            }
             $this->redirect('/account');
+        } else {
+            $this->redirect('/login');
         }
-
-        $this->redirect('/login');
-    }
-
-    private function getBorrowingIdFromURI(string $uri): int
-    {
-        $path = parse_url($uri, PHP_URL_PATH);
-        $segments = explode('/', trim($path, '/'));
-        return (int)end($segments);
     }
 
     public function addBorrowing(): void
@@ -50,5 +49,17 @@ class BorrowingController extends AbstractController
         }
 
         $this->redirect('/account');
+    }
+    public function requestReturn(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $this->isUserLoggedIn()) {
+            $borrowingId = $_POST['id'] ?? null;
+            if ($borrowingId) {
+                $this->managers->borrowingManager->requestReturn((int)$borrowingId);
+            }
+            $this->redirect('/account');
+        }
+
+        $this->redirect('/login');
     }
 }

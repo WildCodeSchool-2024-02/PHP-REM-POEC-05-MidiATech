@@ -121,34 +121,36 @@ class BorrowingManager extends AbstractManager
         $this->insert($borrowing);
     }
 
+    public function getBorrowingById(int $id): array
+    {
+        $statement = $this->pdo->prepare('SELECT * FROM borrowing WHERE id = :id');
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
+
+    public function updateBorrowingStatus(int $id, bool $isReturned, bool $returnRequested): void
+    {
+        $statement = $this->pdo->prepare('UPDATE borrowing SET
+         is_returned = :isReturned, return_requested = :returnRequested WHERE id = :id');
+        $statement->bindValue(':isReturned', $isReturned, \PDO::PARAM_BOOL);
+        $statement->bindValue(':returnRequested', $returnRequested, \PDO::PARAM_BOOL);
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    public function requestReturn(int $borrowingId): void
+    {
+        $statement = $this->pdo->prepare('UPDATE borrowing SET return_requested = true WHERE id = :id');
+        $statement->bindValue(':id', $borrowingId, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
     public function delete(int $id): void
     {
         $statement = $this->pdo->prepare("DELETE FROM " . self::TABLE . " WHERE id=:id");
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $statement->execute();
-    }
-
-    public function acceptReservation(int $id): bool
-    {
-        if ($id) {
-            $id = 2;
-        }
-        return true;
-    }
-
-    public function refuseReservation(int $id): bool
-    {
-        if ($id) {
-            $id = 2;
-        }
-        return true;
-    }
-
-    public function scheduleReservation(int $id, string $date): bool
-    {
-        if ($id && $date) {
-            $id = 2;
-        }
-        return true;
     }
 }

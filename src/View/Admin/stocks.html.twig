@@ -18,13 +18,15 @@ content %}
         </thead>
         <tbody>
             {% for media in medias %}
+
             <tr>
                 <td>{{ media.type }}</td>
                 <td>{{ media.titre }}</td>
                 <td>{{ media.auteur }}</td>
                 <td>{{ media.stock }}</td>
                 <td class="options">
-                    <button class="modify-stock-btn">Modifier Stock</button>
+                    <button class="modify-stock-btn">Modifier Stock</button> 
+                    <!-- le boutton il fait quoi ? il faut rajouter une route ou du -->
                 </td>
             </tr>
             {% endfor %}

@@ -1,52 +1,79 @@
 {% extends 'layout.html.twig' %}
 
 {% block stylesheet %}
-	<link rel="stylesheet" href="/assets/css/reservations.css"/>
+    <link rel="stylesheet" href="/assets/css/reservations.css"/>
 {% endblock %}
 
 {% block title %}
-	Gestion des Réservations
+    Gestion des Réservations
 {% endblock %}
 
 {% block content %}
-	<section class="return">
-		<a href="/admin">Retour</a>
-	</section>
+    <section class="return">
+        <a href="/admin">Retour</a>
+    </section>
 
-	<div class="container2">
-		<h1>Gestion des Réservations</h1>
+    <div class="container2">
+        <h1>Gestion des Réservations</h1>
 
-		<h2>Liste des Réservations</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>Document</th>
-					<th>Type de Média</th>
-					<th>Utilisateur</th>
-					<th>Date de Réservation</th>
-					<th>Options</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for reservation in reservations %}
-					<tr>
-						<td>{{ reservation.title }}</td>
-						<td>{{ reservation.media_type }}</td>
-						<td>{{ reservation.firstname }}
-							{{ reservation.lastname }}</td>
-						<td>{{ reservation.borrowing_date }}</td>
-						<td class="options">
-							<button>Accepter</button>
-							<button>Refuser</button>
-							<button>Planifier</button>
-						</td>
-					</tr>
-				{% else %}
-					<tr>
-						<td colspan="5">Il n'y a aucun résultat</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
+        <h2>Liste des Réservations</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Document</th>
+                    <th>Type de Média</th>
+                    <th>Utilisateur</th>
+                    <th>Date de Réservation</th>
+                    <th>Demande de Rendu</th>
+                    <th>Rendu</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.title }}</td>
+                        <td>{{ reservation.media_type }}</td>
+                        <td>{{ reservation.firstname }} {{ reservation.lastname }}</td>
+                        <td>{{ reservation.borrowing_date }}</td>
+                        <td class="options">
+                            {% if reservation.return_requested %}
+                                <button onclick="acceptReturn({{ reservation.id }})">Accepter le Rendu</button>
+                            {% else %}
+                                Aucune demande
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if reservation.is_returned %}
+                                Rendu
+                            {% else %}
+                                Non Rendu
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6">Il n'y a aucun résultat</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+     
+
+        function acceptReturn(borrowingId) {
+    fetch(`/admin/accept-return/${borrowingId}`, {
+        method: 'POST'
+    }).then(response => {
+        if (response.ok) {
+            alert('Le média a été rendu avec succès.');
+            window.location.reload();
+        } else {
+            alert('Erreur lors de la mise à jour du statut du média.');
+        }
+    });
+}
+
+    </script>
 {% endblock %}

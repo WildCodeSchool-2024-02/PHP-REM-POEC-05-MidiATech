@@ -9,9 +9,7 @@ use App\Model\BooksManager;
 use App\Model\BorrowingManager;
 use App\Model\MusicsManager;
 use App\Model\VideosManager;
-use App\Model\CollectionsManager;
-use App\Model\ReservationsManager;
-use App\Model\StocksManager;
+use InvalidArgumentException;
 
 class AdminController extends AbstractController
 {
@@ -44,7 +42,6 @@ class AdminController extends AbstractController
         $videosManager = new VideosManager();
         $videos = $videosManager->selectAll();
 
-
         return $this->twig->render('Admin/collections.html.twig', [
             'books' => $books,
             'music' => $music,
@@ -65,25 +62,40 @@ class AdminController extends AbstractController
 
 
 
-    public function accept($id)
+
+    public function acceptReturn(int $id)
     {
-        $reservationsManager = new BorrowingManager();
-        $reservationsManager->acceptReservation($id);
+        $borrowingManager = new BorrowingManager();
+        $borrowing = $borrowingManager->getBorrowingById($id);
+
+        if ($borrowing && $borrowing['return_requested']) {
+            $borrowingManager->updateBorrowingStatus($id, true, false);
+
+            // Update the stock of the returned item
+            $this->updateStock($borrowing['id_media'], $borrowing['media_type']);
+        }
+
         header('Location: /admin/reservations');
+        exit();
     }
 
-    public function refuse($id)
+    private function updateStock(int $idMedia, string $mediaType)
     {
-        $reservationsManager = new BorrowingManager();
-        $reservationsManager->refuseReservation($id);
-        header('Location: /admin/reservations');
-    }
+        switch ($mediaType) {
+            case 'book':
+                $manager = new BooksManager();
+                break;
+            case 'music':
+                $manager = new MusicsManager();
+                break;
+            case 'video':
+                $manager = new VideosManager();
+                break;
+            default:
+                throw new InvalidArgumentException('Invalid media type');
+        }
 
-    public function schedule($id, $date)
-    {
-        $reservationsManager = new BorrowingManager();
-        $reservationsManager->scheduleReservation($id, $date);
-        header('Location: /admin/reservations');
+        $manager->incrementStock($idMedia);
     }
 
     public function stocks(): string

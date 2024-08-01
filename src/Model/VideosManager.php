@@ -152,4 +152,10 @@ class VideosManager extends AbstractManager
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function incrementStock(int $id): void
+    {
+        $statement = $this->pdo->prepare('UPDATE books SET stock = stock + 1 WHERE id = :id');
+        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+    }
 }
