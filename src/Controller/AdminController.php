@@ -2,24 +2,29 @@
 
 namespace App\Controller;
 
-use App\Model\BorrowingManager;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class AdminController extends AbstractController
 {
-    public function index()
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function index(): ?string
     {
         if ($this->isUserLoggedIn()) {
-            $user = $this->getUser();
             $userRole = $this->getUserRole();
 
-            if ($user && $userRole === 'admin') {
-                $borrowingManager = new BorrowingManager();
-                $borrowings = $borrowingManager->getAllBorrowings();
+            if ($userRole && $userRole === self::ADMIN) {
+                $borrowings = $this->managers->borrowingManager->getAllBorrowings();
                 return $this->twig->render('Admin/index.html.twig', ['borrowings' => $borrowings]);
             }
         }
 
-        header('Location: /login');
-        exit();
+        $this->redirect('/login');
+        return null;
     }
 }

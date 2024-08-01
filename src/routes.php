@@ -8,15 +8,16 @@
 // e.g route '/item/edit?id=1' will execute $itemController->edit(1)
 return [
     '' => ['HomeController', 'index'],
-    'search' => ['HomeController', 'search'],
+    'search' => ['SearchController', 'search'],
     'books' => ['BooksController', 'index', ['category']],
     'musics' => ['MusicsController', 'index', ['category']],
     'videos' => ['VideosController', 'index', ['category', 'type']],
-    'login' => ['UserController', 'login'],
-    'register' => ['UserController', 'register'],
-    'account' => ['UserController', 'index'],
+    'login' => ['ConnectController', 'login'],
+    'register' => ['ConnectController', 'register'],
+    'logout' => ['ConnectController', 'logout'],
     'admin' => ['AdminController', 'index'],
-    'logout' => ['UserController', 'logout'],
+    'account' => ['UserController', 'index'],
+    'account/edit' => ['UserController', 'editProfile'],
     'books/show' => ['BooksController', 'show', ['id']],
     'musics/show' => ['MusicsController', 'show', ['id']],
     'videos/show' => ['VideosController', 'show', ['id']],
@@ -29,7 +30,5 @@ return [
     'books/delete' => ['BooksController', 'delete', ['id']],
     'musics/delete' => ['MusicsController', 'delete', ['id']],
     'videos/delete' => ['VideosController', 'delete', ['id']],
-    'profile/edit' => ['UserController', 'editProfile'],
-
     'borrowings/add' => ['BorrowingController', 'addBorrowing'],
     'borrowings/return/{id}' => ['BorrowingController', 'return', ['id']],];
