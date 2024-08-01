@@ -1,0 +1,61 @@
+/* General Container */
+.container2 {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Title styles (h1) */
+h1 {
+    text-align: center;
+    font-size: 32px;
+    color: #251565;
+    margin-top: 20px;
+}
+
+/* Section Title styles (h2) */
+h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #251565;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+table th {
+    background-color: #f8faf6;
+}
+
+table td.options {
+    text-align: center;
+}
+
+.modify-stock-btn {
+    background-color: #5f599f;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+}
+
+.modify-stock-btn:hover {
+    background-color: #000000;
+}
+

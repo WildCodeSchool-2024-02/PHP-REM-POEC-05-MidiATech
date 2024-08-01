@@ -30,5 +30,10 @@ return [
     'books/delete' => ['BooksController', 'delete', ['id']],
     'musics/delete' => ['MusicsController', 'delete', ['id']],
     'videos/delete' => ['VideosController', 'delete', ['id']],
+    'admin/reservations' => ['AdminController', 'reservations'],
+    'admin/collections' => ['AdminController', 'collections'],
+    'admin/stocks' => ['AdminController', 'stocks'],
+    'profile/edit' => ['UserController', 'editProfile'],
     'borrowings/add' => ['BorrowingController', 'addBorrowing'],
-    'borrowings/return/{id}' => ['BorrowingController', 'return', ['id']],];
+    'borrowings/return' => ['BorrowingController', 'return', ['id']],
+];

@@ -1,0 +1,80 @@
+/* Title styles (h1) */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 40px;
+    color: #251565;
+}
+
+/* Container for main content */
+.container2 {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px; /* Increased padding for more space above and below */
+    margin: 20px 0; /* Additional margin for more space above and below */
+}
+
+/* Admin links section */
+.admin-links {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Title styles (h2) */
+h2 {
+    margin-bottom: 20px;
+    font-size: 30px;
+    color: #251565;
+}
+
+/* List styles */
+.admin-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-links li {
+    margin: 10px 0;
+}
+
+/* Link styles */
+.admin-links a {
+    text-decoration: none;
+    color: #251565;
+    font-weight: bold;
+    font-size: 20px; /* Increased font size for links */
+    transition: color 0.3s ease;
+}
+
+.admin-links a:hover {
+    color: #251565;
+}
+
+/* Logout button styles */
+form {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+button {
+    background-color: #5f599f;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #000000;
+}

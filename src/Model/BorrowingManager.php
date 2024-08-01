@@ -74,11 +74,14 @@ class BorrowingManager extends AbstractManager
 
 
 
+
+
     public function getAllBorrowings(): false|array
     {
         $statement = $this->pdo->query("
         SELECT
         b.id AS borrowing_id,
+        b.media_type,
         u.firstname,
         u.lastname,
         u.birthday,
@@ -123,5 +126,29 @@ class BorrowingManager extends AbstractManager
         $statement = $this->pdo->prepare("DELETE FROM " . self::TABLE . " WHERE id=:id");
         $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $statement->execute();
+    }
+
+    public function acceptReservation(int $id): bool
+    {
+        if ($id) {
+            $id = 2;
+        }
+        return true;
+    }
+
+    public function refuseReservation(int $id): bool
+    {
+        if ($id) {
+            $id = 2;
+        }
+        return true;
+    }
+
+    public function scheduleReservation(int $id, string $date): bool
+    {
+        if ($id && $date) {
+            $id = 2;
+        }
+        return true;
     }
 }
