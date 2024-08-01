@@ -33,6 +33,11 @@ class AdminController extends AbstractController
         return $this->twig->render('Home/index.html.twig');
     }
 
+    public function categoriesMedias(): string
+    {
+        return $this->twig->render('Admin/categoriesMedias.html.twig');
+    }
+
     public function collections(): string
     {
         $booksManager = new BooksManager();

@@ -161,4 +161,10 @@ abstract class AbstractManager
 
         return $this->pdo->query($query)->fetch();
     }
+
+    public function selectCategories()
+    {
+        $query = "SELECT name FROM categories WHERE name LIKE " . static::TABLE . "%";
+        
+    }
 }

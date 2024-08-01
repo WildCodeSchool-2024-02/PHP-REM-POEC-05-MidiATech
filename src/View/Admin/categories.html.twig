@@ -1,0 +1,56 @@
+{% extends 'layout.html.twig' %} {% block stylesheet %}
+<link rel="stylesheet" href="/assets/css/collections.css" />
+{% endblock %} {% block title %}Gestion des Collections{% endblock %} {% block
+content %}
+<div class="container2">
+    <h1>Gestion des Categories</h1>
+
+    <!-- Section 1: Rechercher un média avec son filtre -->
+    <div class="search-section">
+        <h2>Rechercher un média</h2>
+        <div class="search-filter">
+            <input type="text" placeholder="Rechercher un média..." />
+            <select>
+                <option value="all">Tous</option>
+                <option value= "{{ media_type }}" >{{ media_fr }}</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Section 2: La liste des médias en titre et son tableau en dessous -->
+    <div class="media-list-section">
+        <h2>Liste des Catégories</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Titre</th>
+                    <th>Auteur/Artiste</th>
+                    <th>Catégorie</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for media in medias %}
+                <tr>
+                    <td>{{ media.type }}</td>
+                    <td>{{ media.titre }}</td>
+                    <td>{{ media.auteur }}</td>
+                    <td>{{ media.categorie }}</td>
+                    <td class="options">
+                        <button>Modifier</button>
+                        <button>Supprimer</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Section 3: Ajouter un média -->
+    <div class="add-media-section">
+        <h2>Ajouter un média</h2>
+        <a href="/collections/add" class="add-media-btn">Ajouter un média</a>
+    </div>
+</div>
+{% endblock %}

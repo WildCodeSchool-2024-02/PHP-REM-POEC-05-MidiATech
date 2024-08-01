@@ -31,7 +31,11 @@ return [
     'musics/delete' => ['MusicsController', 'delete', ['id']],
     'videos/delete' => ['VideosController', 'delete', ['id']],
     'admin/reservations' => ['AdminController', 'reservations'],
-    'admin/collections' => ['AdminController', 'collections'],
+    'admin/categories/medias' => ['AdminController', 'categoriesMedias'],
+    'admin/categories/books' => ['AdminBooksController', 'categories'],
+    // 'admin/categories/musics' => ['AdminController', 'categoriesMedia'],
+    // 'admin/categories/videos' => ['AdminController', 'categoriesMedia'],
+
     'admin/stocks' => ['AdminController', 'stocks'],
     'profile/edit' => ['UserController', 'editProfile'],
     'borrowings/add' => ['BorrowingController', 'addBorrowing'],
