@@ -31,13 +31,21 @@ return [
     'videos/delete' => ['VideosController', 'delete', ['id']],
     'admin/reservations' => ['AdminController', 'reservations'],
     'admin/categories' => ['AdminController', 'categoriesMedias'],
+
     'admin/categories/books' => ['AdminBooksController', 'categories'],
     'admin/categories/books/delete' => ['BooksController', 'deleteCategories', ['id']],
     'admin/categories/books/edit' => ['BooksController', 'editCategories', ['id']],
     'admin/categories/books/add' => ['BooksController', 'addCategories'],
 
-    // 'admin/categories/musics' => ['AdminController', 'categoriesMedia'],
-    // 'admin/categories/videos' => ['AdminController', 'categoriesMedia'],
+    'admin/categories/musics' => ['AdminMusicsController', 'categories'],
+    'admin/categories/musics/delete' => ['MusicsController', 'deleteCategories', ['id']],
+    'admin/categories/musics/edit' => ['MusicsController', 'editCategories', ['id']],
+    'admin/categories/musics/add' => ['MusicsController', 'addCategories'],
+
+    'admin/categories/videos' => ['AdminVideosController', 'categories'],
+    'admin/categories/videos/delete' => ['VideosController', 'deleteCategories', ['id']],
+    'admin/categories/videos/edit' => ['VideosController', 'editCategories', ['id']],
+    'admin/categories/videos/add' => ['VideosController', 'addCategories'],
 
     'admin/stocks' => ['AdminController', 'stocks'],
     'profile/edit' => ['UserController', 'editProfile'],

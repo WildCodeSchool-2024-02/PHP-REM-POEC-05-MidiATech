@@ -3,21 +3,13 @@
 {% endblock %} {% block title %}Gestion des Collections{% endblock %} {% block
 content %}
 <div class="container2">
+    <section class="return">
+        <a href="/admin/categories">Retour choix Média</a>
+    </section>
+
     <h1>Gestion des Categories</h1>
-
-    <!-- Section 1: Rechercher un média avec son filtre -->
-    <div class="search-section">
-        <h2>Rechercher un média</h2>
-        <div class="search-filter">
-            <input type="text" placeholder="Rechercher un média..." />
-            <select>
-                <option value="all">Tous</option>
-                <option value="{{ media_type }}">{{ media_fr }}</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- Section 2: La liste des médias en titre et son tableau en dessous -->
+    
+    <!-- Section 1: La liste des médias en titre et son tableau en dessous -->
     <div class="media-list-section">
         <h2>Liste des Catégories</h2>
         <table>
@@ -33,7 +25,10 @@ content %}
                 <tr>
                     <td>{{ categorie.name }}</td>
                     <td class="options">
-                        <a class="edit" href="{{media_type}}/edit?id={{ categorie.id }}">Modifier</a>
+                        <form>
+                            <input type="button" onclick="window.location.href='/admin/categories/{{media_type}}/edit?id={{ categorie.id }}';" value="Modifier" />
+                        </form>
+                        {# <a class="edit" href="{{media_type}}/edit?id={{ categorie.id }}">Modifier</a> #}
                         <form action="/admin/categories/{{media_type}}/delete" method="POST"
                             onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer {{ categorie.name }} ?')">
                             <input type="hidden" name="id" value="{{ categorie.id }}">
