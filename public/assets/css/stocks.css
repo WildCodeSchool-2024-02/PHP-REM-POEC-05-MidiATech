@@ -44,6 +44,28 @@ table td.options {
     text-align: center;
 }
 
+/* Form Input and Button Styles */
+.options form {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align button to the left of the cell */
+    gap: 10px; /* Space between input and button */
+}
+
+input[type="number"] {
+    width: auto; /* Let the input adjust to its content */
+    padding: 8px 10px; /* Padding for better readability */
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus {
+    border-color: #5f599f; /* Focus state color */
+    outline: none;
+}
+
 .modify-stock-btn {
     background-color: #5f599f;
     color: #fff;
@@ -58,4 +80,21 @@ table td.options {
 .modify-stock-btn:hover {
     background-color: #000000;
 }
+.filter-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
 
+.filter-container select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #f8faf6;
+    cursor: pointer;
+}
+
+.filter-container select:focus {
+    border-color: #5f599f;
+    outline: none;}

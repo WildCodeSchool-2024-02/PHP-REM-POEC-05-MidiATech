@@ -59,5 +59,33 @@ button:hover {
     background-color: #000000;
 }
 
+.btn-orange {
+    background-color: orange;
+    color: white;
+    cursor: not-allowed;
+}
+.btn-accept {
+    background-color: green;
+    color: white;
+    cursor: pointer;
+}
+.btn-delete {
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+.btn-delete.disabled {
+    background-color: grey;
+    cursor: not-allowed;
+}
 
 
+
+a.reservationMedia{
+    text-decoration: none;
+    color: black;
+}
+
+a.reservationMedia:hover {
+    color: var(--quaternaryColor);
+}

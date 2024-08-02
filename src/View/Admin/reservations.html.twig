@@ -2,6 +2,7 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="/assets/css/reservations.css"/>
+
 {% endblock %}
 
 {% block title %}
@@ -26,18 +27,36 @@
                     <th>Date de Réservation</th>
                     <th>Demande de Rendu</th>
                     <th>Rendu</th>
+                    <th>Action</th> <!-- New column for actions -->
                 </tr>
             </thead>
             <tbody>
                 {% for reservation in reservations %}
                     <tr>
-                        <td>{{ reservation.title }}</td>
+                        <td>
+                            {% set path = '' %}
+                            {% if reservation.media_type == 'book' %}
+                                {% set path = '/books/show' %}
+                            {% elseif reservation.media_type == 'music' %}
+                                {% set path = '/musics/show' %}
+                            {% elseif reservation.media_type == 'video' %}
+                                {% set path = '/videos/show' %}
+                            {% endif %}
+                            <a class="reservationMedia" href="{{ path }}?id={{ reservation.id_media }}">{{ reservation.title }}</a>
+                        </td>
                         <td>{{ reservation.media_type }}</td>
                         <td>{{ reservation.firstname }} {{ reservation.lastname }}</td>
                         <td>{{ reservation.borrowing_date }}</td>
                         <td class="options">
                             {% if reservation.return_requested %}
-                                <button onclick="acceptReturn({{ reservation.id }})">Accepter le Rendu</button>
+                                {% if not reservation.is_returned %}
+                                    <form method="post" action="/admin/accept-return">
+                                        <input type="hidden" name="borrowing_id" value="{{ reservation.borrowing_id }}">
+                                        <button type="submit" class="btn-accept">Accepter le Rendu</button>
+                                    </form>
+                                {% else %}
+                                    <span class="btn-orange">Rendu</span>
+                                {% endif %}
                             {% else %}
                                 Aucune demande
                             {% endif %}
@@ -49,31 +68,23 @@
                                 Non Rendu
                             {% endif %}
                         </td>
+                        <td>
+                            {% if reservation.is_returned %}
+                                <form method="post" action="/admin/delete-reservation">
+                                    <input type="hidden" name="borrowing_id" value="{{ reservation.borrowing_id }}">
+                                    <button type="submit" class="btn-delete">Supprimer</button>
+                                </form>
+                            {% else %}
+                                <button type="button" class="btn-delete disabled" disabled>Supprimer</button>
+                            {% endif %}
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="6">Il n'y a aucun résultat</td>
+                        <td colspan="7">Il n'y a aucun résultat</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
-    <script>
-     
-
-        function acceptReturn(borrowingId) {
-    fetch(`/admin/accept-return/${borrowingId}`, {
-        method: 'POST'
-    }).then(response => {
-        if (response.ok) {
-            alert('Le média a été rendu avec succès.');
-            window.location.reload();
-        } else {
-            alert('Erreur lors de la mise à jour du statut du média.');
-        }
-    });
-}
-
-    </script>
 {% endblock %}

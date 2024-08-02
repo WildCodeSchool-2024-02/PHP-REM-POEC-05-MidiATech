@@ -4,21 +4,26 @@ namespace App\Controller;
 
 use InvalidArgumentException;
 use App\Model\BorrowingManager;
+use App\Model\BooksManager;
+use App\Model\MusicsManager;
+use App\Model\VideosManager;
 
 class BorrowingController extends AbstractController
 {
-    public function return(int $id): void
+    public function retour(): void
     {
-        $id = 0;
-        if (($_SERVER['REQUEST_METHOD'] === 'POST') && $this->isUserLoggedIn()) {
-            $borrowingId = $_GET['id'] ?? null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $this->isUserLoggedIn()) {
+            $borrowingId = $_POST['borrowing_id'] ?? null;
 
             if ($borrowingId) {
                 $borrowingManager = new BorrowingManager();
                 $borrowingManager->requestReturn((int)$borrowingId);
+
+                // Redirect to account page after processing
+                $this->redirect('/account');
             }
-            $this->redirect('/account');
         } else {
+            // Redirect to login if not authenticated
             $this->redirect('/login');
         }
     }
@@ -34,7 +39,7 @@ class BorrowingController extends AbstractController
         $mediaType = $_POST['media_type'] ?? null;
 
         if ($idMedia && $mediaType) {
-            // Valider et convertir media_type
+            // Validate and convert media_type
             $validMediaTypes = ['book', 'music', 'video'];
             if (!in_array($mediaType, $validMediaTypes, true)) {
                 $mediaType = match ($mediaType) {
@@ -45,11 +50,16 @@ class BorrowingController extends AbstractController
                 };
             }
 
+            // Decrease the stock of the media
+            $this->updateStock($idMedia, $mediaType);
+
+            // Add borrowing record
             $this->managers->borrowingManager->addBorrowingsForUser($userId, $idMedia, $mediaType);
         }
 
         $this->redirect('/account');
     }
+
     public function requestReturn(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $this->isUserLoggedIn()) {
@@ -61,5 +71,25 @@ class BorrowingController extends AbstractController
         }
 
         $this->redirect('/login');
+    }
+
+    private function updateStock(int $idMedia, string $mediaType)
+    {
+        switch ($mediaType) {
+            case 'book':
+                $manager = new BooksManager();
+                break;
+            case 'music':
+                $manager = new MusicsManager();
+                break;
+            case 'video':
+                $manager = new VideosManager();
+                break;
+            default:
+                throw new InvalidArgumentException('Invalid media type');
+        }
+
+        // Change the stock for the media
+        $manager->changeStock($idMedia);
     }
 }

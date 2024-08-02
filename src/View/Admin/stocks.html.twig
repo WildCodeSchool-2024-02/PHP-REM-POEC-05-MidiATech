@@ -1,7 +1,14 @@
-{% extends 'layout.html.twig' %} {% block stylesheet %}
-<link rel="stylesheet" href="/assets/css/stocks.css" />
-{% endblock %} {% block title %}Gestion des Stocks{% endblock %} {% block
-content %}
+{% extends 'layout.html.twig' %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/assets/css/stocks.css"/>
+{% endblock %}
+
+{% block title %}
+    Gestion des Stocks
+{% endblock %}
+
+{% block content %}
 <div class="container2">
     <h1>Gestion des Stocks</h1>
 
@@ -18,17 +25,24 @@ content %}
         </thead>
         <tbody>
             {% for media in medias %}
-
-            <tr>
-                <td>{{ media.type }}</td>
-                <td>{{ media.titre }}</td>
-                <td>{{ media.auteur }}</td>
-                <td>{{ media.stock }}</td>
-                <td class="options">
-                    <button class="modify-stock-btn">Modifier Stock</button> 
-                    <!-- le boutton il fait quoi ? il faut rajouter une route ou du -->
-                </td>
-            </tr>
+                <tr>
+                    <td>{{ media.type }}</td>
+                    <td>{{ media.title }}</td>
+                    <td>{{ media.creator }}</td>
+                    <td>{{ media.stock }}</td>
+                    <td class="options">
+                        <form method="post" action="/admin/update-stock">
+                            <input type="hidden" name="media_id" value="{{ media.id }}">
+                            <input type="hidden" name="media_type" value="{{ media.type }}">
+                            <input type="number" name="new_stock" min="0" value="{{ media.stock }}" required>
+                            <button type="submit" class="modify-stock-btn">Modifier Stock</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">Aucun média trouvé</td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>

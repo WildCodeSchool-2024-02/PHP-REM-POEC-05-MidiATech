@@ -64,10 +64,37 @@ class BooksManager extends AbstractManager
 
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function incrementStock(int $id): void
+    public function incrementStock(int $id): bool
     {
-        $statement = $this->pdo->prepare('UPDATE books SET stock = stock + 1 WHERE id = :id');
-        $statement->bindValue(':id', $id, \PDO::PARAM_INT);
-        $statement->execute();
+        $statement = $this->pdo->prepare("
+            UPDATE " . self::TABLE . " 
+            SET quantities = quantities + 1 
+            WHERE id = :id
+        ");
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+
+        return $statement->execute();
+    }
+
+    public function changeStock(int $id): bool
+    {
+        $statement = $this->pdo->prepare("
+            UPDATE " . self::TABLE . " 
+            SET quantities = quantities - 1
+            WHERE id = :id
+        ");
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+
+        return $statement->execute();
+    }
+    public function updateStock(int $mediaId, int $newStock): bool
+    {
+        $statement = $this->pdo->prepare("
+            UPDATE " . self::TABLE . " SET quantities = :stock WHERE id = :id
+        ");
+        $statement->bindParam(':stock', $newStock, PDO::PARAM_INT);
+        $statement->bindParam(':id', $mediaId, PDO::PARAM_INT);
+
+        return $statement->execute();
     }
 }
