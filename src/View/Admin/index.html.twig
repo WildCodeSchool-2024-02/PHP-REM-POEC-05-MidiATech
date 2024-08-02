@@ -1,16 +1,19 @@
-{% extends 'layout.html.twig' %}
-
-{% block title %}Administration{% endblock %}
-
-{% block content %}
-    <h1>Administration</h1>
-    <form action="/logout" method="post">
-        <button type="submit">Se déconnecter</button>
-    </form>
-    <h2>Liste des emprunts</h2>
-    <ul>
-        {% for borrowing in borrowings %}
-            <li>{{ borrowing.item }} - Emprunté par {{ borrowing.user.firstname }} {{ borrowing.user.lastname }} le {{ borrowing.borrow_date }}</li>
-        {% endfor %}
-    </ul>
+{% extends 'layout.html.twig' %} {% block stylesheet %}
+<link rel="stylesheet" href="/assets/css/index.css" />
+{% endblock %} {% block title %}Administration MidiATech {% endblock %} {% block
+content %}
+<h1>Administration MidiATech</h1>
+<main class="container2">
+    <section class="admin-links">
+        <h2>Gestion des Médias</h2>
+        <ul>
+            <li><a href="/admin/collections">Gestion des Collections</a></li>
+            <li><a href="/admin/reservations">Gestion des Réservations</a></li>
+            <li><a href="/admin/stocks">Gestion des Stocks</a></li>
+        </ul>
+    </section>
+</main>
+<form action="/logout" method="post">
+    <button type="submit">Se déconnecter</button>
+</form>
 {% endblock %}

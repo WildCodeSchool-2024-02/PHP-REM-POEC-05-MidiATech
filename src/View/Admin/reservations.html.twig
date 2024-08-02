@@ -1,0 +1,91 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheet %}
+	<link rel="stylesheet" href="/assets/css/reservations.css"/>
+
+{% endblock %}
+
+{% block title %}
+	Gestion des Réservations
+{% endblock %}
+
+{% block content %}
+	<section class="return">
+		<a href="/admin">Retour</a>
+	</section>
+
+	<div class="container2">
+		<h1>Gestion des Réservations</h1>
+
+		<h2>Liste des Réservations</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Document</th>
+					<th>Type de Média</th>
+					<th>Utilisateur</th>
+					<th>Date de Réservation</th>
+					<th>Demande de Rendu</th>
+					<th>Rendu</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for reservation in reservations %}
+					<tr>
+						<td>
+							{% set path = '' %}
+							{% if reservation.media_type == 'book' %}
+								{% set path = '/books/show' %}
+							{% elseif reservation.media_type == 'music' %}
+								{% set path = '/musics/show' %}
+							{% elseif reservation.media_type == 'video' %}
+								{% set path = '/videos/show' %}
+							{% endif %}
+							<a class="reservationMedia" href="{{ path }}?id={{ reservation.id_media }}">{{ reservation.title }}</a>
+						</td>
+						<td>{{ reservation.media_type }}</td>
+						<td>{{ reservation.firstname }}
+							{{ reservation.lastname }}</td>
+						<td>{{ reservation.borrowing_date }}</td>
+						<td class="options">
+							{% if reservation.return_requested %}
+								{% if not reservation.is_returned %}
+									<form method="post" action="/admin/accept-return">
+										<input type="hidden" name="borrowing_id" value="{{ reservation.borrowing_id }}">
+										<button type="submit" class="btn-accept">Accepter le Rendu</button>
+									</form>
+								{% else %}
+									<span class="btn-orange">Rendu</span>
+								{% endif %}
+							{% else %}
+								Aucune demande
+							{% endif %}
+						</td>
+						<td>
+							{% if reservation.is_returned %}
+								Rendu
+							{% else %}
+								Non Rendu
+							{% endif %}
+						</td>
+						<td>
+							{% if reservation.is_returned %}
+								<form method="post" action="/admin/delete-reservation">
+									<input type="hidden" name="borrowing_id" value="{{ reservation.borrowing_id }}">
+									<button type="submit" class="btn-delete">Supprimer</button>
+								</form>
+							{% else %}
+								<button type="button" class="btn-delete disabled" disabled>Supprimer</button>
+							{% endif %}
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="7">Il n'y a aucun résultat</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}
