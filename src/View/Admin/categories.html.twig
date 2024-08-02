@@ -12,7 +12,7 @@ content %}
             <input type="text" placeholder="Rechercher un média..." />
             <select>
                 <option value="all">Tous</option>
-                <option value= "{{ media_type }}" >{{ media_fr }}</option>
+                <option value="{{ media_type }}">{{ media_fr }}</option>
             </select>
         </div>
     </div>
@@ -23,23 +23,22 @@ content %}
         <table>
             <thead>
                 <tr>
-                    <th>Type</th>
-                    <th>Titre</th>
-                    <th>Auteur/Artiste</th>
-                    <th>Catégorie</th>
-                    <th>Options</th>
+                    <th>Nom</th>
+                    <th>Action</th>
+
                 </tr>
             </thead>
             <tbody>
-                {% for media in medias %}
+                {% for categorie in categories_books %}
                 <tr>
-                    <td>{{ media.type }}</td>
-                    <td>{{ media.titre }}</td>
-                    <td>{{ media.auteur }}</td>
-                    <td>{{ media.categorie }}</td>
+                    <td>{{ categorie.name }}</td>
                     <td class="options">
-                        <button>Modifier</button>
-                        <button>Supprimer</button>
+                        <a class="edit" href="{{media_type}}/edit?id={{ categorie.id }}">Modifier</a>
+                        <form action="/admin/categories/{{media_type}}/delete" method="POST"
+                            onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer {{ categorie.name }} ?')">
+                            <input type="hidden" name="id" value="{{ categorie.id }}">
+                            <input type="submit" class="delete" value="Supprimer">
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
@@ -49,8 +48,8 @@ content %}
 
     <!-- Section 3: Ajouter un média -->
     <div class="add-media-section">
-        <h2>Ajouter un média</h2>
-        <a href="/collections/add" class="add-media-btn">Ajouter un média</a>
+        <h2>Ajouter une catégorie</h2>
+        <a href="/collections/add" class="add-media-btn">Ajouter catégorie</a>
     </div>
 </div>
 {% endblock %}

@@ -7,6 +7,7 @@ use RuntimeException;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use App\Model\AdminManager;
 
 class BooksController extends AbstractController
 {
@@ -84,7 +85,7 @@ class BooksController extends AbstractController
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
                 try {
-                    $id = $this->managers->booksManager->insert($media);
+                    $id = $this->managers->booksManager->update($media);
                     $this->redirect('/books/show?id=' . $id);
                     return null;
                 } catch (RunTimeException $e) {
@@ -156,5 +157,64 @@ class BooksController extends AbstractController
         }
 
         $this->redirect('/books');
+    }
+
+    public function deleteCategories(): void
+    {
+        $adminManager = new AdminManager();
+        $userRole = $this->getUserRole();
+
+        if (($userRole === self::ADMIN) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = trim($_POST['id']);
+
+            $adminManager->deleteCategories((int)$id);
+            $this->redirect('/admin/categories/books');
+        }
+
+        $this->redirect('/admin/categories/books');
+    }
+
+    public function editCategories(int $id): ?string
+    {
+        $adminManager = new AdminManager();
+        $categorie = $adminManager->selectCategoriesById($id);
+        $userRole = $this->getUserRole();
+
+        if ($userRole !== self::ADMIN) {
+            $this->redirect('/');
+            return null;
+        }
+
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // clean $_POST data
+            $categorie = array_map('trim', $_POST);
+
+            $errors = $this->validateCategories($categorie);
+
+            // Si aucune erreur, procéder à l'insertion
+            if (empty($errors)) {
+                try {
+                    $adminManager->updateCategories($categorie);
+                    $this->redirect('/admin/categories/books');
+                    return null;
+                } catch (RunTimeException $e) {
+                    return 'Error: ' . $e->getMessage();
+                }
+            }
+
+            // Renvoyer le formulaire avec les erreurs et les données saisies
+            return $this->twig->render('Admin/edit.html.twig', [
+                'media_type' => 'books',
+                'isEdit' => true,
+                'categorie' => $categorie
+            ]);
+        }
+
+        return $this->twig->render('Admin/edit.html.twig', [
+            'media_type' => 'books',
+            'isEdit' => true,
+            'categorie' => $categorie
+        ]);
     }
 }

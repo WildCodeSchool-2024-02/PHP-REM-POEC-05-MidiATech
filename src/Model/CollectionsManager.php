@@ -119,10 +119,9 @@ class CollectionsManager extends AbstractManager
         return $results;
     }
 
-    /**
-     * Select one media by id
+    /*Select one media by id
      */
-    public function selectOneById(int $id): array|false
+    public function selectAllMediasById(int $id): array|false
     {
         $tables = [self::TABLE_BOOKS, self::TABLE_MUSICS, self::TABLE_VIDEOS];
         foreach ($tables as $table) {

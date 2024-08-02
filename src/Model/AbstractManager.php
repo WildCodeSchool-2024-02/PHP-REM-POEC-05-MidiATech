@@ -155,16 +155,16 @@ abstract class AbstractManager
         }
     }
 
-    public function selectMostRecent()
+    public function selectMostRecent(): array
     {
         $query = "SELECT * FROM " . static::TABLE . " ORDER BY date DESC limit 1";
 
         return $this->pdo->query($query)->fetch();
     }
 
-    public function selectCategories()
+    public function selectCategories(): array
     {
-        $query = "SELECT name FROM categories WHERE name LIKE " . static::TABLE . "%";
-        
+        $query = "SELECT * FROM categories WHERE name LIKE '" . static::TABLE . "%'";
+        return $this->pdo->query($query)->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

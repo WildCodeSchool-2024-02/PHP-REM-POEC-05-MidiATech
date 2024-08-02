@@ -29,7 +29,7 @@ class BooksManager extends AbstractManager
         return (int)$this->pdo->lastInsertId();
     }
 
-    public function update(array $item): bool
+    public function update(array $item): int
     {
         $statement = $this->pdo->prepare(
             "UPDATE " . self::TABLE . "
@@ -48,7 +48,8 @@ class BooksManager extends AbstractManager
         $statement->bindValue(':quantities', $item['quantities'], PDO::PARAM_INT);
         $statement->bindValue(':id_category', $item['id_category'], PDO::PARAM_INT);
 
-        return $statement->execute();
+        $statement->execute();
+        return (int)$item['id'];
     }
 
     public function selectByCategory(string $category): array

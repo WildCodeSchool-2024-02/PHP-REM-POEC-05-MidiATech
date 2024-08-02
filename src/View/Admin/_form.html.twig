@@ -1,0 +1,32 @@
+{% if errors %}
+<div class="errors">
+    <h3>Erreur :</h3>
+    {% for error in errors %}
+    <p>{{ error }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<form class="formMedia" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="id" id="id" value={{ categorie.id }}>
+    <label for="name">Nom :</label>
+    <input type="text" id="name" name="name" value="{{ categorie.name }}">
+
+    {% if media_type == 'videos' %}
+    <label for="id_types">Type :</label>
+    <select id="id_types" name="id_types">
+        <option value="" selected disabled></option>
+        {% for type in types %}
+        {% if media.id_types == type.id %}
+        <option value="{{ type.id }}" selected>{{ type.name }}</option>
+        {% else %}
+        <option value="{{ type.id }}">{{ type.name }}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+    {% endif %}
+
+
+    <input type="submit" value="{{ isEdit ? " Modifier" : "Ajouter" }} la catégorie">
+
+</form>
