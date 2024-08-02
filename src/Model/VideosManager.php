@@ -9,16 +9,18 @@ class VideosManager extends AbstractManager
     public const TABLE = 'videos';
 
     /**
-     * Insert new item in database
+     * Insérer un nouvel élément dans la base de données
      */
     public function insert(array $item): int
     {
+        // Préparation de la requête d'insertion
         $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE .
             "(`title`, `picture`, `description`, `director`, `date`, `duration`,
             `quantities`, `id_category`, `id_types`)
             VALUES (:title, :picture, :description, :director, :date, :duration,
             :quantities, :id_category, :id_types)");
 
+        // Liaison des valeurs aux paramètres de la requête
         $statement->bindValue(':title', $item['title'], PDO::PARAM_STR);
         $statement->bindValue(':picture', $item['picture'], PDO::PARAM_STR);
         $statement->bindValue(':description', $item['description'], PDO::PARAM_STR);
@@ -30,14 +32,15 @@ class VideosManager extends AbstractManager
         $statement->bindValue(':id_types', $item['id_types'], PDO::PARAM_INT);
 
         $statement->execute();
-        return (int)$this->pdo->lastInsertId();
+        return (int)$this->pdo->lastInsertId(); // Retourne l'ID du nouvel élément inséré
     }
 
     /**
-     * Update item in database
+     * Mettre à jour un élément dans la base de données
      */
     public function update(array $item): bool
     {
+        // Préparation de la requête de mise à jour
         $statement = $this->pdo->prepare(
             "UPDATE " . self::TABLE . "
             SET `title` = :title, `picture` = :picture, `description` = :description, `director` = :director,
@@ -46,6 +49,7 @@ class VideosManager extends AbstractManager
             WHERE id=:id"
         );
 
+        // Liaison des valeurs aux paramètres de la requête
         $statement->bindValue(':id', $item['id'], PDO::PARAM_INT);
         $statement->bindValue(':title', $item['title'], PDO::PARAM_STR);
         $statement->bindValue(':picture', $item['picture'], PDO::PARAM_STR);
@@ -57,11 +61,15 @@ class VideosManager extends AbstractManager
         $statement->bindValue(':id_category', $item['id_category'], PDO::PARAM_INT);
         $statement->bindValue(':id_types', $item['id_types'], PDO::PARAM_INT);
 
-        return $statement->execute();
+        return $statement->execute(); // Retourne vrai si la mise à jour a réussi
     }
 
+    /**
+     * Récupérer les catégories associées à un ID de vidéo
+     */
     public function getCategoriesByVideoId(int $videoId): array
     {
+        // Requête pour récupérer les catégories d'une vidéo par son ID
         $statement = $this->pdo->prepare("
             SELECT c.name
             FROM categories c
@@ -71,11 +79,15 @@ class VideosManager extends AbstractManager
         $statement->bindValue(':video_id', $videoId, PDO::PARAM_INT);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $statement->fetchAll(PDO::FETCH_COLUMN); // Retourne un tableau de noms de catégories
     }
 
+    /**
+     * Sélectionner les vidéos par catégorie
+     */
     public function selectByCategory(string $category): array
     {
+        // Requête pour récupérer les vidéos par catégorie
         $statement = $this->pdo->prepare("
             SELECT v.*, TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS category
             FROM videos v
@@ -85,11 +97,15 @@ class VideosManager extends AbstractManager
         $statement->bindValue(':category', $category, PDO::PARAM_STR);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_ASSOC); // Retourne un tableau de vidéos avec leurs détails
     }
 
+    /**
+     * Récupérer les types associés à un ID de vidéo
+     */
     public function getTypesByVideoId(int $videoId): array
     {
+        // Requête pour récupérer les types d'une vidéo par son ID
         $statement = $this->pdo->prepare("
             SELECT t.name
             FROM types t
@@ -99,13 +115,15 @@ class VideosManager extends AbstractManager
         $statement->bindValue(':video_id', $videoId, PDO::PARAM_INT);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $statement->fetchAll(PDO::FETCH_COLUMN); // Retourne un tableau de noms de types
     }
 
-
-
+    /**
+     * Sélectionner les vidéos par type
+     */
     public function selectByType(string $type): array
     {
+        // Requête pour récupérer les vidéos par type
         $statement = $this->pdo->prepare("
             SELECT v.*, t.name AS type
             FROM videos v
@@ -115,20 +133,23 @@ class VideosManager extends AbstractManager
         $statement->bindValue(':type', $type, PDO::PARAM_STR);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_ASSOC); // Retourne un tableau de vidéos avec leurs détails
     }
 
+    /**
+     * Sélectionner les vidéos par catégorie et type
+     */
     public function selectByCategoryAndType(?string $category, string $type): array
     {
         $typesManager = new TypesManager();
         $typeId = $typesManager->getTypeIdByName($type);
 
         if ($typeId === null) {
-            return [];
+            return []; // Retourne un tableau vide si le type n'existe pas
         }
 
+        // Construction de la requête en fonction de la catégorie
         if ($category === null || $category === 'Tout') {
-            // Si la catégorie est "Tout", renvoie tous les médias de ce type
             $statement = $this->pdo->prepare("
             SELECT v.*, t.name AS type, TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS category
             FROM videos v
@@ -150,10 +171,15 @@ class VideosManager extends AbstractManager
         }
 
         $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_ASSOC); // Retourne un tableau de vidéos avec leurs détails
     }
+
+    /**
+     * Augmenter le stock d'une vidéo
+     */
     public function incrementStock(int $id): bool
     {
+        // Requête pour augmenter le stock d'une vidéo par son ID
         $statement = $this->pdo->prepare("
             UPDATE " . self::TABLE . " 
             SET quantities = quantities + 1 
@@ -161,10 +187,15 @@ class VideosManager extends AbstractManager
         ");
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
 
-        return $statement->execute();
+        return $statement->execute(); // Retourne vrai si la mise à jour a réussi
     }
+
+    /**
+     * Modifier le stock d'une vidéo
+     */
     public function changeStock(int $id): bool
     {
+        // Requête pour diminuer le stock d'une vidéo par son ID
         $statement = $this->pdo->prepare("
             UPDATE " . self::TABLE . " 
             SET quantities = quantities - 1
@@ -172,17 +203,21 @@ class VideosManager extends AbstractManager
         ");
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
 
-        return $statement->execute();
+        return $statement->execute(); // Retourne vrai si la mise à jour a réussi
     }
 
+    /**
+     * Mettre à jour le stock d'une vidéo avec une nouvelle valeur
+     */
     public function updateStock(int $mediaId, int $newStock): bool
     {
+        // Requête pour mettre à jour le stock d'une vidéo
         $statement = $this->pdo->prepare("
             UPDATE " . self::TABLE . " SET quantities = :stock WHERE id = :id
         ");
         $statement->bindParam(':stock', $newStock, PDO::PARAM_INT);
         $statement->bindParam(':id', $mediaId, PDO::PARAM_INT);
 
-        return $statement->execute();
+        return $statement->execute(); // Retourne vrai si la mise à jour a réussi
     }
 }

@@ -1,4 +1,3 @@
-/* General Container */
 .container2 {
     max-width: 1200px;
     margin: 0 auto;
@@ -8,7 +7,6 @@
     gap: 40px;
 }
 
-/* Title styles (h1) */
 h1 {
     text-align: center;
     font-size: 32px;
@@ -16,7 +14,6 @@ h1 {
     margin-top: 20px;
 }
 
-/* Section Title styles (h2) */
 h2 {
     text-align: center;
     font-size: 24px;
@@ -44,17 +41,16 @@ table td.options {
     text-align: center;
 }
 
-/* Form Input and Button Styles */
 .options form {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* Align button to the left of the cell */
-    gap: 10px; /* Space between input and button */
+    justify-content: flex-start;
+    gap: 10px;
 }
 
 input[type="number"] {
-    width: auto; /* Let the input adjust to its content */
-    padding: 8px 10px; /* Padding for better readability */
+    width: auto;
+    padding: 8px 10px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -62,7 +58,7 @@ input[type="number"] {
 }
 
 input[type="number"]:focus {
-    border-color: #5f599f; /* Focus state color */
+    border-color: #5f599f;
     outline: none;
 }
 
@@ -80,21 +76,52 @@ input[type="number"]:focus {
 .modify-stock-btn:hover {
     background-color: #000000;
 }
+
 .filter-container {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     margin-bottom: 20px;
 }
 
-.filter-container select {
+.filter-container input[type="text"], .filter-container select {
     padding: 8px;
+    margin-right: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
     background-color: #f8faf6;
-    cursor: pointer;
 }
 
-.filter-container select:focus {
+.filter-container select:focus, .filter-container input[type="text"]:focus {
     border-color: #5f599f;
-    outline: none;}
+    outline: none;
+}
+
+.filter-container button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #5f599f;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-container button:hover {
+    background-color: #000000;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+a.stockMedia {
+    text-decoration: none;
+    color: black;
+}
+
+a.stockMedia:hover {
+    color: var(--quaternaryColor);
+}

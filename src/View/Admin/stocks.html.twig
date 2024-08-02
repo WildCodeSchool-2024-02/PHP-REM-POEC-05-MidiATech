@@ -1,50 +1,79 @@
 {% extends 'layout.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="/assets/css/stocks.css"/>
+	<link rel="stylesheet" href="/assets/css/stocks.css"/>
 {% endblock %}
 
 {% block title %}
-    Gestion des Stocks
+	Gestion des Stocks
 {% endblock %}
 
 {% block content %}
-<div class="container2">
-    <h1>Gestion des Stocks</h1>
+	<section class="return">
+		<a href="/admin">Retour</a>
+	</section>
+	<div class="container2">
 
-    <h2>Liste des Médias</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Type</th>
-                <th>Titre</th>
-                <th>Auteur/Artiste</th>
-                <th>Stock</th>
-                <th>Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for media in medias %}
-                <tr>
-                    <td>{{ media.type }}</td>
-                    <td>{{ media.title }}</td>
-                    <td>{{ media.creator }}</td>
-                    <td>{{ media.stock }}</td>
-                    <td class="options">
-                        <form method="post" action="/admin/update-stock">
-                            <input type="hidden" name="media_id" value="{{ media.id }}">
-                            <input type="hidden" name="media_type" value="{{ media.type }}">
-                            <input type="number" name="new_stock" min="0" value="{{ media.stock }}" required>
-                            <button type="submit" class="modify-stock-btn">Modifier Stock</button>
-                        </form>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="5">Aucun média trouvé</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+
+		<h1>Gestion des Stocks</h1>
+
+		<div class="filter-container">
+			<form method="get" action="/admin/stocks" class="search-form">
+				<select name="type">
+					<option value="all" {% if currentType == 'all' %} selected {% endif %}>Tout</option>
+					<option value="book" {% if currentType == 'book' %} selected {% endif %}>Livres</option>
+					<option value="music" {% if currentType == 'music' %} selected {% endif %}>Musique</option>
+					<option value="video" {% if currentType == 'video' %} selected {% endif %}>Vidéos</option>
+				</select>
+				<input type="text" name="search_title" placeholder="Rechercher par titre" value="{{ currentTitle }}">
+				<input type="text" name="search_author" placeholder="Rechercher par auteur" value="{{ currentAuthor }}">
+				<button type="submit">Entrer</button>
+			</form>
+		</div>
+
+		<h2>Liste des Médias</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Type</th>
+					<th>Titre</th>
+					<th>Auteur/Artiste</th>
+					<th>Stock</th>
+					<th>Options</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for media in medias %}
+					<tr>
+						<td>{{ media.type }}</td>
+						<td>
+							{% set path = '' %}
+							{% if media.type == 'book' %}
+								{% set path = '/books/show' %}
+							{% elseif media.type == 'music' %}
+								{% set path = '/musics/show' %}
+							{% elseif media.type == 'video' %}
+								{% set path = '/videos/show' %}
+							{% endif %}
+							<a class="stockMedia" href="{{ path }}?id={{ media.id }}">{{ media.title }}</a>
+						</td>
+						<td>{{ media.creator }}</td>
+						<td>{{ media.stock }}</td>
+						<td class="options">
+							<form method="post" action="/admin/update-stock">
+								<input type="hidden" name="media_id" value="{{ media.id }}">
+								<input type="hidden" name="media_type" value="{{ media.type }}">
+								<input type="number" name="new_stock" min="0" value="{{ media.stock }}" required>
+								<button type="submit" class="modify-stock-btn">Modifier Stock</button>
+							</form>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="5">Aucun média trouvé</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 {% endblock %}

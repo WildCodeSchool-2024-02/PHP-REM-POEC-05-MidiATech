@@ -5,7 +5,7 @@ namespace App\Model;
 use PDO;
 
 /**
- * Abstract class handling default manager.
+ * Classe abstraite pour la gestion des modèles par défaut.
  */
 abstract class AbstractManager
 {
@@ -20,12 +20,13 @@ abstract class AbstractManager
     }
 
     /**
-     * Get all row from database.
+     * Récupère toutes les lignes de la table dans la base de données.
      */
     public function selectAll(string $orderBy = '', string $direction = 'ASC'): array
     {
+        // Construction de la requête en fonction de la table
         $query = match (static::TABLE) {
-            'books' =>  'SELECT books.*, categories.name AS category FROM books
+            'books' => 'SELECT books.*, categories.name AS category FROM books
                 JOIN categories ON books.id_category = categories.id',
 
             'musics' => 'SELECT musics.*, categories.name AS category FROM musics
@@ -34,7 +35,7 @@ abstract class AbstractManager
             'videos' => 'SELECT videos.*, categories.name AS category, types.name AS type FROM videos
                 JOIN categories ON videos.id_category = categories.id JOIN types ON videos.id_types = types.id',
 
-            'borrowing' =>  "SELECT b.id, u.id AS user_id, u.firstname, u.lastname, u.birthday,
+            'borrowing' => "SELECT b.id, u.id AS user_id, u.firstname, u.lastname, u.birthday,
                         u.address, u.email, b.id_media, b.media_type,
                 CASE b.media_type
                     WHEN 'book' THEN (SELECT title FROM books WHERE id = b.id_media)
@@ -47,6 +48,7 @@ abstract class AbstractManager
             default => 'SELECT * FROM ' . static::TABLE,
         };
 
+        // Ajout d'un tri si spécifié
         if ($orderBy) {
             $query .= ' ORDER BY ' . $orderBy . ' ' . $direction;
         }
@@ -55,11 +57,11 @@ abstract class AbstractManager
     }
 
     /**
-     * Get one row from database by ID.
+     * Récupère une seule ligne de la base de données par ID.
      */
     public function selectOneById(int $id): ?array
     {
-        // prepared request
+        // Préparation de la requête en fonction de la table
         $statement = match (static::TABLE) {
             'books' => $this->pdo->prepare("
                 SELECT books.*, categories.name AS category
@@ -102,18 +104,20 @@ abstract class AbstractManager
         return $result ?: null;
     }
 
-
     /**
-     * Delete row form an ID
+     * Supprime une ligne de la base de données par ID.
      */
     public function delete(int $id): void
     {
-        // prepared request
+        // Requête préparée pour supprimer un enregistrement par ID
         $statement = $this->pdo->prepare("DELETE FROM " . static::TABLE . " WHERE id=:id");
         $statement->bindValue('id', $id, \PDO::PARAM_INT);
         $statement->execute();
     }
 
+    /**
+     * Vérifie si une colonne existe dans la table.
+     */
     public function columnExists($columnName): bool
     {
         $statement = $this->pdo->prepare("SHOW COLUMNS FROM " . static::TABLE . " LIKE :columnName");
@@ -123,6 +127,9 @@ abstract class AbstractManager
         return $statement->fetch() !== false;
     }
 
+    /**
+     * Recherche dans la table en fonction d'un terme.
+     */
     public function search($searchTerm)
     {
         $columnsToSearch = ['author', 'singer', 'director', 'id_types'];
@@ -155,10 +162,53 @@ abstract class AbstractManager
         }
     }
 
+    /**
+     * Sélectionne la ligne la plus récente de la table.
+     */
     public function selectMostRecent()
     {
         $query = "SELECT * FROM " . static::TABLE . " ORDER BY date DESC limit 1";
 
         return $this->pdo->query($query)->fetch();
+    }
+
+    /**
+     * Sélectionne les enregistrements filtrés par titre et auteur.
+     */
+    public function selectFiltered(string $title = '', string $author = '', string $type = ''): array
+    {
+        $query = "SELECT * FROM " . static::TABLE . " WHERE 1=1";
+
+        if ($title) {
+            $query .= " AND title LIKE :title";
+        }
+
+        if ($author) {
+            switch ($type) {
+                case 'book':
+                    $query .= " AND author LIKE :author";
+                    break;
+                case 'music':
+                    $query .= " AND singer LIKE :author";
+                    break;
+                case 'video':
+                    $query .= " AND director LIKE :author";
+                    break;
+            }
+        }
+
+        $statement = $this->pdo->prepare($query);
+
+        if ($title) {
+            $statement->bindValue(':title', '%' . $title . '%', PDO::PARAM_STR);
+        }
+
+        if ($author) {
+            $statement->bindValue(':author', '%' . $author . '%', PDO::PARAM_STR);
+        }
+
+        $statement->execute();
+
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }

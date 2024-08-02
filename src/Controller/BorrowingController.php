@@ -12,24 +12,27 @@ class BorrowingController extends AbstractController
 {
     public function retour(): void
     {
+        // Vérifie si la requête est un POST et si l'utilisateur est connecté
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $this->isUserLoggedIn()) {
             $borrowingId = $_POST['borrowing_id'] ?? null;
 
+            // Si l'ID de l'emprunt est présent, demande un retour
             if ($borrowingId) {
                 $borrowingManager = new BorrowingManager();
                 $borrowingManager->requestReturn((int)$borrowingId);
 
-                // Redirect to account page after processing
+                // Redirige vers la page de compte après le traitement
                 $this->redirect('/account');
             }
         } else {
-            // Redirect to login if not authenticated
+            // Redirige vers la page de connexion si non authentifié
             $this->redirect('/login');
         }
     }
 
     public function addBorrowing(): void
     {
+        // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
         if (!$this->isUserLoggedIn()) {
             $this->redirect('/login');
         }
@@ -38,8 +41,9 @@ class BorrowingController extends AbstractController
         $idMedia = $_POST['id'] ?? null;
         $mediaType = $_POST['media_type'] ?? null;
 
+        // Vérifie la validité de l'ID du média et du type de média
         if ($idMedia && $mediaType) {
-            // Validate and convert media_type
+            // Valide et convertit le type de média
             $validMediaTypes = ['book', 'music', 'video'];
             if (!in_array($mediaType, $validMediaTypes, true)) {
                 $mediaType = match ($mediaType) {
@@ -50,10 +54,10 @@ class BorrowingController extends AbstractController
                 };
             }
 
-            // Decrease the stock of the media
+            // Diminue le stock du média
             $this->updateStock($idMedia, $mediaType);
 
-            // Add borrowing record
+            // Ajoute un enregistrement d'emprunt pour l'utilisateur
             $this->managers->borrowingManager->addBorrowingsForUser($userId, $idMedia, $mediaType);
         }
 
@@ -62,9 +66,11 @@ class BorrowingController extends AbstractController
 
     public function requestReturn(): void
     {
+        // Vérifie si la requête est un POST et si l'utilisateur est connecté
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $this->isUserLoggedIn()) {
             $borrowingId = $_POST['id'] ?? null;
             if ($borrowingId) {
+                // Demande le retour de l'emprunt
                 $this->managers->borrowingManager->requestReturn((int)$borrowingId);
             }
             $this->redirect('/account');
@@ -75,6 +81,7 @@ class BorrowingController extends AbstractController
 
     private function updateStock(int $idMedia, string $mediaType)
     {
+        // Sélectionne le bon gestionnaire en fonction du type de média
         switch ($mediaType) {
             case 'book':
                 $manager = new BooksManager();
@@ -89,7 +96,7 @@ class BorrowingController extends AbstractController
                 throw new InvalidArgumentException('Invalid media type');
         }
 
-        // Change the stock for the media
+        // Modifie le stock pour le média donné
         $manager->changeStock($idMedia);
     }
 }
