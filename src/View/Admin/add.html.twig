@@ -1,0 +1,15 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="/assets/css/form.css">
+{% endblock %}
+
+{% block content %}
+    <section class="return">
+        <a href="/admin/categories/{{ media_type }}">Retour aux catégories</a>
+    </section>
+    <section class="addMedia">
+        <h1>Ajouter une catégorie</h1>
+        {% include 'Admin/_form.html.twig' %}
+    </section>
+{% endblock %}

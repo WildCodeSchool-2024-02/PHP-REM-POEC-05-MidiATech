@@ -67,9 +67,6 @@ class AdminController extends AbstractController
         ]);
     }
 
-
-
-
     public function accept($id)
     {
         $reservationsManager = new BorrowingManager();

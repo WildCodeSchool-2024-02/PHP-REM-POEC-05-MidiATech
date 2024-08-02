@@ -207,7 +207,8 @@ class BooksController extends AbstractController
             return $this->twig->render('Admin/edit.html.twig', [
                 'media_type' => 'books',
                 'isEdit' => true,
-                'categorie' => $categorie
+                'categorie' => $categorie,
+                'errors' => $errors
             ]);
         }
 
@@ -215,6 +216,43 @@ class BooksController extends AbstractController
             'media_type' => 'books',
             'isEdit' => true,
             'categorie' => $categorie
+        ]);
+    }
+
+    public function addCategories(): ?string
+    {
+        $adminManager = new AdminManager();
+        $userRole = $this->getUserRole();
+
+        if ($userRole !== self::ADMIN) {
+            $this->redirect('/books');
+            return null;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $categorie = array_map('trim', $_POST);
+            $errors = $this->validateCategories($categorie);
+
+            if (empty($errors)) {
+                try {
+                    $adminManager->insertCategories($categorie);
+                    $this->redirect('/admin/categories/books');
+                    return null;
+                } catch (RunTimeException $e) {
+                    return 'Error: ' . $e->getMessage();
+                }
+            }
+
+            return $this->twig->render('Admin/add.html.twig', [
+                'categorie' => $categorie,
+                'errors' => $errors,
+                'media_type' => 'books'
+            ]);
+        }
+
+        return $this->twig->render('Admin/add.html.twig', [
+            // 'categorie' => $categorie,
+            'media_type' => 'books'
         ]);
     }
 }

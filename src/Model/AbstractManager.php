@@ -164,7 +164,7 @@ abstract class AbstractManager
 
     public function selectCategories(): array
     {
-        $query = "SELECT * FROM categories WHERE name LIKE '" . static::TABLE . "%'";
+        $query = "SELECT * FROM categories WHERE name LIKE '" . static::TABLE . "%' ORDER BY name";
         return $this->pdo->query($query)->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

@@ -35,4 +35,14 @@ class AdminManager extends AbstractManager
 
         $statement->execute();
     }
+
+    public function insertCategories(array $item): void
+    {
+        $statement = $this->pdo->prepare(
+            "INSERT INTO categories (`name`)
+            VALUES (:name)"
+        );
+        $statement->bindValue(':name', $item['name'], PDO::PARAM_STR);
+        $statement->execute();
+    }
 }

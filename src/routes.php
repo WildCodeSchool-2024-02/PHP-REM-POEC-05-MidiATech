@@ -24,7 +24,6 @@ return [
     'books/add' => ['BooksController', 'add'],
     'videos/add' => ['VideosController', 'add'],
     'musics/add' => ['MusicsController', 'add'],
-    'books/edit' => ['BooksController', 'edit', ['id']],
     'musics/edit' => ['MusicsController', 'edit', ['id']],
     'videos/edit' => ['VideosController', 'edit', ['id']],
     'books/delete' => ['BooksController', 'delete', ['id']],
@@ -35,6 +34,7 @@ return [
     'admin/categories/books' => ['AdminBooksController', 'categories'],
     'admin/categories/books/delete' => ['BooksController', 'deleteCategories', ['id']],
     'admin/categories/books/edit' => ['BooksController', 'editCategories', ['id']],
+    'admin/categories/books/add' => ['BooksController', 'addCategories'],
 
     // 'admin/categories/musics' => ['AdminController', 'categoriesMedia'],
     // 'admin/categories/videos' => ['AdminController', 'categoriesMedia'],
