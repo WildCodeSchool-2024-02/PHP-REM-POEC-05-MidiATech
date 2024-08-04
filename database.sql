@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `midiATech`.`videos` (
     INDEX `fk_videos_categories1_idx` (`id_category` ASC) VISIBLE,
     INDEX `fk_videos_types1_idx` (`id_types` ASC) VISIBLE,
     CONSTRAINT `fk_videos_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-    CONSTRAINT `fk_videos_types` FOREIGN KEY (`id_types`) REFERENCES `midiATech`.`types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_videos_types` FOREIGN KEY (`id_types`) REFERENCES `midiATech`.`types` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------

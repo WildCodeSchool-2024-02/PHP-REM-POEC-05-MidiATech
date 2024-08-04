@@ -55,7 +55,10 @@ class BooksController extends AbstractController
     {
         $media = $this->managers->booksManager->selectOneById($id);
 
-        return $this->twig->render('Media/show.html.twig', ['media' => $media, 'media_type' => 'books']);
+        return $this->twig->render('Media/show.html.twig', [
+            'media' => $media,
+            'media_type' => 'books'
+        ]);
     }
 
 
@@ -96,13 +99,17 @@ class BooksController extends AbstractController
             // Renvoyer le formulaire avec les erreurs et les données saisies
             return $this->twig->render('Media/edit.html.twig', [
                 'categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'books', 'isEdit' => true
+                'media' => $media,
+                'media_type' => 'books',
+                'isEdit' => true
             ]);
         }
 
         return $this->twig->render('Media/edit.html.twig', [
-            'categories' => $categories, 'media' => $media,
-            'media_type' => 'books', 'isEdit' => true
+            'categories' => $categories,
+            'media' => $media,
+            'media_type' => 'books',
+            'isEdit' => true
         ]);
     }
 
@@ -137,12 +144,17 @@ class BooksController extends AbstractController
             }
 
             return $this->twig->render('Media/add.html.twig', [
-                'categories' => $categories, 'errors' => $errors,
-                'media' => $media, 'media_type' => 'books'
+                'categories' => $categories,
+                'errors' => $errors,
+                'media' => $media,
+                'media_type' => 'books'
             ]);
         }
 
-        return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'books']);
+        return $this->twig->render('Media/add.html.twig', [
+            'categories' => $categories,
+            'media_type' => 'books'
+        ]);
     }
 
     public function delete(): void
@@ -251,8 +263,8 @@ class BooksController extends AbstractController
         }
 
         return $this->twig->render('Admin/add.html.twig', [
-            // 'categorie' => $categorie,
-            'media_type' => 'books'
+            'media_type' => 'books',
+            'categorie' => true
         ]);
     }
 }

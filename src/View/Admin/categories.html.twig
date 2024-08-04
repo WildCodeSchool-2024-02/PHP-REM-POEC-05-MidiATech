@@ -8,9 +8,47 @@ content %}
     </section>
 
     <h1>Gestion des Categories</h1>
-    
+
     <!-- Section 1: La liste des médias en titre et son tableau en dessous -->
     <div class="media-list-section">
+        {% if types %}
+        <h2>Liste des Types</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for type in types %}
+                <tr>
+                    <td>{{ type.name }}</td>
+                    <td class="options">
+                        <form>
+                            <input type="button"
+                                onclick="window.location.href='/admin/types/{{media_type}}/edit?id={{ type.id }}';"
+                                value="Modifier" />
+                        </form>
+                        <form action="/admin/types/{{media_type}}/delete" method="POST"
+                            onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer {{ type.name }} ?')">
+                            <input type="hidden" name="id" value="{{ type.id }}">
+                            <input type="submit" class="delete" value="Supprimer">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="add-media-section">
+            <h2>Ajouter un type</h2>
+            <a href="/admin/types/{{media_type}}/add" class="add-media-btn">Ajouter type</a>
+        </div>
+        <br>
+        {% endif %}
+
         <h2>Liste des Catégories</h2>
         <table>
             <thead>
@@ -21,12 +59,14 @@ content %}
                 </tr>
             </thead>
             <tbody>
-                {% for categorie in categories_books %}
+                {% for categorie in categories %}
                 <tr>
                     <td>{{ categorie.name }}</td>
                     <td class="options">
                         <form>
-                            <input type="button" onclick="window.location.href='/admin/categories/{{media_type}}/edit?id={{ categorie.id }}';" value="Modifier" />
+                            <input type="button"
+                                onclick="window.location.href='/admin/categories/{{media_type}}/edit?id={{ categorie.id }}';"
+                                value="Modifier" />
                         </form>
                         {# <a class="edit" href="{{media_type}}/edit?id={{ categorie.id }}">Modifier</a> #}
                         <form action="/admin/categories/{{media_type}}/delete" method="POST"
@@ -39,6 +79,7 @@ content %}
                 {% endfor %}
             </tbody>
         </table>
+
     </div>
 
     <!-- Section 3: Ajouter un média -->

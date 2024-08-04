@@ -88,7 +88,7 @@ class MusicsController extends AbstractController
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
                 try {
-                    $id = $this->managers->musicsManager->insert($media);
+                    $id = $this->managers->musicsManager->update($media);
                     $this->redirect('/musics/show?id=' . $id);
                     return null;
                 } catch (RunTimeException $e) {
@@ -255,8 +255,8 @@ class MusicsController extends AbstractController
         }
 
         return $this->twig->render('Admin/add.html.twig', [
-            // 'categorie' => $categorie,
-            'media_type' => 'musics'
+            'media_type' => 'musics',
+            'categorie' => true
         ]);
     }
 }

@@ -14,7 +14,7 @@ class AdminBooksController extends AdminController
         return $this->twig->render('Admin/categories.html.twig', [
             'media_type' => 'books',
             'media_fr' => 'livre',
-            'categories_books' => $book
+            'categories' => $book
         ]);
     }
 }

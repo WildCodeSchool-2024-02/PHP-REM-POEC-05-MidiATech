@@ -8,8 +8,18 @@
     <section class="return">
         <a href="/admin/categories/{{ media_type }}">Retour aux catégories</a>
     </section>
+    
+    {% if type %}
     <section class="addMedia">
-        <h1>Modifier la catégorie "{{ media.title }}"</h1>
+        <h1>Modifier le type {{type.name}}</h1>
         {% include 'Admin/_form.html.twig' %}
     </section>
+
+    {% else %}
+    <section class="addMedia">
+        <h1>Modifier la catégorie {{categorie.name}}</h1>
+        {% include 'Admin/_form.html.twig' %}
+    </section>
+    {% endif %}
+    
 {% endblock %}

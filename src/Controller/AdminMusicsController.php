@@ -14,7 +14,7 @@ class AdminMusicsController extends AdminController
         return $this->twig->render('Admin/categories.html.twig', [
             'media_type' => 'musics',
             'media_fr' => 'musique',
-            'categories_books' => $music
+            'categories' => $music
         ]);
     }
 }

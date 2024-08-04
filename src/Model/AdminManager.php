@@ -15,10 +15,27 @@ class AdminManager extends AbstractManager
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 
+    public function selectTypesById(int $id): array
+    {
+        $query = "SELECT * FROM types WHERE id = :id";
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+
     public function deleteCategories(int $id): void
     {
         // prepared request
         $statement = $this->pdo->prepare("DELETE FROM categories WHERE id=:id");
+        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    public function deleteTypes(int $id): void
+    {
+        // prepared request
+        $statement = $this->pdo->prepare("DELETE FROM types WHERE id=:id");
         $statement->bindValue('id', $id, \PDO::PARAM_INT);
         $statement->execute();
     }
@@ -36,10 +53,33 @@ class AdminManager extends AbstractManager
         $statement->execute();
     }
 
+    public function updateTypes(array $item): void
+    {
+        $statement = $this->pdo->prepare(
+            "UPDATE types 
+            SET `name` = :name 
+            WHERE `id` = :id"
+        );
+        $statement->bindValue(':name', $item['name'], PDO::PARAM_STR);
+        $statement->bindValue(':id', $item['id'], PDO::PARAM_INT);
+
+        $statement->execute();
+    }
+
     public function insertCategories(array $item): void
     {
         $statement = $this->pdo->prepare(
             "INSERT INTO categories (`name`)
+            VALUES (:name)"
+        );
+        $statement->bindValue(':name', $item['name'], PDO::PARAM_STR);
+        $statement->execute();
+    }
+
+    public function insertTypes(array $item): void
+    {
+        $statement = $this->pdo->prepare(
+            "INSERT INTO types (`name`)
             VALUES (:name)"
         );
         $statement->bindValue(':name', $item['name'], PDO::PARAM_STR);

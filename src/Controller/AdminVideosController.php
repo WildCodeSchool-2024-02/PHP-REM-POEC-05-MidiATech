@@ -8,13 +8,15 @@ class AdminvideosController extends AdminController
 {
     public function categories(): string
     {
-        $video = $this->managers->videosManager->selectCategories();
+        $videosCategories = $this->managers->videosManager->selectCategories();
+        $videosTypes = $this->managers->videosManager->selectTypes();
 
 
         return $this->twig->render('Admin/categories.html.twig', [
             'media_type' => 'videos',
             'media_fr' => 'musique',
-            'categories_books' => $video
+            'categories' => $videosCategories,
+            'types' => $videosTypes
         ]);
     }
 }

@@ -144,14 +144,21 @@ class VideosController extends AbstractController
 
             // Renvoyer le formulaire avec les erreurs et les données saisies
             return $this->twig->render('Media/edit.html.twig', [
-                'categories' => $categories, 'types' => $types,
-                'errors' => $errors, 'media' => $media, 'media_type' => 'videos', 'isEdit' => true
+                'categories' => $categories,
+                'types' => $types,
+                'errors' => $errors,
+                'media' => $media,
+                'media_type' => 'videos',
+                'isEdit' => true
             ]);
         }
 
         return $this->twig->render('Media/edit.html.twig', [
-            'categories' => $categories, 'types' => $types,
-            'media' => $media, 'media_type' => 'videos', 'isEdit' => true
+            'categories' => $categories,
+            'types' => $types,
+            'media' => $media,
+            'media_type' => 'videos',
+            'isEdit' => true
         ]);
     }
 
@@ -315,8 +322,8 @@ class VideosController extends AbstractController
         }
 
         return $this->twig->render('Admin/add.html.twig', [
-            // 'categorie' => $categorie,
-            'media_type' => 'videos'
+            'media_type' => 'videos',
+            'categorie' => true
         ]);
     }
 }

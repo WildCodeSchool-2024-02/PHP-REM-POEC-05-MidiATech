@@ -46,9 +46,9 @@ trait MediasTrait
         $errors = [];
 
         if (empty($categorie['name'])) {
-            $errors['title'] = 'Le nom est requis.';
+            $errors['name'] = 'Le nom est requis.';
         } elseif (strlen($categorie['name']) > 255) {
-            $errors['title'] = 'Le nom ne doit pas dépasser 255 caractères.';
+            $errors['name'] = 'Le nom ne doit pas dépasser 255 caractères.';
         }
 
         return $errors;

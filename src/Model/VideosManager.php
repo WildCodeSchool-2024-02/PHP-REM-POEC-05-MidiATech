@@ -152,4 +152,10 @@ class VideosManager extends AbstractManager
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function selectTypes()
+    {
+        $query = "SELECT * FROM types ORDER BY name";
+        return $this->pdo->query($query)->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
