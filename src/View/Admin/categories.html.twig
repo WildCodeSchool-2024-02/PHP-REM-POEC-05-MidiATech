@@ -1,5 +1,5 @@
 {% extends 'layout.html.twig' %} {% block stylesheet %}
-<link rel="stylesheet" href="/assets/css/collections.css" />
+<link rel="stylesheet" href="/assets/css/categories.css" />
 {% endblock %} {% block title %}Gestion des Collections{% endblock %} {% block
 content %}
 <div class="container2">
@@ -25,16 +25,16 @@ content %}
                 {% for type in types %}
                 <tr>
                     <td>{{ type.name }}</td>
-                    <td class="options">
+                    <td class="action">
                         <form>
-                            <input type="button"
+                            <input class="button" type="button"
                                 onclick="window.location.href='/admin/types/{{media_type}}/edit?id={{ type.id }}';"
                                 value="Modifier" />
                         </form>
                         <form action="/admin/types/{{media_type}}/delete" method="POST"
                             onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer {{ type.name }} ?')">
                             <input type="hidden" name="id" value="{{ type.id }}">
-                            <input type="submit" class="delete" value="Supprimer">
+                            <input type="submit" class="delete button" value="Supprimer">
                         </form>
                     </td>
                 </tr>
@@ -62,9 +62,9 @@ content %}
                 {% for categorie in categories %}
                 <tr>
                     <td>{{ categorie.name }}</td>
-                    <td class="options">
+                    <td class="action">
                         <form>
-                            <input type="button"
+                            <input class="button" type="button"
                                 onclick="window.location.href='/admin/categories/{{media_type}}/edit?id={{ categorie.id }}';"
                                 value="Modifier" />
                         </form>
@@ -72,7 +72,7 @@ content %}
                         <form action="/admin/categories/{{media_type}}/delete" method="POST"
                             onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer {{ categorie.name }} ?')">
                             <input type="hidden" name="id" value="{{ categorie.id }}">
-                            <input type="submit" class="delete" value="Supprimer">
+                            <input type="submit" class="delete button" value="Supprimer">
                         </form>
                     </td>
                 </tr>
