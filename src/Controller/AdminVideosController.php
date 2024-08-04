@@ -9,6 +9,11 @@ class AdminvideosController extends AdminController
     public function categories(): string
     {
         $videosCategories = $this->managers->videosManager->selectCategories();
+        foreach ($videosCategories as &$video) {
+            $video['name'] = substr($video['name'], strlen(self::MEDIA_VIDEOS) + 1);
+        };
+
+
         $videosTypes = $this->managers->videosManager->selectTypes();
 
 

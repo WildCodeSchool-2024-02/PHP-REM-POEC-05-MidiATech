@@ -10,6 +10,10 @@ class AdminBooksController extends AdminController
     {
         $book = $this->managers->booksManager->selectCategories();
 
+        foreach ($book as &$livre) {
+            $livre['name'] = substr($livre['name'], strlen(self::MEDIA_BOOKS) + 1);
+        };
+
 
         return $this->twig->render('Admin/categories.html.twig', [
             'media_type' => 'books',
