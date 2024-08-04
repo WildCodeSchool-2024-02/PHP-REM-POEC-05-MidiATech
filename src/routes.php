@@ -61,5 +61,12 @@ return [
     'admin/stocks' => ['AdminController', 'stocks'],
     'profile/edit' => ['UserController', 'editProfile'],
     'borrowings/add' => ['BorrowingController', 'addBorrowing'],
-    'borrowings/return' => ['BorrowingController', 'return', ['id']],
+
+    'borrowings/retour' => ['BorrowingController', 'retour', ['id']],
+    'borrowings/request-return' => ['BorrowingController', 'requestReturn', ['id']],
+    'admin/accept-return' => ['AdminController', 'acceptReturn', ['id']],
+
+    'admin/update-stock' => ['AdminController', 'handleUpdateStock'],
+
+
 ];

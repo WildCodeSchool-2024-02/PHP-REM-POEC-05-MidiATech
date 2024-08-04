@@ -118,22 +118,4 @@ class CollectionsManager extends AbstractManager
 
         return $results;
     }
-
-    /*Select one media by id
-     */
-    public function selectAllMediasById(int $id): array|false
-    {
-        $tables = [self::TABLE_BOOKS, self::TABLE_MUSICS, self::TABLE_VIDEOS];
-        foreach ($tables as $table) {
-            $statement = $this->pdo->prepare("SELECT * FROM $table WHERE id = :id");
-            $statement->bindValue(':id', $id, PDO::PARAM_INT);
-            $statement->execute();
-            $result = $statement->fetch(PDO::FETCH_ASSOC);
-            if ($result) {
-                return $result;
-            }
-        }
-
-        return false;
-    }
 }

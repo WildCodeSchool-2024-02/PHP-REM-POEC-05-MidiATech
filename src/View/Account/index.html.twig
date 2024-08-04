@@ -7,126 +7,157 @@
 {% block stylesheet %}
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="/assets/css/profile.css"/>
+    <style>
+        /* Custom styles for the orange button */
+        .btn-orange {
+            background-color: orange;
+            color: white;
+            cursor: not-allowed;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
     {% if error %}
         <p class="text-danger">{{ error }}</p>
     {% endif %}
-
     <div class="container-profile emp-profile">
-        <form method="post" action="/logout" id="logoutForm">
-            <div class="row-first">
-                <div class="col-md-4">
-                    <div class="profile-img">
-                        <img src="assets/images/profile.jpg" alt="User-Profile-Image"/>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="profile-head">
-                        <h5>{{ user.firstname }} {{ user.lastname }}</h5>
-                        <p class="proile-rating">Reservation : <span>{{ borrowings|length }}</span></p>
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Information</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Mes réservations</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <a href="/profile/edit" class="profile-edit-btn btn btn-primary">Editer</a>
-                    <button type="button" class="btn-deconnecttion mt-2" onclick="document.getElementById('logoutForm').submit();">Se déconnecter</button>
+        <!-- Profile Information and Logout -->
+        <div class="row-first">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <img src="assets/images/profile.jpg" alt="User-Profile-Image"/>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4"></div>
-                <div class="col-md-8">
-                    <div class="tab-content profile-tab" id="myTabContent">
-                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Nom :</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{ user.firstname }}</p>
-                                </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                    <h5>{{ user.firstname }}
+                        {{ user.lastname }}</h5>
+                    <p class="proile-rating">Reservation :
+                        <span>{{ borrowings|length }}</span>
+                    </p>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Information</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Mes réservations</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <a href="/profile/edit" class="profile-edit-btn btn btn-primary">Editer</a>
+                <form method="post" action="/logout" style="display: inline;">
+                    <button type="submit" class="btn-deconnecttion mt-2">Se déconnecter</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- User Information -->
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-8">
+                <div class="tab-content profile-tab" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Nom :</label>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Prénom :</label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{ user.lastname }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Email : </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{ user.email }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Téléphone : </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{ user.phone }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>Adresse : </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <p>{{ user.address }}</p>
-                                </div>
+                            <div class="col-md-6">
+                                <p>{{ user.firstname }}</p>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            {% if borrowings is empty %}
-                                <p>Aucune réservation trouvée</p>
-                            {% else %}
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Prénom :</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ user.lastname }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Email :</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ user.email }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Téléphone :</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ user.phone }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Adresse :</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ user.address }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reservations -->
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        {% if borrowings is empty %}
+                            <p>Aucune réservation trouvée</p>
+                        {% else %}
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nom du media</th>
+                                            <th>Type de media</th>
+                                            <th>A rendre avant :</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for borrowing in borrowings %}
                                             <tr>
-                                                <th>Nom du media</th>
-                                                <th>Type de media</th>
-                                                <th>A rendre avant :</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for borrowing in borrowings %}
-                                                <tr>
-                                                    <td>{{ borrowing.media_title }}</td>
-                                                    <td>{{ borrowing.media_type }}</td>
-                                                    <td>{{ borrowing.date }}</td>
-                                                    <td>
-                                                        <form method="post" action="/borrowings/return/{{ borrowing.borrowing_id }}">
+                                                <td>
+                                                    {% set path = '' %}
+                                                    {% if borrowing.media_type == 'book' %}
+                                                        {% set path = 'books/show' %}
+                                                    {% elseif borrowing.media_type == 'music' %}
+                                                        {% set path = 'musics/show' %}
+                                                    {% elseif borrowing.media_type == 'video' %}
+                                                        {% set path = 'videos/show' %}
+                                                    {% endif %}
+                                                    <a class="lienAccountMedia" href="{{ path }}?id={{ borrowing.id_media }}">{{ borrowing.media_title }}</a>
+                                                </td>
+                                                <td>{{ borrowing.media_type }}</td>
+                                                <td>{{ borrowing.date }}</td>
+                                                <td>
+                                                    {% if borrowing.return_requested %}
+                                                        <button type="button" class="btn btn-orange" disabled>Demande de rendu envoyé</button>
+                                                    {% else %}
+                                                        <form method="post" action="/borrowings/retour">
+                                                            <input type="hidden" name="borrowing_id" value="{{ borrowing.borrowing_id }}">
                                                             <button type="submit" class="btn btn-danger">Rendre</button>
                                                         </form>
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            {% endif %}
-                        </div>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
+
 {% endblock %}
 
 {% block javascript %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    {% endblock %}
+{% endblock %}

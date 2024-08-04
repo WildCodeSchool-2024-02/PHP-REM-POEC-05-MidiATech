@@ -163,7 +163,17 @@ CREATE TABLE IF NOT EXISTS `midiATech`.`roles` (
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-INSERT INTO `roles` (`name`) VALUES ('admin'), ('user');
+
+ALTER TABLE `midiATech`.`borrowing`
+ADD COLUMN `is_returned` BOOLEAN NOT NULL DEFAULT FALSE,
+ADD COLUMN `return_requested` BOOLEAN NOT NULL DEFAULT FALSE;
+
+
+INSERT INTO
+    `roles` (`name`)
+VALUES
+    ('admin'),
+    ('user');
 
 INSERT INTO
     `users` (
