@@ -49,10 +49,7 @@ CREATE TABLE
 -- -----------------------------------------------------
 -- Table `midiATech`.`books`
 -- -----------------------------------------------------
-<<<<<<< HEAD
-=======
 
->>>>>>> dev
 DROP TABLE IF EXISTS `midiATech`.`books`;
 
 CREATE TABLE IF NOT EXISTS `midiATech`.`books` (
@@ -159,7 +156,15 @@ ALTER TABLE `midiATech`.`users`
     ADD INDEX `fk_users_roles_idx` (`role_id` ASC),
     ADD CONSTRAINT `fk_users_roles` FOREIGN KEY (`role_id`) REFERENCES `midiATech`.`roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
--- -----------------------------------------------------
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `reservations`
+--
+
 -- Table `midiATech`.`roles`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `midiATech`.`roles` (
@@ -167,6 +172,12 @@ CREATE TABLE IF NOT EXISTS `midiATech`.`roles` (
     `name` VARCHAR(50) NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
+
+
+ALTER TABLE `midiATech`.`borrowing`
+ADD COLUMN `is_returned` BOOLEAN NOT NULL DEFAULT FALSE,
+ADD COLUMN `return_requested` BOOLEAN NOT NULL DEFAULT FALSE;
+
 
 INSERT INTO
     `roles` (`name`)

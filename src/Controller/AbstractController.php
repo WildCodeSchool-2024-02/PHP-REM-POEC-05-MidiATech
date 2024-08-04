@@ -10,8 +10,8 @@ use App\Service\ManagerRegistry;
  */
 abstract class AbstractController
 {
-    public const string ADMIN = 'admin';
-    public const string USER = 'user';
+    public const USER = 'user';
+    public const ADMIN = 'admin';
 
     protected Environment $twig;
     protected ManagerRegistry $managers;
