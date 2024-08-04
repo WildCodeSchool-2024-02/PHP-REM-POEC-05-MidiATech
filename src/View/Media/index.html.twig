@@ -4,6 +4,8 @@
 	{{ page_title }}
 {% endblock %}
 
+{% block page %}{% if media_type == 'books' %}books{% elseif media_type == 'musics' %}musics{% elseif media_type == 'videos' %}videos{% endif %}{% endblock %}
+
 {% block stylesheet %}
 	<link rel="stylesheet" href="/assets/css/medias.css">
 {% endblock %}
@@ -22,7 +24,7 @@
 {% block content %}
 	<input type="hidden" id="media_type" value="{{ media_type }}">
 
-    <section class="return">
+    <section class="return_index">
         {% if app.userRole == 'admin' %}
             {% if media_type == 'books' %}
                 <a href="/{{ media_type }}/add">Ajouter un livre</a>

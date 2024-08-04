@@ -9,38 +9,95 @@
     background-color: var(--secondaryColor);
     box-shadow: 0 0 10px 2px var(--primaryColor);
 
-    & .picture {
+    .picture {
         margin-right: 20px;
+        max-width: 300px;
 
-        & img {
-            max-height: 400px;
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            height: auto;
+            width: auto;
         }
     }
 
-    & .media-info {
-        color: var(--tertiaryColor);
+    .out-of-stock {
+        color: red;
+        font-weight: bold;
+        margin-top: 20px;
+        text-align: center;
+    }
 
-        & .button {
+    .reserve[disabled] {
+        background-color: #ccc;
+        color: #666; /* Text color for better contrast */
+        cursor: not-allowed;
+        border: 1px solid #999;
+        margin-top: 10px; /* Space between the message and button */
+        display: block;
+        width: 100%; /* Full width on mobile for consistency */
+    }
+
+    .media-info {
+        color: var(--tertiaryColor);
+        flex: 1;
+
+        .button {
             display: flex;
+            flex-direction: row; /* Buttons side by side on larger screens */
+            align-items: center; /* Align buttons vertically */
             margin-top: 50px;
 
-            & a, input {
+            a, input {
                 padding: 10px 20px;
                 text-decoration: none;
                 color: var(--secondaryColor);
                 border-radius: 5px;
                 border: none;
                 cursor: pointer;
-            }
-
-            & .edit, .reserve {
                 background: green;
                 margin-right: 20px;
             }
 
-            & .delete {
-                padding: 13px 20px;
+            .delete {
+                padding: 10px 20px;
                 background: red;
+            }
+        }
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    
+    .media-details {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        .picture {
+            margin: 0 0 20px 0;
+            width: 100%;
+
+            img {
+                max-width: 100%;
+                max-height: 300px;
+            }
+        }
+
+        .media-info {
+            .button {
+                flex-direction: column; /* Stack buttons vertically on mobile */
+                align-items: center;
+
+                a, input {
+                    margin-bottom: 10px;
+                    width: 80%; /* Full width for better touch targets */
+                }
+
+                .reserve[disabled] {
+                    width: 80%; /* Consistent width on mobile */
+                }
             }
         }
     }

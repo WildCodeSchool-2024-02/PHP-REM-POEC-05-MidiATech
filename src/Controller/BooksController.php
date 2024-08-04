@@ -2,35 +2,36 @@
 
 namespace App\Controller;
 
-use App\Model\BooksManager;
-use App\Model\CategoriesManager;
 use App\Trait\MediasTrait;
+use RuntimeException;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class BooksController extends AbstractController
 {
     use MediasTrait;
 
     /**
-     * List Books
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function index(?string $category = null): string
     {
-        $categoriesManager = new CategoriesManager();
-        $booksManager = new BooksManager();
-
         if ($category && $category !== 'Tout') {
             $categoryFullName = 'Book ' . $category;
-            $medias = $booksManager->selectByCategory($categoryFullName);
+            $medias = $this->managers->booksManager->selectByCategory($categoryFullName);
         } else {
-            $medias = $booksManager->selectAll('title');
+            $medias = $this->managers->booksManager->selectAll();
         }
 
         foreach ($medias as &$media) {
-            $media['categories'] = $categoriesManager->getCategoriesByBookId($media['id']);
+            $media['categories'] = $this->managers->categoriesManager->getCategoriesByBookId($media['id']);
         }
 
         $title = "Livres";
-        $filters = array_merge(['Tout'], $categoriesManager->getAllBookCategories());
+        $filters = array_merge(['Tout'], $this->managers->categoriesManager->getAllBookCategories());
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
@@ -44,121 +45,116 @@ class BooksController extends AbstractController
     }
 
 
-
-
     /**
-     * Show informations for a specific book
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function show($id): string
     {
-        $id = (int) $id;
-        $booksManager = new BooksManager();
-        $media = $booksManager->selectOneById($id);
+        $media = $this->managers->booksManager->selectOneById($id);
 
         return $this->twig->render('Media/show.html.twig', ['media' => $media, 'media_type' => 'books']);
     }
 
+
     /**
-     * Edit a specific book
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function edit(int $id): ?string
     {
-        $booksManager = new BooksManager();
-        $media = $booksManager->selectOneById($id);
-        $categoriesManager = new CategoriesManager();
-        $categories = $categoriesManager->selectAll();
+        $media = $this->managers->booksManager->selectOneById($id);
+        $categories = $this->managers->categoriesManager->selectAll();
         $userRole = $this->getUserRole();
 
-        if ($userRole === 'admin') {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // clean $_POST data
-                $media = array_map('trim', $_POST);
+        if ($userRole !== self::ADMIN) {
+            $this->redirect('/books');
+            return null;
+        }
 
-                $errors = $this->validate($media);
 
-                // Si aucune erreur, procéder à l'insertion
-                if (empty($errors)) {
-                    $booksManager->update($media);
-                    header('Location:/books/show?id=' . $id);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // clean $_POST data
+            $media = array_map('trim', $_POST);
+
+            $errors = $this->validate($media);
+
+            // Si aucune erreur, procéder à l'insertion
+            if (empty($errors)) {
+                try {
+                    $id = $this->managers->booksManager->insert($media);
+                    $this->redirect('/books/show?id=' . $id);
                     return null;
+                } catch (RunTimeException $e) {
+                    return 'Error: ' . $e->getMessage();
                 }
-
-                // Renvoyer le formulaire avec les erreurs et les données saisies
-                return $this->twig->render('Media/edit.html.twig', [
-                    'categories' => $categories, 'errors' => $errors,
-                    'media' => $media, 'media_type' => 'books', 'isEdit' => true
-                ]);
             }
 
+            // Renvoyer le formulaire avec les erreurs et les données saisies
             return $this->twig->render('Media/edit.html.twig', [
-                'categories' => $categories, 'media' => $media,
-                'media_type' => 'books', 'isEdit' => true
+                'categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'books', 'isEdit' => true
             ]);
         }
 
-        header('Location:/books');
-        return null;
+        return $this->twig->render('Media/edit.html.twig', [
+            'categories' => $categories, 'media' => $media,
+            'media_type' => 'books', 'isEdit' => true
+        ]);
     }
 
+
     /**
-     * Add a new item
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function add(): ?string
     {
-        $categoriesManager = new CategoriesManager();
-        $categories = $categoriesManager->selectAll();
+        $categories = $this->managers->categoriesManager->selectAll();
         $userRole = $this->getUserRole();
 
-        if ($userRole === 'admin') {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // Nettoyer les données POST
-                $media = array_map('trim', $_POST);
-
-                $errors = $this->validate($media);
-
-                // Si aucune erreur, procéder à l'insertion
-                if (empty($errors)) {
-                    $booksManager = new BooksManager();
-                    $id = $booksManager->insert($media);
-                    header('Location:/books/show?id=' . $id);
-                    return null;
-                }
-
-                // Renvoyer le formulaire avec les erreurs et les données saisies
-                return $this->twig->render('Media/add.html.twig', [
-                    'categories' => $categories, 'errors' => $errors,
-                    'media' => $media, 'media_type' => 'books'
-                ]);
-            }
-
-            return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'books']);
+        if ($userRole !== self::ADMIN) {
+            $this->redirect('/books');
+            return null;
         }
 
-        header('Location:/books');
-        return null;
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $media = array_map('trim', $_POST);
+            $errors = $this->validate($media);
+
+            if (empty($errors)) {
+                try {
+                    $id = $this->managers->booksManager->insert($media);
+                    $this->redirect('/books/show?id=' . $id);
+                    return null;
+                } catch (RunTimeException $e) {
+                    return 'Error: ' . $e->getMessage();
+                }
+            }
+
+            return $this->twig->render('Media/add.html.twig', [
+                'categories' => $categories, 'errors' => $errors,
+                'media' => $media, 'media_type' => 'books'
+            ]);
+        }
+
+        return $this->twig->render('Media/add.html.twig', ['categories' => $categories, 'media_type' => 'books']);
     }
 
-    /**
-     * Delete a specific item
-     */
     public function delete(): void
     {
         $userRole = $this->getUserRole();
 
-        if (($userRole === 'admin') && $_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (($userRole === self::ADMIN) && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = trim($_POST['id']);
-            $booksManager = new BooksManager();
-            $book = $booksManager->selectOneById((int)$id);
-            $fileName = "../public/assets/images/covers/" . $book['picture'];
 
-            if ($book['picture'] && file_exists($fileName)) {
-                unlink($fileName);  // Supprime le fichier image
-            }
-
-            $booksManager->delete((int)$id);
-            header('Location:/books');
+            $this->managers->booksManager->delete((int)$id);
+            $this->redirect('/books');
         }
 
-        header('Location:/books');
+        $this->redirect('/books');
     }
 }

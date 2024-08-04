@@ -33,6 +33,7 @@ class TypesManager extends AbstractManager
         return $statement->fetchAll(PDO::FETCH_COLUMN);
     }
 
+
     public function getTypeIdByName(string $typeName): ?int
     {
         $statement = $this->pdo->prepare("SELECT id FROM " . self::TABLE . " WHERE name = :name");

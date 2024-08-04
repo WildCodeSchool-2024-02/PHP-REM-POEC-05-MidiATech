@@ -1,5 +1,8 @@
 {% extends 'layout.html.twig' %}
+
 {% block title %}Home{% endblock %}
+
+{% block page %}home{% endblock %}
 
 {% block stylesheet %}
 <link rel="stylesheet" href="/assets/css/home.css">
@@ -13,44 +16,53 @@
 {% include 'Base/_search.html.twig' %}
 
 <main>
- <section class="caroussel">
-    <button class="fleche" id="fleche_gauche">&#8249;</button>
-    <button class="fleche" id="fleche_droite">&#8250;</button>
-    <ul class="slides_container" id="slides_container">
-        <li class="slide">
-            <h2>Dernier livre : {{ carrouselImg.0.title }}</h2>
-            {% if carrouselImg.0.picture %}
-                <a href="/books/show?id={{ carrouselImg.0.id }}">
-                    <img class="slide_picture" src="{{ carrouselImg.0.picture }}" alt="{{ carrouselImg.0.title }}">
-                </a>
-            {% else %}
-                <img class="slide_picture" src="/assets/images/covers/couverture-{{media_type.0}}.webp" alt="cover">
-            {% endif %}
-        </li>
-        <li class="slide">
-            <h2>Dernière musique : {{ carrouselImg.1.title }}</h2>
-            {% if carrouselImg.1.picture %}
-                <a href="/musics/show?id={{ carrouselImg.1.id }}">
-                    <img class="slide_picture" src="{{ carrouselImg.1.picture }}" alt="{{ carrouselImg.1.title }}">
-                </a>
-            {% else %}
-                <img class="slide_picture" src="/assets/images/covers/couverture-{{media_type.1}}.webp" alt="cover">
-            {% endif %}
-        </li>
-        <li class="slide">
-            <h2>Dernière vidéo : {{ carrouselImg.2.title }}</h2>
-            {% if carrouselImg.2.picture %}
-                <a href="/videos/show?id={{ carrouselImg.2.id }}">
-                    <img class="slide_picture" src="{{ carrouselImg.2.picture }}" alt="{{ carrouselImg.2.title }}">
-                </a>
-            {% else %}
-                <img class="slide_picture" src="/assets/images/covers/couverture-{{media_type.2}}.webp" alt="cover">
-            {% endif %}
-        </li>
-    </ul>
-</section>
 
+    <section class="carousel">
+        <button class="fleche" id="fleche_gauche">&#8249;</button>
+        <button class="fleche" id="fleche_droite">&#8250;</button>
+        <ul class="slides_container" id="slides_container">
+            {% for media in medias %}
+                <li class="slide">
+                    {% if media.mediaType == 'books' %}
+                        <h2>Dernier livre</h2>
+                    {% elseif media.mediaType == 'musics' %}
+                        <h2>Dernière musique</h2>
+                    {% elseif media.mediaType == 'videos' %}
+                        <h2>Dernière vidéo</h2>
+                    {% endif %}
 
+                    <a href="/{{ media.mediaType }}/show?id={{ media.id }}">
+                        {% if media.picture %}
+                            <img class="slide_picture" src="{{ media.picture }}" alt="{{ media.title }}">
+                        {% else %}
+                            <img class="slide_picture" src="/assets/images/covers/couverture-{{ media.mediaType }}.webp" alt="{{ media.title }}">
+                        {% endif %}
+                    </a>
+
+                    <div class="info">
+                        <h3>{{ media.title }}</h3>
+
+                        {% if media.mediaType == 'books' %}
+                            <p><strong>Auteur :</strong> {{ media.author }}</p>
+                            <p><strong>Pages :</strong> {{ media.pages }}</p>
+                        {% elseif media.mediaType == 'musics' %}
+                            <p><strong>Chanteur :</strong> {{ media.singer }}</p>
+                            <p><strong>Durée :</strong> {{ media.duration|date('H:i:s') }}</p>
+                        {% elseif media.mediaType == 'videos' %}
+                            <p><strong>Réalisateur :</strong> {{ media.director }}</p>
+                            <p><strong>Durée :</strong> {{ media.duration|date('H:i:s') }}</p>
+                        {% endif %}
+                        <p><strong>Date de sortie :</strong> {{ media.date|format_datetime('long', 'none', locale='fr') }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="slider-indicators">
+            {% for media in medias %}
+                <div class="indicator"></div>
+            {% endfor %}
+        </div>
+    </section>
 
     <article class="article recommandations">
         <h2>RECOMMANDATIONS</h2>
@@ -71,45 +83,75 @@
                 </a>
             </li>
         </ul>
+        <div class="button">
+            {% if app.userRole == 'admin' %}
+                <button class="button modifier-button" data-target="recommandations-form">Modifier</button>
+                <form class="modifier-form" id="recommandations-form" style="display: none;">
+                    <label for="mediaTitle">Titre:</label>
+                    <input type="text" id="mediaTitle" name="mediaTitle" autocomplete="off" oninput="searchMedia()" required>
+                    <div id="mediaTitleSuggestions" class="suggestions"></div>
+
+                    <label for="mediaType">Type:</label>
+                    <select id="mediaType" name="mediaType" required>
+                        <option value="books">Livre</option>
+                        <option value="musics">Musique</option>
+                        <option value="videos">Vidéo</option>
+                    </select>
+
+                    <label for="mediaAuthor">Auteur/Chanteur/Réalisateur:</label>
+                    <input type="text" id="mediaAuthor" name="mediaAuthor" autocomplete="off" oninput="searchMedia()" required>
+                    <div id="mediaAuthorSuggestions" class="suggestions"></div>
+
+                    <input type="hidden" id="mediaId" name="mediaId">
+
+                    <button type="button" onclick="updateRecommandations()">Enregistrer</button>
+                </form>
+            {% endif %}
+        </div>
     </article>
 
-    <article class="article populaire">
+    <article class="article informations">
         <h2>POPULAIRE</h2>
-        <ul>
-            <li>
+        <ul id="populaireList">
+            <li data-id="1">
                 <a href="/books/show?id=4">
                     <img class="article_img" src="https://s1.qwant.com/thumbr/474x654/2/0/fc4e69611916bceedb29d3a308f03c434218561b453c0f6248376be3c159fa/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP.BiMMOjDrzbTC418N8HgvTAHaKO%26pid%3DApi&q=0&b=1&p=0&a=0" alt="populaire book">
                 </a>
             </li>
-            <li>
+            <li data-id="2">
                 <a href="/musics/show?id=81">
                     <img class="article_img" src="https://s2.qwant.com/thumbr/474x474/d/9/1d5e03360caf4ffaa3d6565cd5df823fa98b3341f639707f66834b773a9673/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP.mKBT1nEhCqbE5Gq5jtBv2QHaHa%26pid%3DApi&q=0&b=1&p=0&a=0" alt="populaire music">
                 </a>
             </li>
-            <li>
+            <li data-id="3">
                 <a href="/videos/show?id=19">
                     <img class="article_img" src="https://s2.qwant.com/thumbr/474x631/4/b/7df12a624e9cea5461647c10adc8de0c88d00669b8b9271b261c6f5bd6535f/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP.cjjqH0c_l9Bhu_SMtR-2iAHaJ3%26pid%3DApi&q=0&b=1&p=0&a=0" alt="populaire video">
                 </a>
             </li>
         </ul>
-    </article>
-<article class="article informations">
-    <h2>INFORMATIONS</h2>
-    <ul class="info-list">
-        <li class="info-item">
-            <h6>HORAIRES</h6>
-            <p>9h-18h</p>
-        </li>
-        <li class="info-item">
-            <h6>ADRESSE</h6>
-            <p>123 Rue Wild School Code</p>
-        </li>
-        <li class="info-item">
-            <p>59000 Lille</p>
-        </li>
-    </ul>
-</article>
+        <div class="button">
+            {% if app.userRole == 'admin' %}
+                <button class="button modifier-button" data-target="populaire-form">Modifier</button>
+                <form class="modifier-form" id="populaire-form" style="display: none;">
+                    <label for="populaireId">Choisir un élément:</label>
+                    <select id="populaireId" required>
+                        <option value="1">Livre</option>
+                        <option value="2">Musique</option>
+                        <option value="3">Vidéo</option>
+                    </select>
 
+                    <label for="populaireTitle">Titre:</label>
+                    <input type="text" id="populaireTitle" required>
+
+                    <label for="populaireAuthor">Auteur/Chanteur/Réalisateur:</label>
+                    <input type="text" id="populaireAuthor" required>
+
+                    <button type="button" onclick="updatePopulaire()">Enregistrer</button>
+                </form>
+            {% endif %}
+        </div>
+    </article>
 
 </main>
+
 {% endblock %}

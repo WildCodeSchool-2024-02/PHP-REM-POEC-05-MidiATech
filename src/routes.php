@@ -8,15 +8,16 @@
 // e.g route '/item/edit?id=1' will execute $itemController->edit(1)
 return [
     '' => ['HomeController', 'index'],
-    'search' => ['HomeController', 'search'],
+    'search' => ['SearchController', 'search'],
     'books' => ['BooksController', 'index', ['category']],
     'musics' => ['MusicsController', 'index', ['category']],
     'videos' => ['VideosController', 'index', ['category', 'type']],
-    'login' => ['UserController', 'login'],
-    'register' => ['UserController', 'register'],
-    'account' => ['UserController', 'index'],
+    'login' => ['ConnectController', 'login'],
+    'register' => ['ConnectController', 'register'],
+    'logout' => ['ConnectController', 'logout'],
     'admin' => ['AdminController', 'index'],
-    'logout' => ['UserController', 'logout'],
+    'account' => ['UserController', 'index'],
+    'account/edit' => ['UserController', 'editProfile'],
     'books/show' => ['BooksController', 'show', ['id']],
     'musics/show' => ['MusicsController', 'show', ['id']],
     'videos/show' => ['VideosController', 'show', ['id']],
@@ -29,7 +30,18 @@ return [
     'books/delete' => ['BooksController', 'delete', ['id']],
     'musics/delete' => ['MusicsController', 'delete', ['id']],
     'videos/delete' => ['VideosController', 'delete', ['id']],
+    'admin/reservations' => ['AdminController', 'reservations'],
+    'admin/delete-reservation' => ['AdminController', 'deleteReservation'],
+    'admin/collections' => ['AdminController', 'collections'],
+    'admin/stocks' => ['AdminController', 'stocks'],
     'profile/edit' => ['UserController', 'editProfile'],
     'borrowings/add' => ['BorrowingController', 'addBorrowing'],
-    'borrowings/return/{id}' => ['BorrowingController', 'return', ['id']],
+    'borrowings/retour' => ['BorrowingController', 'retour', ['id']],
+    'borrowings/request-return' => ['BorrowingController', 'requestReturn', ['id']],
+    'admin/accept-return' => ['AdminController', 'acceptReturn', ['id']],
+    'admin/update-stock' => ['AdminController', 'handleUpdateStock'],
+
+    // New Routes for Media Search and Update
+    'admin/search-media' => ['AdminController', 'searchMedia'], // Route for searching media
+    'admin/update-media' => ['AdminController', 'updateMedia'], // Route for updating media
 ];

@@ -4,66 +4,99 @@ namespace App\Controller;
 
 use InvalidArgumentException;
 use App\Model\BorrowingManager;
+use App\Model\BooksManager;
+use App\Model\MusicsManager;
+use App\Model\VideosManager;
 
 class BorrowingController extends AbstractController
 {
-    public function return(): void
+    public function retour(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-            $segments = explode('/', trim($path, '/'));
-            $id = end($segments);
+        // Vérifie si la requête est un POST et si l'utilisateur est connecté
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $this->isUserLoggedIn()) {
+            $borrowingId = $_POST['borrowing_id'] ?? null;
 
-            if (isset($_SESSION['user_id'])) {
+            // Si l'ID de l'emprunt est présent, demande un retour
+            if ($borrowingId) {
                 $borrowingManager = new BorrowingManager();
-                $borrowingManager->delete((int)$id);
+                $borrowingManager->requestReturn((int)$borrowingId);
 
-                // Redirection vers le compte utilisateur après la suppression
-                header('Location: /account');
-                exit();
-            } else {
-                // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
-                header('Location: /login');
-                exit();
+                // Redirige vers la page de compte après le traitement
+                $this->redirect('/account');
             }
+        } else {
+            // Redirige vers la page de connexion si non authentifié
+            $this->redirect('/login');
         }
     }
 
     public function addBorrowing(): void
     {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit();
+        // Redirige vers la page de connexion si l'utilisateur n'est pas connecté
+        if (!$this->isUserLoggedIn()) {
+            $this->redirect('/login');
         }
 
-        $userId = $_SESSION['user_id'];
+        $userId = $this->getUserId();
         $idMedia = $_POST['id'] ?? null;
         $mediaType = $_POST['media_type'] ?? null;
 
+        // Vérifie la validité de l'ID du média et du type de média
         if ($idMedia && $mediaType) {
-            // Valider et convertir media_type
+            // Valide et convertit le type de média
             $validMediaTypes = ['book', 'music', 'video'];
-            if (!in_array($mediaType, $validMediaTypes)) {
-                switch ($mediaType) {
-                    case 'books':
-                        $mediaType = 'book';
-                        break;
-                    case 'musics':
-                        $mediaType = 'music';
-                        break;
-                    case 'videos':
-                        $mediaType = 'video';
-                        break;
-                    default:
-                        throw new InvalidArgumentException('Invalid media_type value');
-                }
+            if (!in_array($mediaType, $validMediaTypes, true)) {
+                $mediaType = match ($mediaType) {
+                    'books' => 'book',
+                    'musics' => 'music',
+                    'videos' => 'video',
+                    default => throw new InvalidArgumentException('Invalid media_type value'),
+                };
             }
 
-            $borrowingManager = new BorrowingManager();
-            $borrowingManager->addBorrowingsForUser($userId, $idMedia, $mediaType);
+            // Diminue le stock du média
+            $this->updateStock($idMedia, $mediaType);
+
+            // Ajoute un enregistrement d'emprunt pour l'utilisateur
+            $this->managers->borrowingManager->addBorrowingsForUser($userId, $idMedia, $mediaType);
         }
 
-        header('Location: /account');
-        exit();
+        $this->redirect('/account');
+    }
+
+    public function requestReturn(): void
+    {
+        // Vérifie si la requête est un POST et si l'utilisateur est connecté
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $this->isUserLoggedIn()) {
+            $borrowingId = $_POST['id'] ?? null;
+            if ($borrowingId) {
+                // Demande le retour de l'emprunt
+                $this->managers->borrowingManager->requestReturn((int)$borrowingId);
+            }
+            $this->redirect('/account');
+        }
+
+        $this->redirect('/login');
+    }
+
+    private function updateStock(int $idMedia, string $mediaType)
+    {
+        // Sélectionne le bon gestionnaire en fonction du type de média
+        switch ($mediaType) {
+            case 'book':
+                $manager = new BooksManager();
+                break;
+            case 'music':
+                $manager = new MusicsManager();
+                break;
+            case 'video':
+                $manager = new VideosManager();
+                break;
+            default:
+                throw new InvalidArgumentException('Invalid media type');
+        }
+
+        // Modifie le stock pour le média donné
+        $manager->changeStock($idMedia);
     }
 }
