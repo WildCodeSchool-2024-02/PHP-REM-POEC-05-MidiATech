@@ -2512,7 +2512,7 @@ VALUES (
     'https://static.fnac-static.com/multimedia/Images/FR/NR/0f/19/dc/14424335/1540-1/tsp20231016081104/Cuisines-du-monde.jpg',
     'Recettes de cuisine internationales.',
     'Collectif',
-    '2028-09-28',
+    '2008-09-28',
     '448',
     '50',
     '43'
