@@ -7,6 +7,7 @@ use RuntimeException;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use App\Model\AdminManager;
 
 class MusicsController extends AbstractController
 {
@@ -87,7 +88,7 @@ class MusicsController extends AbstractController
             // Si aucune erreur, procéder à l'insertion
             if (empty($errors)) {
                 try {
-                    $id = $this->managers->musicsManager->insert($media);
+                    $id = $this->managers->musicsManager->update($media);
                     $this->redirect('/musics/show?id=' . $id);
                     return null;
                 } catch (RunTimeException $e) {
@@ -160,5 +161,102 @@ class MusicsController extends AbstractController
         }
 
         $this->redirect('/musics');
+    }
+
+    public function deleteCategories(): void
+    {
+        $adminManager = new AdminManager();
+        $userRole = $this->getUserRole();
+
+        if (($userRole === self::ADMIN) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = trim($_POST['id']);
+
+            $adminManager->deleteCategories((int)$id);
+            $this->redirect('/admin/categories/musics');
+        }
+
+        $this->redirect('/admin/categories/musics');
+    }
+
+    public function editCategories(int $id): ?string
+    {
+        $adminManager = new AdminManager();
+        $categorie = $adminManager->selectCategoriesById($id);
+        $userRole = $this->getUserRole();
+
+        if ($userRole !== self::ADMIN) {
+            $this->redirect('/');
+            return null;
+        }
+
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // clean $_POST data
+            $categorie = array_map('trim', $_POST);
+
+            $errors = $this->validateCategories($categorie);
+
+            // Si aucune erreur, procéder à l'insertion
+            if (empty($errors)) {
+                try {
+                    $adminManager->updateCategories($categorie);
+                    $this->redirect('/admin/categories/musics');
+                    return null;
+                } catch (RunTimeException $e) {
+                    return 'Error: ' . $e->getMessage();
+                }
+            }
+
+            // Renvoyer le formulaire avec les erreurs et les données saisies
+            return $this->twig->render('Admin/edit.html.twig', [
+                'media_type' => 'musics',
+                'isEdit' => true,
+                'categorie' => $categorie,
+                'errors' => $errors
+            ]);
+        }
+
+        return $this->twig->render('Admin/edit.html.twig', [
+            'media_type' => 'musics',
+            'isEdit' => true,
+            'categorie' => $categorie
+        ]);
+    }
+
+    public function addCategories(): ?string
+    {
+        $adminManager = new AdminManager();
+        $userRole = $this->getUserRole();
+
+        if ($userRole !== self::ADMIN) {
+            $this->redirect('/musics');
+            return null;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $categorie = array_map('trim', $_POST);
+            $errors = $this->validateCategories($categorie);
+
+            if (empty($errors)) {
+                try {
+                    $adminManager->insertCategories($categorie);
+                    $this->redirect('/admin/categories/musics');
+                    return null;
+                } catch (RunTimeException $e) {
+                    return 'Error: ' . $e->getMessage();
+                }
+            }
+
+            return $this->twig->render('Admin/add.html.twig', [
+                'categorie' => $categorie,
+                'errors' => $errors,
+                'media_type' => 'musics'
+            ]);
+        }
+
+        return $this->twig->render('Admin/add.html.twig', [
+            'media_type' => 'musics',
+            'categorie' => true
+        ]);
     }
 }

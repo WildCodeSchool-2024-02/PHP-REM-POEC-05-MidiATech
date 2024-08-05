@@ -10,9 +10,7 @@ DROP SCHEMA IF EXISTS `midiATech`;
 -- -----------------------------------------------------
 -- Schema midiATech
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `midiATech` DEFAULT CHARACTER
-    SET
-    utf8mb4 COLLATE utf8mb4_0900_as_ci;
+CREATE SCHEMA IF NOT EXISTS `midiATech` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_as_ci;
 
 USE `midiATech`;
 
@@ -21,30 +19,28 @@ USE `midiATech`;
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `midiATech`.`users`;
 
-CREATE TABLE
-    IF NOT EXISTS `midiATech`.`users` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `firstname` VARCHAR(80) NOT NULL,
-        `lastname` VARCHAR(80) NOT NULL,
-        `birthday` DATE NOT NULL,
-        `email` VARCHAR(255) NOT NULL,
-        `address` VARCHAR(400) NOT NULL,
-        `password` VARCHAR(255) NOT NULL,
-        `temporary_password` VARCHAR(255) NULL,
-        PRIMARY KEY (`id`)
-    ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `midiATech`.`users` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `firstname` VARCHAR(80) NOT NULL,
+    `lastname` VARCHAR(80) NOT NULL,
+    `birthday` DATE NOT NULL,
+    `email` VARCHAR(255) NOT NULL,
+    `address` VARCHAR(400) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
+    `temporary_password` VARCHAR(255) NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`categories`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `midiATech`.`categories`;
 
-CREATE TABLE
-    IF NOT EXISTS `midiATech`.`categories` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `name` VARCHAR(100) NOT NULL,
-        PRIMARY KEY (`id`)
-    ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `midiATech`.`categories` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`books`
@@ -64,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `midiATech`.`books` (
     `id_category` INT NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `fk_books_categories1_idx` (`id_category` ASC),
-    CONSTRAINT `fk_books_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_books_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -72,90 +68,84 @@ CREATE TABLE IF NOT EXISTS `midiATech`.`books` (
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `midiATech`.`types`;
 
-CREATE TABLE
-    IF NOT EXISTS `midiATech`.`types` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `name` VARCHAR(100) NOT NULL,
-        PRIMARY KEY (`id`)
-    ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `midiATech`.`types` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`videos`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `midiATech`.`videos`;
 
-CREATE TABLE
-    IF NOT EXISTS `midiATech`.`videos` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `title` VARCHAR(255) NOT NULL,
-        `picture` VARCHAR(500) NULL,
-        `description` LONGTEXT NULL,
-        `director` VARCHAR(255) NOT NULL,
-        `date` DATE NOT NULL,
-        `duration` INT NOT NULL,
-        `quantities` INT NOT NULL,
-        `id_category` INT NOT NULL,
-        `id_types` INT NOT NULL,
-        PRIMARY KEY (`id`),
-        INDEX `fk_videos_categories1_idx` (`id_category` ASC) VISIBLE,
-        INDEX `fk_videos_types1_idx` (`id_types` ASC) VISIBLE,
-        CONSTRAINT `fk_videos_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-        CONSTRAINT `fk_videos_types` FOREIGN KEY (`id_types`) REFERENCES `midiATech`.`types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-    ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `midiATech`.`videos` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NOT NULL,
+    `picture` VARCHAR(500) NULL,
+    `description` LONGTEXT NULL,
+    `director` VARCHAR(255) NOT NULL,
+    `date` DATE NOT NULL,
+    `duration` INT NOT NULL,
+    `quantities` INT NOT NULL,
+    `id_category` INT NOT NULL,
+    `id_types` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `fk_videos_categories1_idx` (`id_category` ASC) VISIBLE,
+    INDEX `fk_videos_types1_idx` (`id_types` ASC) VISIBLE,
+    CONSTRAINT `fk_videos_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+    CONSTRAINT `fk_videos_types` FOREIGN KEY (`id_types`) REFERENCES `midiATech`.`types` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`musics`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `midiATech`.`musics`;
 
-CREATE TABLE
-    IF NOT EXISTS `midiATech`.`musics` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `title` VARCHAR(255) NOT NULL,
-        `picture` VARCHAR(500) NULL,
-        `singer` VARCHAR(255) NOT NULL,
-        `date` DATE NOT NULL,
-        `duration` INT NOT NULL,
-        `quantities` INT NOT NULL,
-        `id_category` INT NOT NULL,
-        PRIMARY KEY (`id`),
-        INDEX `fk_musics_categories1_idx` (`id_category` ASC) VISIBLE,
-        CONSTRAINT `fk_musics_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-    ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `midiATech`.`musics` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NOT NULL,
+    `picture` VARCHAR(500) NULL,
+    `singer` VARCHAR(255) NOT NULL,
+    `date` DATE NOT NULL,
+    `duration` INT NOT NULL,
+    `quantities` INT NOT NULL,
+    `id_category` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `fk_musics_categories1_idx` (`id_category` ASC) VISIBLE,
+    CONSTRAINT `fk_musics_categories` FOREIGN KEY (`id_category`) REFERENCES `midiATech`.`categories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`borrowing`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `midiATech`.`borrowing`;
 
-CREATE TABLE
-    IF NOT EXISTS `midiATech`.`borrowing` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `id_users` INT NOT NULL,
-        `id_media` INT NOT NULL,
-        `media_type` ENUM ('book', 'music', 'video') NOT NULL,
-        `date` DATE NOT NULL,
-        PRIMARY KEY (`id`),
-        INDEX `fk_users_idx` (`id_users` ASC) VISIBLE,
-        CONSTRAINT `fk_borrowing_users` FOREIGN KEY (`id_users`) REFERENCES `midiATech`.`users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-    ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `midiATech`.`borrowing` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `id_users` INT NOT NULL,
+    `id_media` INT NOT NULL,
+    `media_type` ENUM('book', 'music', 'video') NOT NULL,
+    `date` DATE NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `fk_users_idx` (`id_users` ASC) VISIBLE,
+    CONSTRAINT `fk_borrowing_users` FOREIGN KEY (`id_users`) REFERENCES `midiATech`.`users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `midiATech`.`roles`
 -- -----------------------------------------------------
-CREATE TABLE
-    IF NOT EXISTS `midiATech`.`roles` (
-        `id` INT NOT NULL AUTO_INCREMENT,
-        `name` VARCHAR(50) NOT NULL,
-        PRIMARY KEY (`id`)
-    ) ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `midiATech`.`roles` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB;
 
 -- Ajout de la colonne role_id à la table users
 ALTER TABLE `midiATech`.`users`
-    ADD COLUMN `role_id` INT NOT NULL AFTER `temporary_password`,
-    ADD INDEX `fk_users_roles_idx` (`role_id` ASC),
-    ADD CONSTRAINT `fk_users_roles` FOREIGN KEY (`role_id`) REFERENCES `midiATech`.`roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
+ADD COLUMN `role_id` INT NOT NULL AFTER `temporary_password`,
+ADD INDEX `fk_users_roles_idx` (`role_id` ASC),
+ADD CONSTRAINT `fk_users_roles` FOREIGN KEY (`role_id`) REFERENCES `midiATech`.`roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Index pour les tables déchargées
@@ -186,745 +176,5267 @@ VALUES
     ('user');
 
 INSERT INTO
-    `users`
-    (`firstname`, `lastname`, `birthday`, `email`, `address`, `password`, `temporary_password`, `role_id`)
-VALUES
-    ('admin', 'admin', '1900-01-01', 'admin@midiatech.fr', 'inconnu', '$2y$10$oB3ljA/hwnVxlyg7CEHLJ.5beP.k/qlSxp.GDHk5ObFXq6PkqpM.q', NULL, '1');
+    `users` (
+        `firstname`,
+        `lastname`,
+        `birthday`,
+        `email`,
+        `address`,
+        `password`,
+        `temporary_password`,
+        `role_id`
+    )
+VALUES (
+        'admin',
+        'admin',
+        '1900-01-01',
+        'admin@midiatech.fr',
+        'inconnu',
+        '$2y$10$oB3ljA/hwnVxlyg7CEHLJ.5beP.k/qlSxp.GDHk5ObFXq6PkqpM.q',
+        NULL,
+        '1'
+    );
 
 INSERT INTO `roles` (`name`) VALUES ('admin'), ('user');
 
 INSERT INTO
     types (name)
-VALUES
-    ('Film'),
+VALUES ('Film'),
     ('Série'),
     ('Jeunesse'),
     ('Documentaire');
 
 INSERT INTO
     categories (name)
-VALUES
-    ('Video Action'),
-    ('Video Animalier'),
-    ('Video Animation'),
-    ('Video Aventure'),
-    ('Video Biographie'),
-    ('Video Biopic'),
-    ('Video Catastrophe'),
-    ('Video Classique'),
-    ('Video Comédie'),
-    ('Video Comédie dramatique'),
-    ('Video Comédie musical'),
-    ('Video Comédie romantique'),
-    ('Video Court métrage'),
-    ('Video Drame'),
-    ('Video Fantastique'),
-    ('Video Géographique'),
-    ('Video Guerre'),
-    ('Video Historique'),
-    ('Video Horreur'),
-    ('Video Humaniste'),
-    ('Video Manga'),
-    ('Video Médical'),
-    ('Video Policier'),
-    ('Video Science-fiction'),
-    ('Video Thriller'),
-    ('Video Western'),
-    ('Book Auto-biographie'),
-    ('Book Bande-dessinée'),
-    ('Book Beaux-livres'),
-    ('Book Biographie.'),
-    ('Book Conte'),
-    ('Book Correspondances'),
-    ('Book Essai'),
-    ('Book Fable'),
-    ('Book Guide pratique'),
-    ('Book Livre religieux'),
-    ('Book Manga'),
-    ('Book Mémoires'),
-    ('Book Nouvelle'),
-    ('Book Pamphlet'),
-    ('Book Poésie en prose'),
-    ('Book Poésie en vers'),
-    ('Book Recettes de cuisine'),
-    ('Book Récits de voyage'),
-    ('Book Roman anticipation'),
-    ('Book Roman apprentissage'),
-    ('Book Roman aventure'),
-    ('Book Roman fantasy'),
-    ('Book Roman feel-good'),
-    ('Book Roman historique'),
-    ('Book Roman horreur'),
-    ('Book Roman humoristique'),
-    ('Book Roman jeunesse'),
-    ('Book Roman littérature contemporaine'),
-    ('Book Roman mœurs'),
-    ('Book Roman noir'),
-    ('Book Roman philosophique'),
-    ('Book Roman policier'),
-    ('Book Roman science-fiction'),
-    ('Book Roman sentimental'),
-    ('Book Roman thriller'),
-    ('Book Scénario'),
-    ('Music Afro'),
-    ('Music AnimeVerse'),
-    ('Music Blues'),
-    ('Music Bubble'),
-    ('Music Chill'),
-    ('Music Classique'),
-    ('Music Country'),
-    ('Music Culture Queer'),
-    ('Music Dance & EDM'),
-    ('Music Disco'),
-    ('Music Drag Race France'),
-    ('Music Films & Séries'),
-    ('Music Folk & Acoustique'),
-    ('Music Gaming'),
-    ('Music Gospel'),
-    ('Music Heavy Metal'),
-    ('Music Hip Hop'),
-    ('Music Indie & Alternative'),
-    ('Music Jazz'),
-    ('Music K-pop'),
-    ('Music Latino'),
-    ('Music Lofi'),
-    ('Music Metal'),
-    ('Music Musique brésilienne'),
-    ('Music Musique japonaise'),
-    ('Music Musiques du Monde'),
-    ('Music Opéra'),
-    ('Music Pop'),
-    ('Music Punk'),
-    ('Music R&B'),
-    ('Music Raï'),
-    ('Music Rap'),
-    ('Music Reggae'),
-    ('Music Reggaeton'),
-    ('Music Rock'),
-    ('Music Rock Alternatif'),
-    ('Music Salsa'),
-    ('Music Soul & Funk'),
-    ('Music Techno'),
-    ('Music Trance'),
-    ('Music Trap'),
-    ('Music Variété française');
+VALUES ('videos action'),
+    ('videos animalier'),
+    ('videos animation'),
+    ('videos aventure'),
+    ('videos biographie'),
+    ('videos biopic'),
+    ('videos catastrophe'),
+    ('videos classique'),
+    ('videos comédie'),
+    ('videos comédie dramatique'),
+    ('videos comédie musical'),
+    ('videos comédie romantique'),
+    ('videos court métrage'),
+    ('videos drame'),
+    ('videos fantastique'),
+    ('videos géographique'),
+    ('videos guerre'),
+    ('videos historique'),
+    ('videos horreur'),
+    ('videos humaniste'),
+    ('videos manga'),
+    ('videos médical'),
+    ('videos policier'),
+    ('videos science-fiction'),
+    ('videos thriller'),
+    ('videos western'),
+    ('books auto-biographie'),
+    ('books bande-dessinée'),
+    ('books beaux-livres'),
+    ('books biographie'),
+    ('books conte'),
+    ('books correspondances'),
+    ('books essai'),
+    ('books fable'),
+    ('books guide pratique'),
+    ('books livre religieux'),
+    ('books manga'),
+    ('books mémoires'),
+    ('books nouvelle'),
+    ('books pamphlet'),
+    ('books poésie en prose'),
+    ('books poésie en vers'),
+    ('books recettes de cuisine'),
+    ('books récits de voyage'),
+    ('books roman anticipation'),
+    ('books roman apprentissage'),
+    ('books roman aventure'),
+    ('books roman fantasy'),
+    ('books roman feel-good'),
+    ('books roman historique'),
+    ('books roman horreur'),
+    ('books roman humoristique'),
+    ('books roman jeunesse'),
+    (
+        'books roman littérature contemporaine'
+    ),
+    ('books roman mœurs'),
+    ('books roman noir'),
+    ('books roman philosophique'),
+    ('books roman policier'),
+    ('books roman science-fiction'),
+    ('books roman sentimental'),
+    ('books roman thriller'),
+    ('books scénario'),
+    ('musics afro'),
+    ('musics animeVerse'),
+    ('musics blues'),
+    ('musics bubble'),
+    ('musics chill'),
+    ('musics classique'),
+    ('musics country'),
+    ('musics culture queer'),
+    ('musics dance & edm'),
+    ('musics disco'),
+    ('musics drag race france'),
+    ('musics films & séries'),
+    ('musics folk & acoustique'),
+    ('musics gaming'),
+    ('musics gospel'),
+    ('musics heavy metal'),
+    ('musics hip Hop'),
+    ('musics indie & alternative'),
+    ('musics jazz'),
+    ('musics k-pop'),
+    ('musics latino'),
+    ('musics lofi'),
+    ('musics metal'),
+    ('musics musique brésilienne'),
+    ('musics musique japonaise'),
+    ('musics musiques du monde'),
+    ('musics opéra'),
+    ('musics pop'),
+    ('musics punk'),
+    ('musics r&b'),
+    ('musics raï'),
+    ('musics rap'),
+    ('musics reggae'),
+    ('musics reggaeton'),
+    ('musics rock'),
+    ('musics rock alternatif'),
+    ('musics salsa'),
+    ('musics soul & funk'),
+    ('musics techno'),
+    ('musics trance'),
+    ('musics trap'),
+    ('musics variété française');
 
-INSERT INTO `videos`
-    (`title`, `picture`, `description`, `director`, `date`, `duration`, `quantities`, `id_category`, `id_types`)
-VALUES
-    ('Die Hard', '', 'Un policier de New York tente de sauver un groupe de personnes pris en otage par des terroristes lors d\'une fête de Noël à Los Angeles.', 'John McTiernan', '1988-07-15', '7920', '50', '1', '1'),
-    ('24 heures chrono', '', 'Un agent fédéral doit déjouer des complots terroristes en 24 heures.', 'Robert Cochran', '2001-11-06', '103680', '50', '1', '2'),
-    ('La Ligue des justiciers', '', 'Les plus grands super-héros du monde s\'unissent pour combattre les menaces planétaires.', 'Bruce Timm', '2001-11-17', '28800', '50', '1', '2'),
-    ('Power Rangers', '', 'Un groupe d\'adolescents se transforme en super-héros pour protéger le monde contre des menaces extraterrestres.', 'Haim Saban', '1993-08-28', '134400', '50', '1', '3'),
-    ('Taken', '', 'Un ancien agent secret utilise ses compétences pour sauver sa fille kidnappée.', 'Pierre Morel', '2008-02-27', '5580', '50', '1', '1'),
+INSERT INTO
+    `videos` (
+        `title`,
+        `picture`,
+        `description`,
+        `director`,
+        `date`,
+        `duration`,
+        `quantities`,
+        `id_category`,
+        `id_types`
+    )
+VALUES (
+        'Die Hard',
+        '',
+        'Un policier de New York tente de sauver un groupe de personnes pris en otage par des terroristes lors d\'une fête de Noël à Los Angeles.',
+        'John McTiernan',
+        '1988-07-15',
+        '7920',
+        '50',
+        '1',
+        '1'
+    ),
+    (
+        '24 heures chrono',
+        '',
+        'Un agent fédéral doit déjouer des complots terroristes en 24 heures.',
+        'Robert Cochran',
+        '2001-11-06',
+        '103680',
+        '50',
+        '1',
+        '2'
+    ),
+    (
+        'La Ligue des justiciers',
+        '',
+        'Les plus grands super-héros du monde s\'unissent pour combattre les menaces planétaires.',
+        'Bruce Timm',
+        '2001-11-17',
+        '28800',
+        '50',
+        '1',
+        '2'
+    ),
+    (
+        'Power Rangers',
+        '',
+        'Un groupe d\'adolescents se transforme en super-héros pour protéger le monde contre des menaces extraterrestres.',
+        'Haim Saban',
+        '1993-08-28',
+        '134400',
+        '50',
+        '1',
+        '3'
+    ),
+    (
+        'Taken',
+        '',
+        'Un ancien agent secret utilise ses compétences pour sauver sa fille kidnappée.',
+        'Pierre Morel',
+        '2008-02-27',
+        '5580',
+        '50',
+        '1',
+        '1'
+    ),
 
-    ('La Marche de l\'empereur', '', 'Un documentaire sur le cycle de vie des manchots empereurs en Antarctique.', 'Luc Jacquet', '2005-01-26', '4800', '50', '2', '4'),
-    ('Planète Terre', '', 'Une exploration en profondeur de la biodiversité et des écosystèmes de notre planète.', 'Alastair Fothergill', '2006-03-05', '34200', '50', '2', '4'),
-    ('Blue Planet II', '', 'Un voyage spectaculaire à travers les océans de la Terre pour découvrir la vie marine.', 'David Attenborough', '2017-10-29', '21360', '50', '2', '4'),
-    ('Zoboomafoo', '', 'Deux frères explorent le monde des animaux avec l\'aide d\'un lémurien nommé Zoboomafoo.', 'Chris Kratt', '1999-01-25', '3600', '50', '2', '3'),
-    ('Le Peuple migrateur', '', 'Un documentaire sur les migrations d\'oiseaux à travers le monde.', 'Jacques Perrin', '2001-12-12', '5520', '50', '2', '4'),
+(
+    'La Marche de l\'empereur',
+    '',
+    'Un documentaire sur le cycle de vie des manchots empereurs en Antarctique.',
+    'Luc Jacquet',
+    '2005-01-26',
+    '4800',
+    '50',
+    '2',
+    '4'
+),
+(
+    'Planète Terre',
+    '',
+    'Une exploration en profondeur de la biodiversité et des écosystèmes de notre planète.',
+    'Alastair Fothergill',
+    '2006-03-05',
+    '34200',
+    '50',
+    '2',
+    '4'
+),
+(
+    'Blue Planet II',
+    '',
+    'Un voyage spectaculaire à travers les océans de la Terre pour découvrir la vie marine.',
+    'David Attenborough',
+    '2017-10-29',
+    '21360',
+    '50',
+    '2',
+    '4'
+),
+(
+    'Zoboomafoo',
+    '',
+    'Deux frères explorent le monde des animaux avec l\'aide d\'un lémurien nommé Zoboomafoo.',
+    'Chris Kratt',
+    '1999-01-25',
+    '3600',
+    '50',
+    '2',
+    '3'
+),
+(
+    'Le Peuple migrateur',
+    '',
+    'Un documentaire sur les migrations d\'oiseaux à travers le monde.',
+    'Jacques Perrin',
+    '2001-12-12',
+    '5520',
+    '50',
+    '2',
+    '4'
+),
 
-    ('Le Roi Lion', '', 'L\'épopée d\'un jeune lionceau destiné à devenir roi des animaux dans les plaines d\'Afrique.', 'Roger Allers', '1994-06-15', '5280', '50', '3', '1'),
-    ('Toy Story', '', 'Les jouets d\'un jeune garçon prennent vie et vivent des aventures lorsqu\'il n\'est pas là.', 'John Lasseter', '1995-11-22', '4860', '50', '3', '1'),
-    ('Avatar: The Last Airbender', '', 'Un jeune garçon, dernier maître de l\'air, doit maîtriser les quatre éléments pour restaurer la paix dans le monde.', 'Michael Dante DiMartino', '2005-02-21', '13800', '50', '3', '2'),
-    ('My Little Pony: Friendship Is Magic', '', 'Les aventures de six poneys qui apprennent les valeurs de l\'amitié.', 'Lauren Faust', '2010-10-10', '18000', '50', '3', '3'),
-    ('Frozen', '', 'Une jeune reine dotée de pouvoirs de glace doit sauver son royaume d\'un hiver éternel.', 'Chris Buck', '2013-11-27', '6180', '50', '3', '1'),
+(
+    'Le Roi Lion',
+    '',
+    'L\'épopée d\'un jeune lionceau destiné à devenir roi des animaux dans les plaines d\'Afrique.',
+    'Roger Allers',
+    '1994-06-15',
+    '5280',
+    '50',
+    '3',
+    '1'
+),
+(
+    'Toy Story',
+    '',
+    'Les jouets d\'un jeune garçon prennent vie et vivent des aventures lorsqu\'il n\'est pas là.',
+    'John Lasseter',
+    '1995-11-22',
+    '4860',
+    '50',
+    '3',
+    '1'
+),
+(
+    'Avatar: The Last Airbender',
+    '',
+    'Un jeune garçon, dernier maître de l\'air, doit maîtriser les quatre éléments pour restaurer la paix dans le monde.',
+    'Michael Dante DiMartino',
+    '2005-02-21',
+    '13800',
+    '50',
+    '3',
+    '2'
+),
+(
+    'My Little Pony: Friendship Is Magic',
+    '',
+    'Les aventures de six poneys qui apprennent les valeurs de l\'amitié.',
+    'Lauren Faust',
+    '2010-10-10',
+    '18000',
+    '50',
+    '3',
+    '3'
+),
+(
+    'Frozen',
+    '',
+    'Une jeune reine dotée de pouvoirs de glace doit sauver son royaume d\'un hiver éternel.',
+    'Chris Buck',
+    '2013-11-27',
+    '6180',
+    '50',
+    '3',
+    '1'
+),
 
-    ('Indiana Jones: Les Aventuriers de l\'arche perdue', '', 'Un archéologue cherche à récupérer l\'Arche d\'Alliance avant les nazis.', 'Steven Spielberg', '1981-06-12', '6900', '50', '4', '1'),
-    ('Pirates des Caraïbes: La Malédiction du Black Pearl', '', 'Un forgeron et un pirate excentrique s\'allient pour sauver une demoiselle en détresse des pirates maudits.', 'Gore Verbinski', '2003-07-09', '8700', '50', '4', '1'),
-    ('Les Mystérieuses Cités d\'Or', '', 'Un jeune garçon part à la recherche des légendaires Cités d\'Or en Amérique latine.', 'Bernard Deyriès', '1982-09-28', '11100', '50', '4', '2'),
-    ('Dora l\'exploratrice', '', 'Les aventures éducatives d\'une jeune exploratrice et de son ami singe, Babouche.', 'Chris Gifford', '2000-08-14', '7800', '50', '4', '3'),
-    ('Man vs. Wild', '', 'Un aventurier partage des techniques de survie en se retrouvant dans des situations extrêmes.', 'Bear Grylls', '2006-10-27', '19800', '50', '4', '4'),
+(
+    'Indiana Jones: Les Aventuriers de l\'arche perdue',
+    '',
+    'Un archéologue cherche à récupérer l\'Arche d\'Alliance avant les nazis.',
+    'Steven Spielberg',
+    '1981-06-12',
+    '6900',
+    '50',
+    '4',
+    '1'
+),
+(
+    'Pirates des Caraïbes: La Malédiction du Black Pearl',
+    '',
+    'Un forgeron et un pirate excentrique s\'allient pour sauver une demoiselle en détresse des pirates maudits.',
+    'Gore Verbinski',
+    '2003-07-09',
+    '8700',
+    '50',
+    '4',
+    '1'
+),
+(
+    'Les Mystérieuses Cités d\'Or',
+    '',
+    'Un jeune garçon part à la recherche des légendaires Cités d\'Or en Amérique latine.',
+    'Bernard Deyriès',
+    '1982-09-28',
+    '11100',
+    '50',
+    '4',
+    '2'
+),
+(
+    'Dora l\'exploratrice',
+    '',
+    'Les aventures éducatives d\'une jeune exploratrice et de son ami singe, Babouche.',
+    'Chris Gifford',
+    '2000-08-14',
+    '7800',
+    '50',
+    '4',
+    '3'
+),
+(
+    'Man vs. Wild',
+    '',
+    'Un aventurier partage des techniques de survie en se retrouvant dans des situations extrêmes.',
+    'Bear Grylls',
+    '2006-10-27',
+    '19800',
+    '50',
+    '4',
+    '4'
+),
 
-    ('La Liste de Schindler', '', 'L\'histoire d\'un industriel allemand qui a sauvé plus de mille Juifs pendant l\'Holocauste.', 'Steven Spielberg', '1993-11-30', '11700', '50', '5', '1'),
-    ('The Crown', '', 'Une série sur la vie et le règne de la reine Elizabeth II.', 'Peter Morgan', '2016-11-04', '32400', '50', '5', '2'),
-    ('Walk the Line', '', 'La vie du chanteur de country Johnny Cash, de sa jeunesse à son apogée musicale.', 'James Mangold', '2005-09-13', '8580', '50', '5', '1'),
-    ('12 Years a Slave', '', 'L\'histoire vraie de Solomon Northup, un homme noir libre kidnappé et vendu comme esclave.', 'Steve McQueen', '2013-10-18', '7980', '50', '5', '1'),
-    ('Unbroken', '', 'La vie d\'un athlète olympique et aviateur de la Seconde Guerre mondiale, Louis Zamperini, capturé par les Japonais.', 'Angelina Jolie', '2014-12-25', '8280', '50', '5', '1'),
+(
+    'La Liste de Schindler',
+    '',
+    'L\'histoire d\'un industriel allemand qui a sauvé plus de mille Juifs pendant l\'Holocauste.',
+    'Steven Spielberg',
+    '1993-11-30',
+    '11700',
+    '50',
+    '5',
+    '1'
+),
+(
+    'The Crown',
+    '',
+    'Une série sur la vie et le règne de la reine Elizabeth II.',
+    'Peter Morgan',
+    '2016-11-04',
+    '32400',
+    '50',
+    '5',
+    '2'
+),
+(
+    'Walk the Line',
+    '',
+    'La vie du chanteur de country Johnny Cash, de sa jeunesse à son apogée musicale.',
+    'James Mangold',
+    '2005-09-13',
+    '8580',
+    '50',
+    '5',
+    '1'
+),
+(
+    '12 Years a Slave',
+    '',
+    'L\'histoire vraie de Solomon Northup, un homme noir libre kidnappé et vendu comme esclave.',
+    'Steve McQueen',
+    '2013-10-18',
+    '7980',
+    '50',
+    '5',
+    '1'
+),
+(
+    'Unbroken',
+    '',
+    'La vie d\'un athlète olympique et aviateur de la Seconde Guerre mondiale, Louis Zamperini, capturé par les Japonais.',
+    'Angelina Jolie',
+    '2014-12-25',
+    '8280',
+    '50',
+    '5',
+    '1'
+),
 
-    ('Bohemian Rhapsody', '', 'L\'histoire de Freddie Mercury et du groupe de rock Queen.', 'Bryan Singer', '2018-10-24', '8040', '50', '6', '1'),
-    ('La Vie en Rose', '', 'Un biopic sur la chanteuse française Édith Piaf.', 'Olivier Dahan', '2007-02-14', '8400', '50', '6', '1'),
-    ('The Social Network', '', 'La création de Facebook par Mark Zuckerberg et les controverses qui en ont découlé.', 'David Fincher', '2010-10-01', '7260', '50', '6', '1'),
-    ('Raging Bull', '', 'La vie du boxeur Jake LaMotta et ses luttes personnelles et professionnelles.', 'Martin Scorsese', '1980-11-14', '8040', '50', '6', '1'),
-    ('Rocketman', '', 'La vie et la carrière musicale de la superstar britannique Elton John.', 'Dexter Fletcher', '2019-05-16', '7260', '50', '6', '1'),
+(
+    'Bohemian Rhapsody',
+    '',
+    'L\'histoire de Freddie Mercury et du groupe de rock Queen.',
+    'Bryan Singer',
+    '2018-10-24',
+    '8040',
+    '50',
+    '6',
+    '1'
+),
+(
+    'La Vie en Rose',
+    '',
+    'Un biopic sur la chanteuse française Édith Piaf.',
+    'Olivier Dahan',
+    '2007-02-14',
+    '8400',
+    '50',
+    '6',
+    '1'
+),
+(
+    'The Social Network',
+    '',
+    'La création de Facebook par Mark Zuckerberg et les controverses qui en ont découlé.',
+    'David Fincher',
+    '2010-10-01',
+    '7260',
+    '50',
+    '6',
+    '1'
+),
+(
+    'Raging Bull',
+    '',
+    'La vie du boxeur Jake LaMotta et ses luttes personnelles et professionnelles.',
+    'Martin Scorsese',
+    '1980-11-14',
+    '8040',
+    '50',
+    '6',
+    '1'
+),
+(
+    'Rocketman',
+    '',
+    'La vie et la carrière musicale de la superstar britannique Elton John.',
+    'Dexter Fletcher',
+    '2019-05-16',
+    '7260',
+    '50',
+    '6',
+    '1'
+),
 
-    ('Titanic', '', 'Une histoire d\'amour fictive se déroulant à bord du tristement célèbre paquebot Titanic.', 'James Cameron', '1997-12-19', '11700', '50', '7', '1'),
-    ('Le Jour d\'après', '', 'Après une série de catastrophes climatiques, un scientifique tente de sauver son fils à New York.', 'Roland Emmerich', '2004-05-28', '7440', '50', '7', '1'),
-    ('Deep Impact', '', 'L\'humanité se prépare à l\'impact dévastateur d\'une comète en approche.', 'Mimi Leder', '1998-05-08', '7200', '50', '7', '1'),
-    ('San Andreas', '', 'Un pilote d\'hélicoptère de secours traverse la Californie dévastée par un tremblement de terre pour sauver sa famille.', 'Brad Peyton', '2015-05-29', '6840', '50', '7', '1'),
-    ('Chernobyl', '', 'La mini-série retrace l\'accident nucléaire de Tchernobyl et ses conséquences.', 'Johan Renck', '2019-05-06', '19800', '50', '7', '2'),
+(
+    'Titanic',
+    '',
+    'Une histoire d\'amour fictive se déroulant à bord du tristement célèbre paquebot Titanic.',
+    'James Cameron',
+    '1997-12-19',
+    '11700',
+    '50',
+    '7',
+    '1'
+),
+(
+    'Le Jour d\'après',
+    '',
+    'Après une série de catastrophes climatiques, un scientifique tente de sauver son fils à New York.',
+    'Roland Emmerich',
+    '2004-05-28',
+    '7440',
+    '50',
+    '7',
+    '1'
+),
+(
+    'Deep Impact',
+    '',
+    'L\'humanité se prépare à l\'impact dévastateur d\'une comète en approche.',
+    'Mimi Leder',
+    '1998-05-08',
+    '7200',
+    '50',
+    '7',
+    '1'
+),
+(
+    'San Andreas',
+    '',
+    'Un pilote d\'hélicoptère de secours traverse la Californie dévastée par un tremblement de terre pour sauver sa famille.',
+    'Brad Peyton',
+    '2015-05-29',
+    '6840',
+    '50',
+    '7',
+    '1'
+),
+(
+    'Chernobyl',
+    '',
+    'La mini-série retrace l\'accident nucléaire de Tchernobyl et ses conséquences.',
+    'Johan Renck',
+    '2019-05-06',
+    '19800',
+    '50',
+    '7',
+    '2'
+),
 
-    ('Casablanca', '', 'Un propriétaire de bar à Casablanca doit choisir entre son amour pour une femme et d\'aider son mari résistant à échapper aux nazis.', 'Michael Curtiz', '1942-11-26', '6120', '50', '8', '1'),
-    ('Autant en emporte le vent', '', 'Les vies et amours d\'une jeune femme sudiste pendant et après la guerre de Sécession.', 'Victor Fleming', '1939-12-15', '13860', '50', '8', '1'),
-    ('Citizen Kane', '', 'L\'histoire d\'un magnat de la presse et la quête pour découvrir la signification de son dernier mot.', 'Orson Welles', '1941-05-01', '7140', '50', '8', '1'),
-    ('Les Temps modernes', '', 'Charlot lutte pour survivre dans le monde industrialisé moderne.', 'Charlie Chaplin', '1936-02-05', '5220', '50', '8', '1'),
-    ('La Dolce Vita', '', 'Un journaliste romain explore les plaisirs et les décadences de la haute société romaine.', 'Federico Fellini', '1960-02-05', '10680', '50', '8', '1'),
+(
+    'Casablanca',
+    '',
+    'Un propriétaire de bar à Casablanca doit choisir entre son amour pour une femme et d\'aider son mari résistant à échapper aux nazis.',
+    'Michael Curtiz',
+    '1942-11-26',
+    '6120',
+    '50',
+    '8',
+    '1'
+),
+(
+    'Autant en emporte le vent',
+    '',
+    'Les vies et amours d\'une jeune femme sudiste pendant et après la guerre de Sécession.',
+    'Victor Fleming',
+    '1939-12-15',
+    '13860',
+    '50',
+    '8',
+    '1'
+),
+(
+    'Citizen Kane',
+    '',
+    'L\'histoire d\'un magnat de la presse et la quête pour découvrir la signification de son dernier mot.',
+    'Orson Welles',
+    '1941-05-01',
+    '7140',
+    '50',
+    '8',
+    '1'
+),
+(
+    'Les Temps modernes',
+    '',
+    'Charlot lutte pour survivre dans le monde industrialisé moderne.',
+    'Charlie Chaplin',
+    '1936-02-05',
+    '5220',
+    '50',
+    '8',
+    '1'
+),
+(
+    'La Dolce Vita',
+    '',
+    'Un journaliste romain explore les plaisirs et les décadences de la haute société romaine.',
+    'Federico Fellini',
+    '1960-02-05',
+    '10680',
+    '50',
+    '8',
+    '1'
+),
 
-    ('Les Bronzés', '', 'Les aventures hilarantes de vacanciers dans un club de vacances en Afrique.', 'Patrice Leconte', '1978-11-22', '5460', '50', '9', '1'),
-    ('Friends', '', 'Les tribulations de six amis vivant à New York.', 'David Crane', '1994-09-22', '52800', '50', '9', '2'),
-    ('Intouchables', '', 'L\'amitié inattendue entre un riche tétraplégique et son auxiliaire de vie issu des quartiers populaires.', 'Olivier Nakache', '2011-11-02', '6720', '50', '9', '1'),
-    ('Les Simpson', '', 'Les mésaventures de la famille Simpson dans la ville fictive de Springfield.', 'Matt Groening', '1989-12-17', '60000', '50', '9', '2'),
-    ('Moi, moche et méchant', '', 'Un super-vilain découvre qu\'il a un cœur tendre après avoir adopté trois orphelines.', 'Pierre Coffin', '2010-07-09', '5700', '50', '9', '1'),
+(
+    'Les Bronzés',
+    '',
+    'Les aventures hilarantes de vacanciers dans un club de vacances en Afrique.',
+    'Patrice Leconte',
+    '1978-11-22',
+    '5460',
+    '50',
+    '9',
+    '1'
+),
+(
+    'Friends',
+    '',
+    'Les tribulations de six amis vivant à New York.',
+    'David Crane',
+    '1994-09-22',
+    '52800',
+    '50',
+    '9',
+    '2'
+),
+(
+    'Intouchables',
+    '',
+    'L\'amitié inattendue entre un riche tétraplégique et son auxiliaire de vie issu des quartiers populaires.',
+    'Olivier Nakache',
+    '2011-11-02',
+    '6720',
+    '50',
+    '9',
+    '1'
+),
+(
+    'Les Simpson',
+    '',
+    'Les mésaventures de la famille Simpson dans la ville fictive de Springfield.',
+    'Matt Groening',
+    '1989-12-17',
+    '60000',
+    '50',
+    '9',
+    '2'
+),
+(
+    'Moi, moche et méchant',
+    '',
+    'Un super-vilain découvre qu\'il a un cœur tendre après avoir adopté trois orphelines.',
+    'Pierre Coffin',
+    '2010-07-09',
+    '5700',
+    '50',
+    '9',
+    '1'
+),
 
-    ('Forrest Gump', '', 'La vie extraordinaire d\'un homme simple qui influence des événements historiques importants.', 'Robert Zemeckis', '1994-07-06', '8520', '50', '10', '1'),
-    ('The Truman Show', '', 'Un homme découvre que sa vie entière est un show télévisé.', 'Peter Weir', '1998-06-05', '6180', '50', '10', '1'),
-    ('Breaking Bad', '', 'Un professeur de chimie atteint d\'un cancer se tourne vers la fabrication de méthamphétamine pour subvenir aux besoins de sa famille.', 'Vince Gilligan', '2008-01-20', '29400', '50', '10', '2'),
-    ('Scrubs', '', 'Les aventures professionnelles et personnelles des médecins et des infirmières dans un hôpital.', 'Bill Lawrence', '2001-10-02', '42000', '50', '10', '2'),
-    ('This Is Us', '', 'Les membres de la famille Pearson traversent les hauts et les bas de la vie à travers différentes décennies.', 'Dan Fogelman', '2016-09-20', '32400', '50', '10', '2'),
+(
+    'Forrest Gump',
+    '',
+    'La vie extraordinaire d\'un homme simple qui influence des événements historiques importants.',
+    'Robert Zemeckis',
+    '1994-07-06',
+    '8520',
+    '50',
+    '10',
+    '1'
+),
+(
+    'The Truman Show',
+    '',
+    'Un homme découvre que sa vie entière est un show télévisé.',
+    'Peter Weir',
+    '1998-06-05',
+    '6180',
+    '50',
+    '10',
+    '1'
+),
+(
+    'Breaking Bad',
+    '',
+    'Un professeur de chimie atteint d\'un cancer se tourne vers la fabrication de méthamphétamine pour subvenir aux besoins de sa famille.',
+    'Vince Gilligan',
+    '2008-01-20',
+    '29400',
+    '50',
+    '10',
+    '2'
+),
+(
+    'Scrubs',
+    '',
+    'Les aventures professionnelles et personnelles des médecins et des infirmières dans un hôpital.',
+    'Bill Lawrence',
+    '2001-10-02',
+    '42000',
+    '50',
+    '10',
+    '2'
+),
+(
+    'This Is Us',
+    '',
+    'Les membres de la famille Pearson traversent les hauts et les bas de la vie à travers différentes décennies.',
+    'Dan Fogelman',
+    '2016-09-20',
+    '32400',
+    '50',
+    '10',
+    '2'
+),
 
-    ('La La Land', '', 'Un musicien et une actrice en herbe poursuivent leurs rêves à Los Angeles.', 'Damien Chazelle', '2016-12-09', '7680', '50', '11', '1'),
-    ('Mamma Mia!', '', 'Une jeune fille sur le point de se marier tente de découvrir lequel des trois hommes est son père.', 'Phyllida Lloyd', '2008-07-18', '6480', '50', '11', '1'),
-    ('Glee', '', 'Les membres d\'une chorale de lycée tentent de surmonter les défis de la vie adolescente et des compétitions de chant.', 'Ryan Murphy', '2009-05-19', '24840', '50', '11', '2'),
-    ('The Greatest Showman', '', 'L\'histoire de P.T. Barnum, l\'homme qui a créé le cirque moderne.', 'Michael Gracey', '2017-12-20', '6300', '50', '11', '1'),
-    ('High School Musical', '', 'Deux lycéens de différents milieux découvrent leur passion commune pour le chant.', 'Kenny Ortega', '2006-01-20', '5880', '50', '11', '3'),
+(
+    'La La Land',
+    '',
+    'Un musicien et une actrice en herbe poursuivent leurs rêves à Los Angeles.',
+    'Damien Chazelle',
+    '2016-12-09',
+    '7680',
+    '50',
+    '11',
+    '1'
+),
+(
+    'Mamma Mia!',
+    '',
+    'Une jeune fille sur le point de se marier tente de découvrir lequel des trois hommes est son père.',
+    'Phyllida Lloyd',
+    '2008-07-18',
+    '6480',
+    '50',
+    '11',
+    '1'
+),
+(
+    'Glee',
+    '',
+    'Les membres d\'une chorale de lycée tentent de surmonter les défis de la vie adolescente et des compétitions de chant.',
+    'Ryan Murphy',
+    '2009-05-19',
+    '24840',
+    '50',
+    '11',
+    '2'
+),
+(
+    'The Greatest Showman',
+    '',
+    'L\'histoire de P.T. Barnum, l\'homme qui a créé le cirque moderne.',
+    'Michael Gracey',
+    '2017-12-20',
+    '6300',
+    '50',
+    '11',
+    '1'
+),
+(
+    'High School Musical',
+    '',
+    'Deux lycéens de différents milieux découvrent leur passion commune pour le chant.',
+    'Kenny Ortega',
+    '2006-01-20',
+    '5880',
+    '50',
+    '11',
+    '3'
+),
 
-    ('Quand Harry rencontre Sally', '', 'Deux amis de longue date se demandent si les hommes et les femmes peuvent vraiment être amis.', 'Rob Reiner', '1989-07-21', '5760', '50', '12', '1'),
-    ('Love Actually', '', 'Les histoires entrelacées de plusieurs couples et célibataires à Londres pendant la période de Noël.', 'Richard Curtis', '2003-11-07', '8100', '50', '12', '1'),
-    ('Friends', '', 'Les tribulations de six amis vivant à New York, souvent impliqués dans des situations amoureuses comiques.', 'David Crane', '1994-09-22', '52800', '50', '12', '2'),
-    ('How I Met Your Mother', '', 'Un homme raconte à ses enfants comment il a rencontré leur mère, avec de nombreuses histoires romantiques en chemin.', 'Carter Bays', '2005-09-19', '46200', '50', '12', '2'),
-    ('Jane the Virgin', '', 'Une jeune femme religieuse tombe enceinte par insémination artificielle accidentelle.', 'Jennie Snyder Urman', '2014-10-13', '25800', '50', '12', '2'),
+(
+    'Quand Harry rencontre Sally',
+    '',
+    'Deux amis de longue date se demandent si les hommes et les femmes peuvent vraiment être amis.',
+    'Rob Reiner',
+    '1989-07-21',
+    '5760',
+    '50',
+    '12',
+    '1'
+),
+(
+    'Love Actually',
+    '',
+    'Les histoires entrelacées de plusieurs couples et célibataires à Londres pendant la période de Noël.',
+    'Richard Curtis',
+    '2003-11-07',
+    '8100',
+    '50',
+    '12',
+    '1'
+),
+(
+    'Friends',
+    '',
+    'Les tribulations de six amis vivant à New York, souvent impliqués dans des situations amoureuses comiques.',
+    'David Crane',
+    '1994-09-22',
+    '52800',
+    '50',
+    '12',
+    '2'
+),
+(
+    'How I Met Your Mother',
+    '',
+    'Un homme raconte à ses enfants comment il a rencontré leur mère, avec de nombreuses histoires romantiques en chemin.',
+    'Carter Bays',
+    '2005-09-19',
+    '46200',
+    '50',
+    '12',
+    '2'
+),
+(
+    'Jane the Virgin',
+    '',
+    'Une jeune femme religieuse tombe enceinte par insémination artificielle accidentelle.',
+    'Jennie Snyder Urman',
+    '2014-10-13',
+    '25800',
+    '50',
+    '12',
+    '2'
+),
 
-    ('La Jetée', '', 'Un homme se souvient de son passé et voit son futur à travers des images après une guerre nucléaire.', 'Chris Marker', '1962-02-16', '1680', '50', '13', '1'),
-    ('Piper', '', 'Un jeune oiseau apprend à surmonter sa peur de l\'eau.', 'Alan Barillaro', '2016-06-17', '360', '50', '13', '1'),
-    ('Presto', '', 'Un lapin de magicien affamé tente de récupérer une carotte.', 'Doug Sweetland', '2008-06-27', '300', '50', '13', '1'),
-    ('Bao', '', 'Une femme chinoise à la retraite reçoit une seconde chance à la maternité lorsque l\'un de ses baozi prend vie.', 'Domee Shi', '2018-06-15', '450', '50', '13', '1'),
-    ('La Luna', '', 'Un jeune garçon découvre la tradition familiale de nettoyer la lune.', 'Enrico Casarosa', '2011-06-06', '420', '50', '13', '1'),
+(
+    'La Jetée',
+    '',
+    'Un homme se souvient de son passé et voit son futur à travers des images après une guerre nucléaire.',
+    'Chris Marker',
+    '1962-02-16',
+    '1680',
+    '50',
+    '13',
+    '1'
+),
+(
+    'Piper',
+    '',
+    'Un jeune oiseau apprend à surmonter sa peur de l\'eau.',
+    'Alan Barillaro',
+    '2016-06-17',
+    '360',
+    '50',
+    '13',
+    '1'
+),
+(
+    'Presto',
+    '',
+    'Un lapin de magicien affamé tente de récupérer une carotte.',
+    'Doug Sweetland',
+    '2008-06-27',
+    '300',
+    '50',
+    '13',
+    '1'
+),
+(
+    'Bao',
+    '',
+    'Une femme chinoise à la retraite reçoit une seconde chance à la maternité lorsque l\'un de ses baozi prend vie.',
+    'Domee Shi',
+    '2018-06-15',
+    '450',
+    '50',
+    '13',
+    '1'
+),
+(
+    'La Luna',
+    '',
+    'Un jeune garçon découvre la tradition familiale de nettoyer la lune.',
+    'Enrico Casarosa',
+    '2011-06-06',
+    '420',
+    '50',
+    '13',
+    '1'
+),
 
-    ('The Shawshank Redemption', '', 'Un homme injustement condamné à la prison à vie pour le meurtre de sa femme tisse des liens avec un autre détenu.', 'Frank Darabont', '1994-09-23', '8520', '50', '14', '1'),
-    ('Breaking Bad', '', 'Un professeur de chimie atteint d\'un cancer se tourne vers la fabrication de méthamphétamine pour subvenir aux besoins de sa famille.', 'Vince Gilligan', '2008-01-20', '29400', '50', '14', '2'),
-    ('Les Soprano', '', 'La vie quotidienne et les dilemmes moraux d\'un chef de la mafia du New Jersey.', 'David Chase', '1999-01-10', '31980', '50', '14', '2'),
-    ('The Wire', '', 'Une exploration réaliste des institutions de la ville de Baltimore et de leurs relations complexes.', 'David Simon', '2002-06-02', '36000', '50', '14', '2'),
-    ('Homeland', '', 'Une agente de la CIA croit  qu\'un prisonnier de guerre a été retourné par Al-Qaïda et représente une menace pour les États-Unis.', 'Howard Gordon', '2011-10-02', '43200', '50', '14', '2'),
+(
+    'The Shawshank Redemption',
+    '',
+    'Un homme injustement condamné à la prison à vie pour le meurtre de sa femme tisse des liens avec un autre détenu.',
+    'Frank Darabont',
+    '1994-09-23',
+    '8520',
+    '50',
+    '14',
+    '1'
+),
+(
+    'Breaking Bad',
+    '',
+    'Un professeur de chimie atteint d\'un cancer se tourne vers la fabrication de méthamphétamine pour subvenir aux besoins de sa famille.',
+    'Vince Gilligan',
+    '2008-01-20',
+    '29400',
+    '50',
+    '14',
+    '2'
+),
+(
+    'Les Soprano',
+    '',
+    'La vie quotidienne et les dilemmes moraux d\'un chef de la mafia du New Jersey.',
+    'David Chase',
+    '1999-01-10',
+    '31980',
+    '50',
+    '14',
+    '2'
+),
+(
+    'The Wire',
+    '',
+    'Une exploration réaliste des institutions de la ville de Baltimore et de leurs relations complexes.',
+    'David Simon',
+    '2002-06-02',
+    '36000',
+    '50',
+    '14',
+    '2'
+),
+(
+    'Homeland',
+    '',
+    'Une agente de la CIA croit  qu\'un prisonnier de guerre a été retourné par Al-Qaïda et représente une menace pour les États-Unis.',
+    'Howard Gordon',
+    '2011-10-02',
+    '43200',
+    '50',
+    '14',
+    '2'
+),
 
-    ('Le Seigneur des Anneaux: La Communauté de l\'Anneau', '', 'Un hobbit part en quête de détruire un puissant anneau maléfique.', 'Peter Jackson', '2001-12-19', '10680', '50', '15', '1'),
-    ('Harry Potter à l\'école des sorciers', '', 'Un jeune garçon découvre qu\'il est un sorcier et commence son éducation magique.', 'Chris Columbus', '2001-11-16', '9180', '50', '15', '1'),
-    ('Game of Thrones', '', 'Les maisons nobles de Westeros luttent pour le trône de fer.', 'David Benioff', '2011-04-17', '43200', '50', '15', '2'),
-    ('Once Upon a Time', '', 'Les personnages de contes de fées sont piégés dans une petite ville sans se souvenir de leur véritable identité.', 'Edward Kitsis', '2011-10-23', '19800', '50', '15', '2'),
-    ('His Dark Materials', '', 'Une jeune fille découvre un complot en voyageant à travers des mondes parallèles.', 'Jack Thorne', '2019-11-03', '19800', '50', '15', '2'),
+(
+    'Le Seigneur des Anneaux: La Communauté de l\'Anneau',
+    '',
+    'Un hobbit part en quête de détruire un puissant anneau maléfique.',
+    'Peter Jackson',
+    '2001-12-19',
+    '10680',
+    '50',
+    '15',
+    '1'
+),
+(
+    'Harry Potter à l\'école des sorciers',
+    '',
+    'Un jeune garçon découvre qu\'il est un sorcier et commence son éducation magique.',
+    'Chris Columbus',
+    '2001-11-16',
+    '9180',
+    '50',
+    '15',
+    '1'
+),
+(
+    'Game of Thrones',
+    '',
+    'Les maisons nobles de Westeros luttent pour le trône de fer.',
+    'David Benioff',
+    '2011-04-17',
+    '43200',
+    '50',
+    '15',
+    '2'
+),
+(
+    'Once Upon a Time',
+    '',
+    'Les personnages de contes de fées sont piégés dans une petite ville sans se souvenir de leur véritable identité.',
+    'Edward Kitsis',
+    '2011-10-23',
+    '19800',
+    '50',
+    '15',
+    '2'
+),
+(
+    'His Dark Materials',
+    '',
+    'Une jeune fille découvre un complot en voyageant à travers des mondes parallèles.',
+    'Jack Thorne',
+    '2019-11-03',
+    '19800',
+    '50',
+    '15',
+    '2'
+),
 
-    ('Planète Terre', '', 'Une exploration en profondeur de la biodiversité et des écosystèmes de notre planète.', 'Alastair Fothergill', '2006-03-05', '34200', '50', '16', '4'),
-    ('Blue Planet II', '', 'Un voyage spectaculaire à travers les océans de la Terre pour découvrir la vie marine.', 'David Attenborough', '2017-10-29', '21360', '50', '16', '4'),
-    ('Human Planet', '', 'L\'adaptation de l\'humanité aux environnements les plus extrêmes de la planète.', 'Brian Leith', '2011-01-13', '16800', '50', '16', '4'),
-    ('Les Nouveaux Explorateurs', '', 'Des voyageurs explorent des endroits reculés et inexplorés à travers le monde.', 'Géraldine Asselin', '2007-10-22', '12600', '50', '16', '4'),
-    ('Le Grand Nord', '', 'Un documentaire qui suit les loups et les caribous à travers les paysages de l\'Arctique.', 'Jean-Michel Bertrand', '2004-03-17', '6120', '50', '16', '4'),
+(
+    'Planète Terre',
+    '',
+    'Une exploration en profondeur de la biodiversité et des écosystèmes de notre planète.',
+    'Alastair Fothergill',
+    '2006-03-05',
+    '34200',
+    '50',
+    '16',
+    '4'
+),
+(
+    'Blue Planet II',
+    '',
+    'Un voyage spectaculaire à travers les océans de la Terre pour découvrir la vie marine.',
+    'David Attenborough',
+    '2017-10-29',
+    '21360',
+    '50',
+    '16',
+    '4'
+),
+(
+    'Human Planet',
+    '',
+    'L\'adaptation de l\'humanité aux environnements les plus extrêmes de la planète.',
+    'Brian Leith',
+    '2011-01-13',
+    '16800',
+    '50',
+    '16',
+    '4'
+),
+(
+    'Les Nouveaux Explorateurs',
+    '',
+    'Des voyageurs explorent des endroits reculés et inexplorés à travers le monde.',
+    'Géraldine Asselin',
+    '2007-10-22',
+    '12600',
+    '50',
+    '16',
+    '4'
+),
+(
+    'Le Grand Nord',
+    '',
+    'Un documentaire qui suit les loups et les caribous à travers les paysages de l\'Arctique.',
+    'Jean-Michel Bertrand',
+    '2004-03-17',
+    '6120',
+    '50',
+    '16',
+    '4'
+),
 
-    ('Il faut sauver le soldat Ryan', '', 'Pendant la Seconde Guerre mondiale, un groupe de soldats est envoyé en mission pour ramener chez lui le dernier frère survivant d\'une famille.', 'Steven Spielberg', '1998-07-24', '10020', '50', '17', '1'),
-    ('Band of Brothers', '', 'Les expériences des soldats de la Easy Company pendant la Seconde Guerre mondiale.', 'Steven Spielberg', '2001-09-09', '59400', '50', '17', '2'),
-    ('Apocalypse Now', '', 'Pendant la guerre du Vietnam, un capitaine est envoyé pour éliminer un colonel devenu fou.', 'Francis Ford Coppola', '1979-08-15', '9720', '50', '17', '1'),
-    ('La Ligne verte', '', 'Un gardien de prison découvre que l\'un de ses détenus possède des pouvoirs surnaturels.', 'Frank Darabont', '1999-12-10', '11400', '50', '17', '1'),
-    ('Hacksaw Ridge', '', 'L\'histoire vraie de Desmond Doss, un objecteur de conscience qui a sauvé des dizaines de soldats lors de la bataille d\'Okinawa.', 'Mel Gibson', '2016-11-04', '8340', '50', '17', '1'),
+(
+    'Il faut sauver le soldat Ryan',
+    '',
+    'Pendant la Seconde Guerre mondiale, un groupe de soldats est envoyé en mission pour ramener chez lui le dernier frère survivant d\'une famille.',
+    'Steven Spielberg',
+    '1998-07-24',
+    '10020',
+    '50',
+    '17',
+    '1'
+),
+(
+    'Band of Brothers',
+    '',
+    'Les expériences des soldats de la Easy Company pendant la Seconde Guerre mondiale.',
+    'Steven Spielberg',
+    '2001-09-09',
+    '59400',
+    '50',
+    '17',
+    '2'
+),
+(
+    'Apocalypse Now',
+    '',
+    'Pendant la guerre du Vietnam, un capitaine est envoyé pour éliminer un colonel devenu fou.',
+    'Francis Ford Coppola',
+    '1979-08-15',
+    '9720',
+    '50',
+    '17',
+    '1'
+),
+(
+    'La Ligne verte',
+    '',
+    'Un gardien de prison découvre que l\'un de ses détenus possède des pouvoirs surnaturels.',
+    'Frank Darabont',
+    '1999-12-10',
+    '11400',
+    '50',
+    '17',
+    '1'
+),
+(
+    'Hacksaw Ridge',
+    '',
+    'L\'histoire vraie de Desmond Doss, un objecteur de conscience qui a sauvé des dizaines de soldats lors de la bataille d\'Okinawa.',
+    'Mel Gibson',
+    '2016-11-04',
+    '8340',
+    '50',
+    '17',
+    '1'
+),
 
-    ('Braveheart', '', 'L\'histoire de William Wallace, qui a mené une rébellion écossaise contre l\'Angleterre.', 'Mel Gibson', '1995-05-24', '10680', '50', '18', '1'),
-    ('The Crown', '', 'Une série sur la vie et le règne de la reine Elizabeth II.', 'Peter Morgan', '2016-11-04', '32400', '50', '18', '2'),
-    ('Gladiator', '', 'Un général romain trahi cherche à se venger de l\'empereur corrompu qui a tué sa famille et l\'a réduit en esclavage.', 'Ridley Scott', '2000-05-05', '9300', '50', '18', '1'),
-    ('The Tudors', '', 'Les amours et les intrigues politiques du roi Henry VIII.', 'Michael Hirst', '2007-04-01', '23400', '50', '18', '2'),
-    ('Dunkerque', '', 'L\'évacuation de Dunkerque pendant la Seconde Guerre mondiale.', 'Christopher Nolan', '2017-07-21', '6360', '50', '18', '1'),
+(
+    'Braveheart',
+    '',
+    'L\'histoire de William Wallace, qui a mené une rébellion écossaise contre l\'Angleterre.',
+    'Mel Gibson',
+    '1995-05-24',
+    '10680',
+    '50',
+    '18',
+    '1'
+),
+(
+    'The Crown',
+    '',
+    'Une série sur la vie et le règne de la reine Elizabeth II.',
+    'Peter Morgan',
+    '2016-11-04',
+    '32400',
+    '50',
+    '18',
+    '2'
+),
+(
+    'Gladiator',
+    '',
+    'Un général romain trahi cherche à se venger de l\'empereur corrompu qui a tué sa famille et l\'a réduit en esclavage.',
+    'Ridley Scott',
+    '2000-05-05',
+    '9300',
+    '50',
+    '18',
+    '1'
+),
+(
+    'The Tudors',
+    '',
+    'Les amours et les intrigues politiques du roi Henry VIII.',
+    'Michael Hirst',
+    '2007-04-01',
+    '23400',
+    '50',
+    '18',
+    '2'
+),
+(
+    'Dunkerque',
+    '',
+    'L\'évacuation de Dunkerque pendant la Seconde Guerre mondiale.',
+    'Christopher Nolan',
+    '2017-07-21',
+    '6360',
+    '50',
+    '18',
+    '1'
+),
 
-    ('The Shining', '', 'Un écrivain et sa famille s\'isolent dans un hôtel hanté où il sombre dans la folie.', 'Stanley Kubrick', '1980-05-23', '8520', '50', '19', '1'),
-    ('American Horror Story', '', 'Chaque saison explore une histoire d\'horreur différente avec les mêmes acteurs.', 'Ryan Murphy', '2011-10-05', '27600', '50', '19', '2'),
-    ('Stranger Things', '', 'Un groupe d\'enfants enquête sur la disparition de leur ami et découvre des phénomènes surnaturels.', 'The Duffer Brothers', '2016-07-15', '28800', '50', '19', '2'),
-    ('Le Projet Blair Witch', '', 'Trois étudiants en cinéma se perdent dans les bois en tournant un documentaire sur une légende locale.', 'Daniel Myrick', '1999-07-16', '4920', '50', '19', '1'),
-    ('Hocus Pocus', '', 'Trois sorcières ressuscitent à Salem, et trois enfants doivent les arrêter.', 'Kenny Ortega', '1993-07-16', '5760', '50', '19', '1'),
+(
+    'The Shining',
+    '',
+    'Un écrivain et sa famille s\'isolent dans un hôtel hanté où il sombre dans la folie.',
+    'Stanley Kubrick',
+    '1980-05-23',
+    '8520',
+    '50',
+    '19',
+    '1'
+),
+(
+    'American Horror Story',
+    '',
+    'Chaque saison explore une histoire d\'horreur différente avec les mêmes acteurs.',
+    'Ryan Murphy',
+    '2011-10-05',
+    '27600',
+    '50',
+    '19',
+    '2'
+),
+(
+    'Stranger Things',
+    '',
+    'Un groupe d\'enfants enquête sur la disparition de leur ami et découvre des phénomènes surnaturels.',
+    'The Duffer Brothers',
+    '2016-07-15',
+    '28800',
+    '50',
+    '19',
+    '2'
+),
+(
+    'Le Projet Blair Witch',
+    '',
+    'Trois étudiants en cinéma se perdent dans les bois en tournant un documentaire sur une légende locale.',
+    'Daniel Myrick',
+    '1999-07-16',
+    '4920',
+    '50',
+    '19',
+    '1'
+),
+(
+    'Hocus Pocus',
+    '',
+    'Trois sorcières ressuscitent à Salem, et trois enfants doivent les arrêter.',
+    'Kenny Ortega',
+    '1993-07-16',
+    '5760',
+    '50',
+    '19',
+    '1'
+),
 
-    ('La Liste de Schindler', '', 'L\'histoire d\'un industriel allemand qui a sauvé plus de mille Juifs pendant l\'Holocauste.', 'Steven Spielberg', '1993-11-30', '11700', '50', '20', '1'),
-    ('Into the Wild', '', 'L\'histoire vraie de Christopher McCandless, qui a abandonné tout pour vivre dans la nature sauvage de l\'Alaska.', 'Sean Penn', '2007-09-21', '8880', '50', '20', '1'),
-    ('Slumdog Millionaire', '', 'Un jeune homme pauvre de Mumbai participe à un jeu télévisé et raconte sa vie à travers ses réponses.', 'Danny Boyle', '2008-11-12', '7200', '50', '20', '1'),
-    ('The Pursuit of Happyness', '', 'L\'histoire vraie de Chris Gardner, un sans-abri devenu millionnaire.', 'Gabriele Muccino', '2006-12-15', '7020', '50', '20', '1'),
+(
+    'La Liste de Schindler',
+    '',
+    'L\'histoire d\'un industriel allemand qui a sauvé plus de mille Juifs pendant l\'Holocauste.',
+    'Steven Spielberg',
+    '1993-11-30',
+    '11700',
+    '50',
+    '20',
+    '1'
+),
+(
+    'Into the Wild',
+    '',
+    'L\'histoire vraie de Christopher McCandless, qui a abandonné tout pour vivre dans la nature sauvage de l\'Alaska.',
+    'Sean Penn',
+    '2007-09-21',
+    '8880',
+    '50',
+    '20',
+    '1'
+),
+(
+    'Slumdog Millionaire',
+    '',
+    'Un jeune homme pauvre de Mumbai participe à un jeu télévisé et raconte sa vie à travers ses réponses.',
+    'Danny Boyle',
+    '2008-11-12',
+    '7200',
+    '50',
+    '20',
+    '1'
+),
+(
+    'The Pursuit of Happyness',
+    '',
+    'L\'histoire vraie de Chris Gardner, un sans-abri devenu millionnaire.',
+    'Gabriele Muccino',
+    '2006-12-15',
+    '7020',
+    '50',
+    '20',
+    '1'
+),
 
-    ('Akira', '', 'Dans un futur dystopique, un jeune homme développe des pouvoirs télékinésiques après un accident de moto.', 'Katsuhiro Otomo', '1988-07-16', '7440', '50', '21', '1'),
-    ('Naruto', '', 'Un jeune ninja cherche à devenir le plus grand ninja de son village et à être reconnu par ses pairs.', 'Masashi Kishimoto', '2002-10-03', '29040', '50', '21', '2'),
-    ('One Piece', '', 'Les aventures de Monkey D. Luffy et son équipage de pirates à la recherche du trésor One Piece.', 'Eiichiro Oda', '1999-10-20', '100800', '50', '21', '2'),
-    ('Death Note', '', 'Un lycéen découvre un cahier surnaturel qui lui permet de tuer quiconque dont il écrit le nom.', 'Tsugumi Ohba', '2006-10-04', '9000', '50', '21', '2'),
-    ('Dragon Ball Z', '', 'Les aventures de Goku et ses amis alors qu\'ils protègent la Terre contre diverses menaces.', 'Akira Toriyama', '1989-04-26', '29100', '50', '21', '2'),
+(
+    'Akira',
+    '',
+    'Dans un futur dystopique, un jeune homme développe des pouvoirs télékinésiques après un accident de moto.',
+    'Katsuhiro Otomo',
+    '1988-07-16',
+    '7440',
+    '50',
+    '21',
+    '1'
+),
+(
+    'Naruto',
+    '',
+    'Un jeune ninja cherche à devenir le plus grand ninja de son village et à être reconnu par ses pairs.',
+    'Masashi Kishimoto',
+    '2002-10-03',
+    '29040',
+    '50',
+    '21',
+    '2'
+),
+(
+    'One Piece',
+    '',
+    'Les aventures de Monkey D. Luffy et son équipage de pirates à la recherche du trésor One Piece.',
+    'Eiichiro Oda',
+    '1999-10-20',
+    '100800',
+    '50',
+    '21',
+    '2'
+),
+(
+    'Death Note',
+    '',
+    'Un lycéen découvre un cahier surnaturel qui lui permet de tuer quiconque dont il écrit le nom.',
+    'Tsugumi Ohba',
+    '2006-10-04',
+    '9000',
+    '50',
+    '21',
+    '2'
+),
+(
+    'Dragon Ball Z',
+    '',
+    'Les aventures de Goku et ses amis alors qu\'ils protègent la Terre contre diverses menaces.',
+    'Akira Toriyama',
+    '1989-04-26',
+    '29100',
+    '50',
+    '21',
+    '2'
+),
 
-    ('Le Silence des agneaux', '', 'Un jeune agent du FBI sollicite l\'aide d\'un psychopathe emprisonné pour attraper un autre tueur en série.', 'Jonathan Demme', '1991-02-14', '7080', '50', '22', '1'),
-    ('Sherlock', '', 'Une adaptation moderne des aventures du célèbre détective Sherlock Holmes.', 'Steven Moffat', '2010-07-25', '17160', '50', '22', '2'),
-    ('Luther', '', 'Un détective brillant mais troublé résout des crimes tout en luttant contre ses propres démons.', 'Neil Cross', '2010-05-04', '16200', '50', '22', '2'),
-    ('True Detective', '', 'Les enquêtes d\'inspecteurs de police dans différentes régions des États-Unis.', 'Nic Pizzolatto', '2014-01-12', '15540', '50', '22', '2'),
-    ('Fargo', '', 'Des crimes et des incidents étranges dans le Minnesota.', 'Noah Hawley', '2014-04-15', '14640', '50', '22', '2'),
+(
+    'Le Silence des agneaux',
+    '',
+    'Un jeune agent du FBI sollicite l\'aide d\'un psychopathe emprisonné pour attraper un autre tueur en série.',
+    'Jonathan Demme',
+    '1991-02-14',
+    '7080',
+    '50',
+    '22',
+    '1'
+),
+(
+    'Sherlock',
+    '',
+    'Une adaptation moderne des aventures du célèbre détective Sherlock Holmes.',
+    'Steven Moffat',
+    '2010-07-25',
+    '17160',
+    '50',
+    '22',
+    '2'
+),
+(
+    'Luther',
+    '',
+    'Un détective brillant mais troublé résout des crimes tout en luttant contre ses propres démons.',
+    'Neil Cross',
+    '2010-05-04',
+    '16200',
+    '50',
+    '22',
+    '2'
+),
+(
+    'True Detective',
+    '',
+    'Les enquêtes d\'inspecteurs de police dans différentes régions des États-Unis.',
+    'Nic Pizzolatto',
+    '2014-01-12',
+    '15540',
+    '50',
+    '22',
+    '2'
+),
+(
+    'Fargo',
+    '',
+    'Des crimes et des incidents étranges dans le Minnesota.',
+    'Noah Hawley',
+    '2014-04-15',
+    '14640',
+    '50',
+    '22',
+    '2'
+),
 
-    ('Blade Runner', '', 'Un policier à la retraite doit traquer des androïdes rebelles dans un futur dystopique.', 'Ridley Scott', '1982-06-25', '7020', '50', '23', '1'),
-    ('Star Wars: Un nouvel espoir', '', 'Un jeune fermier se joint à la lutte contre un empire maléfique et découvre ses pouvoirs Jedi.', 'George Lucas', '1977-05-25', '8580', '50', '23', '1'),
-    ('Matrix', '', 'Un hacker découvre que le monde dans lequel il vit est une simulation et mène la révolte contre ses créateurs.', 'Lana Wachowski', '1999-03-31', '6840', '50', '23', '1'),
-    ('Black Mirror', '', 'Une série d\'antho', 'Charlie Brooker', '2011-12-04', '29400', '50', '23', '2'),
-    ('Westworld', '', 'Dans un parc d\'attractions futuriste, des robots se rebellent contre leurs créateurs.', 'Jonathan Nolan', '2016-10-02', '29700', '50', '23', '2'),
+(
+    'Blade Runner',
+    '',
+    'Un policier à la retraite doit traquer des androïdes rebelles dans un futur dystopique.',
+    'Ridley Scott',
+    '1982-06-25',
+    '7020',
+    '50',
+    '23',
+    '1'
+),
+(
+    'Star Wars: Un nouvel espoir',
+    '',
+    'Un jeune fermier se joint à la lutte contre un empire maléfique et découvre ses pouvoirs Jedi.',
+    'George Lucas',
+    '1977-05-25',
+    '8580',
+    '50',
+    '23',
+    '1'
+),
+(
+    'Matrix',
+    '',
+    'Un hacker découvre que le monde dans lequel il vit est une simulation et mène la révolte contre ses créateurs.',
+    'Lana Wachowski',
+    '1999-03-31',
+    '6840',
+    '50',
+    '23',
+    '1'
+),
+(
+    'Black Mirror',
+    '',
+    'Une série d\'antho',
+    'Charlie Brooker',
+    '2011-12-04',
+    '29400',
+    '50',
+    '23',
+    '2'
+),
+(
+    'Westworld',
+    '',
+    'Dans un parc d\'attractions futuriste, des robots se rebellent contre leurs créateurs.',
+    'Jonathan Nolan',
+    '2016-10-02',
+    '29700',
+    '50',
+    '23',
+    '2'
+),
 
-    ('Seven', '', 'Deux détectives enquêtent sur une série de meurtres basés sur les sept péchés capitaux.', 'David Fincher', '1995-09-22', '7620', '50', '25', '1'),
-    ('Gone Girl', '', 'La disparition mystérieuse d\'une femme entraîne une enquête médiatique et des révélations troublantes.', 'David Fincher', '2014-10-03', '8940', '50', '25', '1'),
-    ('True Detective', '', 'Les enquêtes d\'inspecteurs de police dans différentes régions des États-Unis.', 'Nic Pizzolatto', '2014-01-12', '15540', '50', '25', '2'),
-    ('Mindhunter', '', 'Deux agents du FBI interrogent des tueurs en série pour comprendre leurs motivations.', 'Joe Penhall', '2017-10-13', '20400', '50', '25', '2'),
-    ('Prisoners', '', 'Après la disparition de sa fille et de son amie, un père désespéré prend les choses en main.', 'Denis Villeneuve', '2013-09-20', '9180', '50', '25', '1');
+(
+    'Seven',
+    '',
+    'Deux détectives enquêtent sur une série de meurtres basés sur les sept péchés capitaux.',
+    'David Fincher',
+    '1995-09-22',
+    '7620',
+    '50',
+    '25',
+    '1'
+),
+(
+    'Gone Girl',
+    '',
+    'La disparition mystérieuse d\'une femme entraîne une enquête médiatique et des révélations troublantes.',
+    'David Fincher',
+    '2014-10-03',
+    '8940',
+    '50',
+    '25',
+    '1'
+),
+(
+    'True Detective',
+    '',
+    'Les enquêtes d\'inspecteurs de police dans différentes régions des États-Unis.',
+    'Nic Pizzolatto',
+    '2014-01-12',
+    '15540',
+    '50',
+    '25',
+    '2'
+),
+(
+    'Mindhunter',
+    '',
+    'Deux agents du FBI interrogent des tueurs en série pour comprendre leurs motivations.',
+    'Joe Penhall',
+    '2017-10-13',
+    '20400',
+    '50',
+    '25',
+    '2'
+),
+(
+    'Prisoners',
+    '',
+    'Après la disparition de sa fille et de son amie, un père désespéré prend les choses en main.',
+    'Denis Villeneuve',
+    '2013-09-20',
+    '9180',
+    '50',
+    '25',
+    '1'
+);
 
 -- Insertion de deux utilisateurs
 
 INSERT INTO
-    `books` (`title`, `picture`, `description`, `author`, `date`, `pages`, `quantities`, `id_category`)
-VALUES
-    ('Le Deuxième Sexe', 'https://m.media-amazon.com/images/I/71qjM2w0RoL._SY466_.jpg', 'Essai de Simone de Beauvoir sur la condition des femmes.', 'Simone de Beauvoir', '1949-03-14', '768', '50', '27'),
-    ('Moi, Christiane F.', 'https://m.media-amazon.com/images/I/41ZN0nEdsqL._SY445_SX342_.jpg', 'Le récit autobiographique d’une adolescente perdue dans la drogue et la prostitution.', 'Christiane F.', '1979-03-01', '272', '50', '27'),
-    ('Les Confessions', 'https://m.media-amazon.com/images/I/71U-3bc-4KL._SY466_.jpg', 'Autobiographie de Jean-Jacques Rousseau dans laquelle il raconte son histoire personnelle.', 'Jean-Jacques Rousseau', '1782-03-01', '512', '50', '27'),
-    ('Moi, Malala', 'https://cdn.bookey.app/20210820145141651/20210820145508107.jpg', 'L’histoire inspirante de Malala Yousafzai, la jeune militante pour l’éducation.', 'Malala Yousafzai', '2013-10-08', '288', '50', '27'),
-    ('Le Journal d\'Anne Frank', 'https://m.media-amazon.com/images/I/41xV1gecXhL._SY445_SX342_.jpg', 'Les écrits poignants d’Anne Frank, une jeune fille juive cachée pendant la Seconde Guerre mondiale.', 'Anne Frank', '1947-06-25', '283', '50', '27'),
-
-    ('Astérix le Gaulois', 'https://m.media-amazon.com/images/I/618+ej+x29L._SY445_SX342_.jpg', 'Les aventures humoristiques d’un guerrier gaulois et de ses amis.', 'René Goscinny, Albert Uderzo', '1961-10-01', '48', '50', '28'),
-    ('Tintin au Tibet', 'https://m.media-amazon.com/images/I/41x5ydLTFqL._SY445_SX342_.jpg', 'Tintin part à la recherche de son ami Chang dans les montagnes tibétaines.', 'Hergé', '1960-10-01', '62', '50', '28'),
-    ('Les Schtroumpfs', 'https://bdi.dlpdomain.com/album/9782800158068-couv-M700x1200.jpg', 'Les aventures des petits Schtroumpfs dans leur village.', 'Peyo', '1958-10-01', '40', '50', '28'),
-    ('Blake et Mortimer', 'https://www.bedetheque.com/media/Couvertures/blakeetmortimercouv01espadon.jpg', 'Les aventures de deux détectives dans des enquêtes complexes et palpitantes.', 'Edgar P. Jacobs', '1950-09-01', '56', '50', '28'),
-    ('Dragon Ball', 'https://www.legaliondesetoiles.com/photo/art/default/8265239-12927519.jpg?v=1674306988', 'Les aventures de Goku et ses amis dans leur quête des Dragon Balls.', 'Akira Toriyama', '1984-11-01', '200', '50', '28'),
-
-    ('La Fabrique du prince charmant', 'https://ref.lamartinieregroupe.com/media/9782021533224/grande/153322_couverture_Hres_0.jpg', 'Imaginez le prince charmant des années 70, celui des romans-photos aux sourcils circonflexes, brushing « nuque longue » et assurance à toute épreuve dans son pattes d’éléphant.', 'Ovidie', '2024-05-24', '120', '50', '29'),
-    ('les jardins de versailles', 'https://boutique-chateauversailles.fr/wp-content/uploads/2023/11/LesjardinsdeVersailles_Une.png', 'Un livre illustré sur la splendeur des jardins de Versailles.', 'Jacques Moulin', '2023-10-20', '256', '50', '29'),
-    ('Les Grands Maîtres de la Peinture', 'https://m.media-amazon.com/images/I/51F2QXDS0CL._SY466_.jpg', 'Une exploration des œuvres des plus grands maîtres de la peinture.', 'Robert Cumming', '1999-01-05', '256', '50', '29'),
-    ('Les Merveilles du Monde', 'https://pictures.abebooks.com/isbn/9782859610357-fr.jpg', 'Un voyage visuel à travers les plus grands sites du patrimoine mondial.', 'Edmund SWINGLEHURST', '1978-01-01', '156', '50', '29'),
-    ('Les Architectes Célèbres', 'https://pictures.abebooks.com/inventory/md/md31154665612.jpg', 'Un aperçu des réalisations des architectes les plus influents.', 'Lucien Mazenod', '1958-01-01', '352', '50', '29'),
-
-    ('Steve Jobs', 'https://m.media-amazon.com/images/I/81vhsD+QgKL._SY466_.jpg', 'Une biographie détaillée de Steve Jobs, co-fondateur d’Apple.', 'Walter Isaacson', '2011-10-24', '656', '50', '30'),
-    ('Une vie', 'https://m.media-amazon.com/images/I/71CUud+k3OL._SY466_.jpg', 'Biographie de Simone Veil, une figure emblématique de la politique française.', 'Simone Veil', '2007-09-10', '496', '50', '30'),
-    ('Nelson Mandela : Un Long Chemin Vers La Liberté', 'https://m.media-amazon.com/images/I/81+qJ3dldOL._SY466_.jpg', 'L’autobiographie de Nelson Mandela sur son combat pour la liberté en Afrique du Sud.', 'Nelson Mandela', '1994-11-01', '576', '50', '30'),
-    ('Einstein : Sa Vie, Son Univers', 'https://m.media-amazon.com/images/I/71IIC0n4cBL._SY466_.jpg', 'Une biographie détaillée d’Albert Einstein, le génie de la physique.', 'Walter Isaacson', '2007-09-01', '704', '50', '30'),
-    ('L’Inconnu du Luxembourg', 'https://m.media-amazon.com/images/I/917XqYjHH8L._SY466_.jpg', 'La biographie de la mystérieuse figure du Luxembourg qui a marqué l’histoire.', 'Laurence Lebas', '2019-11-15', '320', '50', '30'),
-
-    ('Le Petit Prince', 'https://m.media-amazon.com/images/I/710wth0vXZL._SY466_.jpg', 'Le conte poétique d’Antoine de Saint-Exupéry sur un jeune prince et ses voyages.', 'Antoine de Saint-Exupéry', '1943-04-06', '96', '50', '31'),
-    ('Les Contes de Perrault', 'https://m.media-amazon.com/images/I/611p-w1auTL._SY466_.jpg', 'Recueil des célèbres contes de Charles Perrault.', 'Charles Perrault', '1697-01-01', '272', '50', '31'),
-    ('Alice au Pays des Merveilles', 'https://m.media-amazon.com/images/I/713BVhe+IJL._SY466_.jpg', 'L’aventure fantastique d’Alice dans un monde étrange.', 'Lewis Carroll', '1865-11-26', '100', '50', '31'),
-    ('Peter Pan', 'https://m.media-amazon.com/images/I/61v4oe0lMCL._SY466_.jpg', 'Les aventures de Peter Pan, le garçon qui ne veut pas grandir.', 'J.M. Barrie', '1911-01-01', '208', '50', '31'),
-    ('La Belle au bois dormant', 'https://m.media-amazon.com/images/I/81QUrPZqycL._SY466_.jpg', 'Le conte classique de la princesse endormie, victime d’une malédiction.', 'Charles Perrault', '1697-01-01', '72', '50', '31'),
-
-    ('Les Liaisons dangereuses', 'https://media.senscritique.com/media/000004378333/300/les_liaisons_dangereuses.jpg', 'Un duel pervers entre deux nobles manipulateurs et libertins du siècle des lumières qui se jouent de la société pudibonde dans laquelle ils vivent.', 'Choderlos de Laclos', '1782-01-01', '000', '50', '32'),
-    ('Correspondances entre Montaigne et La Boétie', 'https://m.media-amazon.com/images/I/614j4FDuUGL._SY466_.jpg', 'Échanges épistolaires entre deux grandes figures de la Renaissance.', 'Michel de Montaigne', '2008-04-15', '368', '50', '32'),
-    ('Les Lettres de Vincent Van Gogh', 'https://static.fnac-static.com/multimedia/PE/Images/FR/NR/d7/21/14/1319383/1507-1/tsp20231226071839/Lettres-a-son-frere-Theo.jpg', 'Correspondances fascinantes du peintre Vincent Van Gogh.', 'Vincent Van Gogh', '2012-01-20', '432', '50', '32'),
-    ('Correspondances de Flaubert', 'https://images.epagine.fr/793/9782070402793_1_75.jpg', 'Une vue intérieure sur la vie de Gustave Flaubert à travers ses lettres.', 'Gustave Flaubert', '2011-06-10', '256', '50', '32'),
-    ('Lettre à une jeune fille', 'https://bddi.2dcom.fr/libriweb.php?ean=9782246745815', 'Une série de lettres adressées à une jeune femme pour la guider.', 'Joë Bousquet', '2008-10-15', '322', '50', '32'),
-
-    ('La Structure des Révolutions Scientifiques', 'https://m.media-amazon.com/images/I/61qk+o9sy2L._SY466_.jpg', 'Essai de Thomas Kuhn sur la façon dont les révolutions scientifiques changent les paradigmes.', 'Thomas Kuhn', '1962-11-01', '288', '50', '33'),
-    ('L\'Étranger', 'https://m.media-amazon.com/images/I/41LdKQUBsWL._SY445_SX342_.jpg', 'Essai philosophique de Camus sur l’absurdité de la condition humaine.', 'Albert Camus', '1942-05-01', '123', '50', '33'),
-    ('Le Capital', 'https://m.media-amazon.com/images/I/81ZiOatNr1L._SY466_.jpg', 'Analyse critique de l’économie politique par Karl Marx.', 'Karl Marx', '1867-09-01', '1008', '50', '33'),
-    ('La Condition Humaine', 'https://m.media-amazon.com/images/I/81FIjdDHYPL._SY466_.jpg', 'Essai de Malraux sur les dimensions existentielles de l’être humain.', 'André Malraux', '1933-10-15', '320', '50', '33'),
-    ('Sapiens : Une Brève Histoire de l’Humanité', 'https://m.media-amazon.com/images/I/61SaNiLLX-L._SY466_.jpg', 'Un essai sur l’évolution de l’humanité par Yuval Noah Harari.', 'Yuval Noah Harari', '2011-09-04', '498', '50', '33'),
-
-    ('La Fontaine : Fables', 'https://m.media-amazon.com/images/I/61pCJvXKBNL._SY466_.jpg', 'Recueil des célèbres fables de Jean de La Fontaine.', 'Jean de La Fontaine', '1668-01-01', '336', '50', '34'),
-    ('Les Fables de La Fontaine', 'https://m.media-amazon.com/images/I/61pp3BTB15L._SY466_.jpg', 'Une nouvelle édition des fables de La Fontaine avec illustrations.', 'Jean de La Fontaine', '1694-01-01', '350', '50', '34'),
-    ('Fables pour les petits d\'après Ésope', 'https://m.media-amazon.com/images/I/61vJUlHR8AS._SY466_.jpg', 'Collection de fables adaptées aux jeunes lecteurs.', 'Susanna Davidson', '2021-08-12', '160', '50', '34'),
-    ('Contes et fables d\'animaux', 'https://m.media-amazon.com/images/I/51DeTCeoAoL._SY466_.jpg', 'Fables mettant en scène des animaux et leurs leçons de vie.', 'Laurent Kling', '2005-03-23', '44', '50', '34'),
-
-    ('Le Guide du Routard', 'https://m.media-amazon.com/images/I/81475VZnbyL._SY466_.jpg', 'Guide pratique pour voyager à travers différents pays.', 'Collectif', '2022-05-10', '576', '50', '35'),
-    ('Sos cuisine', 'https://cdn1.booknode.com/book_cover/1350/sos_cuisine-1349554-264-432.jpg', 'Jean-Pierre Coffe propose 360 recettes classiques ou originales et 450 trucs vraiment efficaces pour les réussir.', 'Jean-Pierre Coffe', '2007-12-12', '598', '50', '35'),
-    ('Guide des plantes médicinales', 'https://m.media-amazon.com/images/I/81Ff8JSZyCL._SY466_.jpg', 'Guide complet des plantes médicinales et de leurs usages.', 'Paul Schauenberg', '2005-03-11', '396', '50', '35'),
-    ('Le Petit Larousse du jardin facile', '', 'Un guide pour les passionnés de jardinage, avec conseils et techniques.', 'Didier Willery', '2018-02-28', '336', '50', '35'),
-    ('Le Grand Livre du Développement Personnel', 'https://m.media-amazon.com/images/I/61cD7os4i6L._SY466_.jpg', 'Conseils pratiques pour améliorer son bien-être et son développement personnel.', 'James Path', '2023-11-04', '347', '50', '35'),
-
-    ('La Bible', 'https://pictures.abebooks.com/isbn/9781935302421-fr.jpg', 'Le texte sacré du christianisme.', 'Anonyme', '0000-01-01', '1500', '50', '36'),
-    ('Le Coran', 'https://previews.123rf.com/images/mawardibahar/mawardibahar1310/mawardibahar131000176/22739705-coran-premi%C3%A8re-page-de-couverture.jpg', 'Le texte sacré de l’islam.', 'Anonyme', '610-01-01', '604', '50', '36'),
-    ('Les Vedas', 'https://m.media-amazon.com/images/I/51XvEVvj0+L._SY445_SX342_.jpg', 'Les textes sacrés de l’hindouisme.', 'Anonyme', '1500-01-01', '700', '50', '36'),
-    ('La Torah', 'https://m.media-amazon.com/images/I/81D74ny63nL._SY466_.jpg', 'Le texte sacré du judaïsme.', 'Anonyme', '1500-01-01', '304', '50', '36'),
-    ('Le Bouddhisme : Enseignements, Histoire et Pratiques', 'https://m.media-amazon.com/images/I/51HSJHK0EoL._SY466_.jpg', 'Introduction aux enseignements et pratiques du bouddhisme.', 'Peter Harvey', '1999-01-01', '448', '50', '36'),
-
-    ('Naruto', 'https://m.media-amazon.com/images/I/71GsyZF5AyL._SY466_.jpg', 'Les aventures du ninja Naruto Uzumaki et ses quêtes pour devenir Hokage.', 'Masashi Kishimoto', '1999-09-21', '208', '50', '37'),
-    ('One Piece', 'https://m.media-amazon.com/images/I/91t7YlWwGfL._SY466_.jpg', 'Les aventures de Monkey D. Luffy à la recherche du trésor ultime, le One Piece.', 'Eiichiro Oda', '1997-07-22', '208', '50', '37'),
-    ('Dragon Ball', 'https://m.media-amazon.com/images/I/51doNJR9pTL._SY445_SX342_.jpg', 'Les aventures de Goku, un garçon doté de pouvoirs extraordinaires.', 'Akira Toriyama', '1984-11-01', '200', '50', '37'),
-    ('Death Note', 'https://m.media-amazon.com/images/I/812k3BWrksL._SY466_.jpg', 'Un adolescent trouve un cahier qui lui permet de tuer quiconque en écrivant son nom.', 'Tsugumi Ohba', '2003-12-01', '220', '50', '37'),
-    ('Attack on Titan', 'https://m.media-amazon.com/images/I/516FKAN4t7L._SY445_SX342_.jpg', 'Dans un monde où l’humanité est menacée par des titans, Eren Yeager lutte pour survivre.', 'Hajime Isayama', '2009-09-09', '232', '50', '37'),
-
-    ('Mémoires d\'outre-tombe', 'https://m.media-amazon.com/images/I/31lO1vK4n9L._SY445_SX342_.jpg', 'Les mémoires de François-René de Chateaubriand sur sa vie et ses voyages.', 'François-René de Chateaubriand', '1848-01-01', '800', '50', '38'),
-    ('Les Confessions', 'https://m.media-amazon.com/images/I/71QsjSE+8xL._SY466_.jpg', 'Autobiographie de Jean-Jacques Rousseau.', 'Jean-Jacques Rousseau', '1782-01-01', '512', '50', '38'),
-    ('Mémoires d\'un jeune homme dérangé', 'https://m.media-amazon.com/images/I/81CSgULhaqL._SY466_.jpg', 'Les mémoires d’un jeune homme en proie à des crises intérieures.', 'Frédéric Beigbeder', '2016-08-01', '160', '50', '38'),
-    ('La Vie de Samuel Johnson', 'https://m.media-amazon.com/images/I/51PNQ8RNM4L._SY466_.jpg', 'Une biographie détaillée de Samuel Johnson, écrivain et critique.', 'James Boswell', '1791-01-01', '960', '50', '38'),
-    ('Mémoires d\'une Geisha', 'https://m.media-amazon.com/images/I/41MGHx-nxBL._SY445_SX342_.jpg', 'L’histoire d’une geisha japonaise qui se bat pour survivre dans un monde turbulent.', 'Arthur Golden', '1997-09-24', '448', '50', '38'),
-
-    ('Les Nouvelles de Maupassant', 'https://servimg.eyrolles.com/static/media/0266/9782492900266_internet_h1400.jpg', 'Recueil de nouvelles de Guy de Maupassant.', 'Guy de Maupassant', '1885-01-01', '312', '50', '39'),
-    ('Nouvelles Histoires Extraordinaires', 'https://images.noosfere.org/couv/l/ldp1055-1992.jpg', 'Recueil de nouvelles fantastiques par Edgar Allan Poe.', 'Edgar Allan Poe', '1845-01-01', '264', '50', '39'),
-    ('Le Horla', 'https://upload.wikimedia.org/wikipedia/commons/3/3f/Guy_de_Maupassant_le_Horla-edition1908.jpg', 'Nouvelles fantastiques et étranges de Guy de Maupassant.', 'Guy de Maupassant', '1887-01-01', '128', '50', '39'),
-    ('Dubliners', 'https://m.media-amazon.com/images/I/41+RbJgJhxL.jpg', 'Recueil de nouvelles de James Joyce sur la vie à Dublin.', 'James Joyce', '1914-06-15', '208', '50', '39'),
-    ('La Peste', 'https://upload.wikimedia.org/wikipedia/commons/c/c6/La_Peste_book_cover.jpg', 'Une nouvelle d’Albert Camus sur l’épidémie qui ravage une ville.', 'Albert Camus', '1947-11-10', '318', '50', '39'),
-
-    ('Le Pamphlet des Droits de l\'Homme', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Declaration_of_the_Rights_of_Man_and_of_the_Citizen_in_1789.jpg/800px-Declaration_of_the_Rights_of_Man_and_of_the_Citizen_in_1789.jpg', 'Un pamphlet important sur les droits de l’homme.', 'Anonyme', '1789-07-14', '48', '50', '40'),
-    ('Pamphlet pour la Liberté', '', 'Un pamphlet plaidant pour les libertés individuelles.', 'Anonyme', '1790-01-01', '64', '50', '40'),
-    ('Le Pamphlet Économique', '', 'Critique économique présentée sous forme de pamphlet.', 'Anonyme', '1850-01-01', '72', '50', '40'),
-    ('Pamphlet Politique', '', 'Analyse politique et critique sous forme de pamphlet.', 'Anonyme', '1910-01-01', '56', '50', '40'),
-    ('Pamphlet sur la Réforme', '', 'Pamphlet abordant les questions de réforme sociale.', 'Anonyme', '1920-01-01', '80', '50', '40'),
-
-    ('Le Spleen de Paris', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Spleen_et_ideal-aquarell.jpg/260px-Spleen_et_ideal-aquarell.jpg', 'Poèmes en prose de Charles Baudelaire sur les thèmes de la ville et de l’ennui.', 'Charles Baudelaire', '1869-01-01', '182', '50', '41'),
-    ('Le Livre de Monelle', 'https://books.google.fr/books/content?id=0x-fm0VVT-sC&hl=fr&pg=PA1&img=1&zoom=3&bul=1&sig=ACfU3U2BW5ELDUZgDQKgqFFne9wZNXNuSg&w=1280', 'Poésie en prose de Marcel Schwob explorant des récits mystérieux.', 'Marcel Schwob', '1894-01-01', '216', '50', '41'),
-    ('Les Fleurs du mal', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Fleurs_du_mal.jpg/250px-Fleurs_du_mal.jpg', 'Poésie en prose de Baudelaire, célèbre recueil explorant les thèmes de la beauté et du mal.', 'Charles Baudelaire', '1857-06-25', '192', '50', '41'),
-    ('Je, d\'un accident ou d\'amour', 'https://m.media-amazon.com/images/I/51jxt3+PXzL._SY466_.jpg', 'Depuis, ma pensée se désordre. Mon langage se confusion. D’un commencement comme ça. Je voiture Adèle jusqu’à la gare de l’Est, elle se départ chez elle, distance d’ici. Bien trop lointain. Elle m’amour, je l’énormément, mais elle s’en retour. A trois centaines de kilomètres.', 'Loïc Demey', '2014-10-01', '44', '50', '41'),
-    ('Fureur et Mystère', 'https://m.media-amazon.com/images/I/41CddFBFEwL._SY466_.jpg', 'Pourquoi le cacher ? Ce n\'est pas une poésie facile. Ses difficultés sont à proportion, en nous, des vieilles habitudes de voir et de leur résistance : René Char ou la jeunesse des mots, du monde...', 'René Char', '1967-01-20', '219', '50', '41'),
-
-    ('Les Rimes de Verlaine', '', 'Recueil de poèmes en vers par Paul Verlaine.', 'Paul Verlaine', '1874-01-01', '160', '50', '42'),
-    ('Le Cantique des cantiques', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Song_of_songs_Rothschild_mahzor.jpg/250px-Song_of_songs_Rothschild_mahzor.jpg', 'Poème biblique ancien en vers.', 'Anonyme', '0000-01-01', '64', '50', '42'),
-    ('Méditations poétiques', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Lamartine_-_M%C3%A9ditations_po%C3%A9tiques_%28%C3%A9dition_de_1820%29.djvu/page12-800px-Lamartine_-_M%C3%A9ditations_po%C3%A9tiques_%28%C3%A9dition_de_1820%29.djvu.jpg', 'Recueil de poèmes en vers de Lamartine.', 'Alphonse de Lamartine', '1820-01-01', '284', '50', '42'),
-    ('Les Fleurs du mal', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Fleurs_du_mal.jpg/250px-Fleurs_du_mal.jpg', 'Recueil de poèmes en vers de Baudelaire.', 'Charles Baudelaire', '1857-06-25', '192', '50', '42'),
-    ('Ode à la Joie', 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Schiller_an_die_freude_manuskript_2.jpg', 'Poème en vers de Friedrich Schiller sur la joie universelle.', 'Friedrich Schiller', '1786-01-01', '64', '50', '42'),
-
-    ('Le Grand Livre de la Cuisine', 'https://www.hachette.fr/sites/default/files/images/livres/couv/9782017216117-001-T.jpeg', 'Recueil de recettes de cuisine pour tous les goûts.', 'Collectif', '2023-10-18', '384', '50', '43'),
-    ('500 Recettes de Grand-Mère', 'https://cdn.cultura.com/cdn-cgi/image/width=830/media/pim/TITELIVE/69_9782353558001_1_75.jpg', 'Recettes traditionnelles transmises par les grands-mères.', 'BROZINSKA ANASTASIIA', '2011-11-24', '352', '50', '43'),
-    ('Cuisine Facile', 'https://media.hachette.fr/fit-in/500x500/imgArticle/MARABOUT/2019/9782501142380-001-X.jpeg?source=web', 'Guide pratique de recettes simples et rapides.', 'Collectif', '2019-09-04', '480', '50', '43'),
-    ('La Cuisine du Monde', 'https://static.fnac-static.com/multimedia/Images/FR/NR/0f/19/dc/14424335/1540-1/tsp20231016081104/Cuisines-du-monde.jpg', 'Recettes de cuisine internationales.', 'Collectif', '2028-09-28', '448', '50', '43'),
-    ('Les Délices de la Pâtisserie', '', 'Recueil de recettes de pâtisserie.', 'Anonyme', '2017-08-22', '272', '50', '43'),
-
-    ('Voyage au Centre de la Terre', 'https://m.media-amazon.com/images/I/51JcOyh3GlL._SY445_SX342_.jpg', 'Aventure scientifique et fantastique de Jules Verne.', 'Jules Verne', '1864-01-01', '320', '50', '44'),
-    ('En Route pour le Soleil', 'https://i.ebayimg.com/images/g/QRoAAOSwGuBmT5m2/s-l960.jpg', 'Récit d’un voyage fascinant vers le soleil.', 'Nancy Martin', '2015-04-10', '280', '50', '44'),
-    ('Les Voyages de Gulliver', 'https://m.media-amazon.com/images/I/81fZOS91fYL._SY466_.jpg', 'Voyages imaginaires de Gulliver dans des mondes fantastiques.', 'Jonathan Swift', '1726-10-01', '432', '50', '44'),
-    ('Le Tour du Monde en Quatre-vingts Jours', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Verne_Tour_du_Monde.jpg/250px-Verne_Tour_du_Monde.jpg', 'Aventure autour du monde en 80 jours par Jules Verne.', 'Jules Verne', '1872-01-01', '320', '50', '44'),
-    ('Récits d’un Voyage en Asie', '', 'Récits captivants d’un voyage à travers l’Asie.', 'Anonyme', '2020-09-15', '320', '50', '44'),
-
-    ('Neuromancien', 'https://m.media-amazon.com/images/I/514O6OgWH1L._SY466_.jpg', 'Roman cyberpunk de William Gibson sur un hacker dans un futur dystopique.', 'William Gibson', '1984-07-01', '271', '50', '45'),
-    ('Dune', 'https://www.lisez.com/usuaris/libros/fotos/9782266321/m_libros/9782266320481ORI.jpg', 'Roman épique de science-fiction sur la planète Arrakis.', 'Frank Herbert', '1965-08-01', '688', '50', '45'),
-    ('Fondation', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIlQxXzyTXiQsgxcVYIANeSwBzdP70woeDiXLiLXt3ZAb8W8m1', 'Saga de science-fiction sur la chute d’un empire galactique.', 'Isaac Asimov', '1951-06-01', '255', '50', '45'),
-    ('Le Meilleur des Mondes', 'https://m.media-amazon.com/images/I/61v7bRPlQPL._SY466_.jpg', 'Roman de science-fiction d’Aldous Huxley sur une société dystopique.', 'Aldous Huxley', '1932-01-01', '311', '50', '45'),
-    ('La Machine à Explorer le Temps', 'https://m.media-amazon.com/images/I/61Wu23921IL._SY466_.jpg', 'Roman de H.G. Wells sur un voyage dans le futur.', 'H.G. Wells', '1895-01-01', '132', '50', '45'),
-
-    ('L\'Attrape-Cœurs', 'https://m.media-amazon.com/images/I/51Pe+9usQFL._SY445_SX342_.jpg', 'L’histoire de Holden Caulfield, adolescent en rébellion à New York.', 'J.D. Salinger', '1951-07-16', '277', '50', '46'),
-    ('Le Rouge et le Noir', 'https://m.media-amazon.com/images/I/81xF2uEZLNL._SY466_.jpg', 'Roman de Stendhal sur la vie d’un jeune ambitieux au début du XIXe siècle.', 'Stendhal', '1830-11-01', '528', '50', '46'),
-    ('Siddhartha', 'https://m.media-amazon.com/images/I/31Xppl-IMbL.jpg', 'Récit de la quête spirituelle d’un jeune homme dans l’Inde ancienne.', 'Hermann Hesse', '1922-01-01', '152', '50', '46'),
-    ('Les Années d\'apprentissage de Wilhelm Meister', 'https://m.media-amazon.com/images/I/81k2kDV2S3L._SY466_.jpg', 'Roman de Goethe sur la formation d’un jeune homme en Allemagne.', 'Johann Wolfgang von Goethe', '1795-01-01', '442', '50', '46'),
-    ('La Vie devant soi', 'https://m.media-amazon.com/images/I/41rFB6k+wCL._SY466_.jpg', 'L’histoire d’un jeune orphelin arabe sous la garde d’une vieille femme juive.', 'Romain Gary', '1975-01-01', '248', '50', '46'),
-
-    ('Les Trois Mousquetaires', 'https://m.media-amazon.com/images/I/81rmbx14FlL._SY466_.jpg', 'Les aventures de d’Artagnan et de ses amis mousquetaires.', 'Alexandre Dumas', '1844-03-01', '768', '50', '47'),
-    ('L\'Île au trésor', 'https://m.media-amazon.com/images/I/71y4XC2YROL._SY466_.jpg', 'Roman d’aventure sur la chasse au trésor d’un jeune garçon.', 'Robert Louis Stevenson', '1883-11-14', '320', '50', '47'),
-    ('Vingt Mille Lieues sous les mers', 'https://m.media-amazon.com/images/I/91mCz5zst4L._SY466_.jpg', 'L’aventure sous-marine du capitaine Nemo et de son équipage.', 'Jules Verne', '1870-03-01', '384', '50', '47'),
-    ('Robinson Crusoe', 'https://m.media-amazon.com/images/I/714uTgCI1fL._SY466_.jpg', 'Une magnifique édition illustrée vintage du roman intemporel Robinson Crusoé de Daniel Defoe', 'Foe Daniel', '1952-01-01', '472', '50', '47'),
-    ('La Piste des Éléphants', 'https://m.media-amazon.com/images/I/91kIyazy+SL._SY466_.jpg', 'Un voyage d’aventure à travers la jungle pour retrouver des éléphants perdus.', 'Éric Gallorini', '2013-05-28', '245', '50', '47'),
-
-    ('Le Seigneur des Anneaux', 'https://img.livraddict.com/covers/183/183472/couv60527719.jpg', 'L’épopée de la Terre du Milieu et la quête pour détruire l’Anneau Unique.', 'J.R.R. Tolkien', '1954-07-29', '1216', '50', '48'),
-    ('Harry Potter à l\'école des sorciers', 'https://pictures.abebooks.com/inventory/31887879498.jpg', 'Les aventures d’un jeune sorcier à Poudlard.', 'J.K. Rowling', '1997-06-26', '309', '50', '48'),
-    ('Les Chroniques de Narnia', 'https://m.media-amazon.com/images/I/51l3WHZuiAL._SY466_.jpg', 'Les aventures fantastiques de quatre enfants dans un monde magique.', 'C.S. Lewis', '1950-10-16', '768', '50', '48'),
-    ('Eragon', 'https://m.media-amazon.com/images/I/91JrDpvTiML._SY466_.jpg', 'L’histoire d’un jeune fermier qui découvre un dragon et part pour une grande aventure.', 'Christopher Paolini', '2002-08-26', '528', '50', '48'),
-    ('La Belgariade', 'https://m.media-amazon.com/images/I/81yr6aavh+L._SY466_.jpg', 'Une série de fantasy qui suit un jeune homme dans une quête épique.', 'David Eddings', '1982-05-01', '464', '50', '48'),
-
-    ('Ensemble, c\'est tout', 'https://www.ledilettante.com/wp-content/uploads/2019/05/978-2-84263-085-0.jpg', 'L’histoire de plusieurs personnes qui se retrouvent pour construire une famille.', 'Anna Gavalda', '2004-08-20', '458', '50', '49'),
-    ('Le Vieux qui ne voulait pas fêter son anniversaire', 'https://m.media-amazon.com/images/I/717KhB2omVL._SY466_.jpg', 'Les aventures d’un vieil homme qui fuit sa fête d’anniversaire et vit des péripéties.', 'Jonas Jonasson', '2009-08-25', '376', '50', '49'),
-    ('La Délicatesse', 'https://images.epagine.fr/415/9782070126415_1_75.jpg', 'L’histoire d’une femme qui retrouve l’amour après une tragédie.', 'David Foenkinos', '2009-01-01', '248', '50', '49'),
-    ('Le Petit Prince', 'https://www.antoinedesaintexupery.com/wp-content/uploads/2011/02/08_0.jpg', 'La célèbre histoire d’un prince venu d’une autre planète et de ses découvertes sur Terre.', 'Antoine de Saint-Exupéry', '1943-04-06', '96', '50', '49'),
-    ('A la lumière du petit matin', 'https://m.media-amazon.com/images/I/61XdlgSxFOL._SY466_.jpg', 'À l\'approche de la quarantaine, Hortense se partage entre son métier de professeur de danse et sa liaison avec un homme marié.', 'Agnès Martin-Lugand', '2019-09-05', '384', '50', '49'),
-
-    ('Les Misérables', 'https://m.media-amazon.com/images/I/61qEU1CUkHL._SY466_.jpg', 'Roman épique de Victor Hugo sur la justice sociale.', 'Victor Hugo', '1862-01-01', '1463', '50', '50'),
-    ('Germinal', 'https://m.media-amazon.com/images/I/51QhaCkG0WL._SY445_SX342_.jpg', 'Roman de Zola sur les conditions des mineurs au XIXe siècle.', 'Émile Zola', '1885-01-01', '512', '50', '50'),
-    ('La Reine Margot', 'https://tomtomlatomate.wordpress.com/wp-content/uploads/2019/02/la-reine-margot-alexandre-dumas.jpg', 'L’histoire de la Reine Margot et des intrigues politiques au XVIe siècle.', 'Alexandre Dumas', '1845-05-01', '512', '50', '50'),
-    ('Le Comte de Monte-Cristo', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Louis_Fran%C3%A7ais-Dant%C3%A8s_sur_son_rocher.jpg/250px-Louis_Fran%C3%A7ais-Dant%C3%A8s_sur_son_rocher.jpg', 'L’histoire de vengeance d’Edmond Dantès, injustement emprisonné.', 'Alexandre Dumas', '1846-01-01', '1278', '50', '50'),
-    ('Les Choses', 'https://m.media-amazon.com/images/I/5151NNLoxxL._SY466_.jpg', 'Portrait d’une génération des années 60 à travers les yeux de François et Christine.', 'Georges Pérec', '1965-01-01', '256', '50', '50'),
-
-    ('Dracula', 'https://m.media-amazon.com/images/I/51rv060WrZL._SY445_SX342_.jpg', 'L’histoire du comte Dracula, vampire et des événements terrifiants qu’il provoque.', 'Bram Stoker', '1897-05-26', '416', '50', '51'),
-    ('Frankenstein', 'https://m.media-amazon.com/images/I/41+TJDLYviL._SY445_SX342_.jpg', 'Le récit de Victor Frankenstein et de sa création monstrueuse.', 'Mary Shelley', '1818-01-01', '280', '50', '51'),
-    ('Ça', 'https://m.media-amazon.com/images/I/31IHWxBVh8L.jpg', 'L’histoire de l’entité maléfique qui hante la ville de Derry.', 'Stephen King', '1986-09-15', '1138', '50', '51'),
-    ('Le Shining', 'https://m.media-amazon.com/images/I/61evFv7CJ5L._SY466_.jpg', 'L’histoire d’un écrivain et de sa famille confrontés à des forces surnaturelles.', 'Stephen King', '1977-01-28', '447', '50', '51'),
-    ('L’Exorciste', 'https://m.media-amazon.com/images/I/71Aa9Pgz0sL._SY466_.jpg', 'Un récit de possession démoniaque et de lutte contre le mal.', 'William Peter Blatty', '1971-06-01', '332', '50', '51'),
-
-    ('Le Petit Nicolas', 'https://m.media-amazon.com/images/I/61861NRhcpL._SY466_.jpg', 'Les aventures amusantes et espiègles d\'un jeune garçon nommé Nicolas et de ses amis.', 'René Goscinny', '1960-03-29', '160', '50', '52' ),
-    ('Les Tribulations d\'un chinois en Chine', 'https://m.media-amazon.com/images/I/510IlNZrRfL._SY466_.jpg', 'Les mésaventures humoristiques d\'un riche héritier en voyage en Chine.', 'Jules Verne', '1879-07-01', '288', '50', '52' ),
-    ('Le Journal d\'une femme de chambre', 'https://m.media-amazon.com/images/I/61S3ED0UBaL._SY466_.jpg', 'Le récit satirique des expériences d\'une femme de chambre au service des bourgeois parisiens.', 'Octave Mirbeau', '1900-02-20', '352', '50', '52' ),
-    ('Au bonheur des ogres', 'https://m.media-amazon.com/images/I/61gX+A0a+IL._SY466_.jpg', 'Les mésaventures loufoques d\'un héros gaffeur au sein d\'une famille farfelue.', 'Daniel Pennac', '1985-09-20', '288', '50', '52' ),
-    ('La vie sexuelle des super-héros', 'https://m.media-amazon.com/images/I/91niz6Vzy4L._SY466_.jpg', 'Une parodie amusante de la vie privée des super-héros et de leurs relations amoureuses.', 'Marco Mancassola', '2010-04-15', '416', '50', '52' ),
-
-    ('Le Royaume de Kensuké', 'https://m.media-amazon.com/images/I/81N3Utt2zHS._SY466_.jpg', 'Le Royaume de Kensuké est un roman de Michael Morpurgo destiné à un public pré-adolescent ou adolescent. C\'est un livre d\'aventures s\'inspirant de Robinson Crusoé.', 'Michael Morpurgo', '2000-06-26', '152', '50', '53' ),
-    ('Le Petit Prince', 'https://books.google.fr/books/publisher/content?id=1ppDEAAAQBAJ&hl=fr&pg=PP1&img=1&zoom=3&bul=1&sig=ACfU3U23RwcBAaHGuhoAmqSoMiu8GnUJoA&w=1280', 'L\'histoire poétique et philosophique d\'un jeune prince explorant des planètes lointaines.', 'Antoine de Saint-Exupéry', '1943-04-06', '96', '50', '53' ),
-    ('L\'esprit de l\'hiver', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhzrUYE0kixpie0gA__ljoDJheW_p4VMDW1lKYnz8Ruix2K174', 'L\'hiver et son manteau se sont posés sur la forêt. Les jours sont froids et les nuits sont longues, mais, comme chaque année à l\'approche de la fête de Yule, les habitants de Bellécorce se réjouissent : les boutiques regorgent de jolies choses, les gourmandises se préparent, et beaucoup prennent la direction du Grand Nord.', 'Mickaël Brun-Arnaud', '2023-10-04', '324', '50', '53' ),
-    ('Charlie et la chocolaterie', 'https://m.media-amazon.com/images/I/51vABGxjcfL._SY466_.jpg', 'Les aventures extraordinaires de Charlie Bucket dans la fabuleuse chocolaterie de Willy Wonka.', 'Roald Dahl', '1964-01-17', '176', '50', '53' ),
-    ('Le Lion', 'https://m.media-amazon.com/images/I/91U1rbnk5uL._SY466_.jpg', 'L\'histoire touchante de la relation entre une jeune fille et un lion dans la savane africaine.', 'Joseph Kessel', '1958-01-01', '272', '50', '53' ),
-
-    ('La Tresse', 'https://m.media-amazon.com/images/I/71FtuYQlQrL._SY466_.jpg', 'Trois femmes, trois histoires, trois continents : le destin tressé de Smita en Inde, Giulia en Sicile et Sarah au Canada.', 'Laetitia Colombani', '2017-05-10', '224', '50', '54' ),
-    ('L\'élégance du hérisson', 'https://m.media-amazon.com/images/I/41osx8p8yrL._SY445_SX342_.jpg', 'Dans un immeuble bourgeois parisien, la concierge Renée et la jeune Paloma nouent une amitié improbable.', 'Muriel Barbery', '2006-08-20', '359', '50', '54' ),
-    ('En attendant Bojangles', 'https://m.media-amazon.com/images/I/81DB6wNMluL._SY466_.jpg', 'Un enfant raconte la vie extravagante de ses parents, entre folie et amour démesuré.', 'Olivier Bourdeaut', '2016-01-06', '160', '50', '54' ),
-    ('Les Gratitudes', 'https://m.media-amazon.com/images/I/71l31Lyl95L._SY466_.jpg', 'Une réflexion sur la gratitude à travers l\'histoire d\'une vieille femme et de son entourage.', 'Delphine de Vigan', '2019-02-20', '208', '50', '54' ),
-    ('Changer l\'eau des fleurs', 'https://m.media-amazon.com/images/I/71m1nkcF2EL._SY466_.jpg', 'La vie douce-amère de Violette Toussaint, gardienne de cimetière, au milieu des histoires de deuil et de renaissance.', 'Valérie Perrin', '2018-02-28', '576', '50', '54' ),
-
-    ('Madame Bovary', 'https://m.media-amazon.com/images/I/81ghr9ALaDL._SY466_.jpg', 'L\'histoire tragique d\'Emma Bovary, une femme insatisfaite de sa vie provinciale.', 'Gustave Flaubert', '1857-04-15', '432', '50', '55' ),
-    ('Bel-Ami', 'https://m.media-amazon.com/images/I/4118OrYciZL._SY445_SX342_.jpg', 'L\'ascension sociale d\'un jeune homme ambitieux dans le Paris du XIXe siècle.', 'Guy de Maupassant', '1885-04-01', '384', '50', '55' ),
-    ('Thérèse Raquin', 'https://m.media-amazon.com/images/I/61cDRpN2D4L._SY466_.jpg', 'Le drame d\'une femme adultère et de son amant après qu\'ils ont assassiné son mari.', 'Émile Zola', '1867-01-01', '336', '50', '55' ),
-    ('Le Rouge et le Noir', 'https://m.media-amazon.com/images/I/61yOisDsHYL._SY466_.jpg', 'Le parcours ambitieux et amoureux de Julien Sorel dans la France post-napoléonienne.', 'Stendhal', '1830-11-01', '576', '50', '55' ),
-    ('La Curée', 'https://m.media-amazon.com/images/I/51ncGHkZ22S._SY466_.jpg', 'Les excès et la décadence de la bourgeoisie parisienne sous le Second Empire.', 'Émile Zola', '1871-01-01', '416', '50', '55' ),
-
-    ('Le Dahlia noir', 'https://m.media-amazon.com/images/I/51HYoNXm54L._SY466_.jpg', 'L\'enquête sur le meurtre brutal et non résolu d\'une jeune femme à Los Angeles en 1947.', 'James Ellroy', '1987-09-15', '512', '50', '56' ),
-    ('American Psycho', 'https://m.media-amazon.com/images/I/61i+TTSlbVL._SY466_.jpg', 'Le récit dérangeant d\'un jeune cadre new-yorkais en apparence parfait, mais en réalité psychopathe et meurtrier.', 'Bret Easton Ellis', '1991-03-06', '400', '50', '56' ),
-    ('Millénium, Tome 1 : Les Hommes qui n\'aimaient pas les femmes', 'https://m.media-amazon.com/images/I/41vJBg-JcTL._SY466_.jpg', 'Le journaliste Mikael Blomkvist et la hackeuse Lisbeth Salander enquêtent sur une disparition vieille de 40 ans.', 'Stieg Larsson', '2005-08-01', '672', '50', '56' ),
-    ('La Nuit des temps', 'https://m.media-amazon.com/images/I/51BE6jBtZ4L._SY445_SX342_.jpg', 'La découverte d\'une civilisation ancienne et l\'amour impossible entre deux êtres séparés par des millénaires.', 'René Barjavel', '1968-09-25', '384', '50', '56' ),
-    ('Seul le silence', 'https://m.media-amazon.com/images/I/61LeJC1VwvL._SY466_.jpg', 'Un jeune garçon découvre les secrets sombres de sa petite ville après une série de meurtres brutaux.', 'R. J. Ellory', '2007-01-18', '544', '50', '56' ),
-
-    ('Le Monde de Sophie', '', 'Une introduction à la philosophie à travers les aventures d\'une jeune fille découvrant les grandes questions existentielles.', 'Jostein Gaarder', '1991-12-05', '544', '50', '57' ),
-    ('L\'Étranger', '', 'Le récit absurde et détaché de Meursault, un homme indifférent aux normes sociales, confronté à la justice.', 'Albert Camus', '1942-06-15', '191', '50', '57' ),
-    ('Le Prophète', '', 'Une série de poèmes philosophiques sur la vie, l\'amour, le travail et la liberté.', 'Khalil Gibran', '1923-01-01', '128', '50', '57' ),
-    ('Ainsi parlait Zarathoustra', '', 'Un traité philosophique sous forme de récit où Nietzsche expose sa vision du Surhomme.', 'Friedrich Nietzsche', '1883-01-01', '336', '50', '57' ),
-    ('Siddhartha', '', 'Le voyage spirituel et philosophique d\'un homme en quête de sagesse et de sens.', 'Hermann Hesse', '1922-01-01', '152', '50', '57' ),
-
-    ('Le Chien des Baskerville', '', 'Sherlock Holmes enquête sur la légende d\'un chien monstrueux qui hanterait une famille noble.', 'Arthur Conan Doyle', '1902-04-01', '272', '50', '58' ),
-    ('Le Crime de l\'Orient-Express', '', 'Hercule Poirot enquête sur le meurtre d\'un riche homme d\'affaires à bord de l\'Orient-Express.', 'Agatha Christie', '1934-01-01', '256', '50', '58' ),
-    ('Da Vinci Code', '', 'Le professeur Robert Langdon découvre une série de mystères cachés dans les œuvres de Léonard de Vinci.', 'Dan Brown', '2003-03-18', '736', '50', '58' ),
-    ('Millénium, Tome 1 : Les Hommes qui n\'aimaient pas les femmes', '', 'Le journaliste Mikael Blomkvist et la hackeuse Lisbeth Salander enquêtent sur une disparition vieille de 40 ans.', 'Stieg Larsson', '2005-08-01', '672', '50', '58' ),
-    ('Le Nom de la rose', '', 'Le moine franciscain Guillaume de Baskerville mène une enquête dans une abbaye médiévale où se produisent des meurtres mystérieux.', 'Umberto Eco', '1980-01-01', '552', '50', '58' ),
-
-    ('1984', '', 'Un homme tente de survivre dans un régime totalitaire où Big Brother surveille tout.', 'George Orwell', '1949-06-08', '328', '50', '59' ),
-    ('Dune', '', 'L\'épopée de Paul Atréides sur la planète désertique Arrakis, où l\'épice mélangée est la substance la plus précieuse de l\'univers.', 'Frank Herbert', '1965-08-01', '688', '50', '59' ),
-    ('Le Meilleur des mondes', '', 'Un futur dystopique où les êtres humains sont conditionnés et contrôlés dès la naissance pour maintenir une société stable.', 'Aldous Huxley', '1932-01-01', '288', '50', '59' ),
-    ('Neuromancien', '', 'Un hacker sur le déclin est engagé pour réaliser une mission de piratage dans un univers cybernétique.', 'William Gibson', '1984-07-01', '271', '50', '59' ),
-    ('La Guerre des mondes', '', 'L\'invasion de la Terre par des extraterrestres martiens et la lutte de l\'humanité pour sa survie.', 'H.G. Wells', '1898-01-01', '192', '50', '59' ),
-
-    ('Orgueil et Préjugés', '', 'La relation tumultueuse entre Elizabeth Bennet et Mr. Darcy dans l\'Angleterre du début du XIXe siècle.', 'Jane Austen', '1813-01-28', '432', '50', '60' ),
-    ('Les Hauts de Hurlevent', '', 'L\'histoire d\'amour passionnée et destructrice entre Heathcliff et Catherine Earnshaw dans les landes du Yorkshire.', 'Emily Brontë', '1847-12-01', '416', '50', '60' ),
-    ('Outlander', '', 'Une infirmière de la Seconde Guerre mondiale se retrouve projetée dans l\'Écosse du XVIIIe siècle où elle rencontre un Highlander.', 'Diana Gabaldon', '1991-06-01', '896', '50', '60' ),
-    ('La Nuit des temps', '', 'La découverte d\'une civilisation ancienne et l\'amour impossible entre deux êtres séparés par des millénaires.', 'René Barjavel', '1968-09-25', '384', '50', '60' ),
-    ('P.S. I Love You', '', 'Une jeune veuve reçoit des lettres de son défunt mari pour l\'aider à surmonter son deuil et retrouver le bonheur.', 'Cecelia Ahern', '2004-01-01', '512', '50', '60' ),
-
-    ('Le Silence des agneaux', '', 'L\'agent du FBI Clarice Starling doit interroger le dangereux psychopathe Hannibal Lecter pour arrêter un tueur en série.', 'Thomas Harris', '1988-05-19', '367', '50', '61' ),
-    ('La Fille du train', '', 'Une femme dépressive et alcoolique devient obsédée par un couple qu\'elle observe depuis le train, jusqu\'à ce qu\'un crime se produise.', 'Paula Hawkins', '2015-01-13', '408', '50', '61' ),
-    ('Gone Girl', '', 'La disparition mystérieuse d\'une femme mène à une enquête complexe révélant de sombres secrets matrimoniaux.', 'Gillian Flynn', '2012-06-05', '432', '50', '61' ),
-    ('Shutter Island', '', 'Deux marshals enquêtent sur la disparition d\'une patiente dans un hôpital psychiatrique situé sur une île isolée.', 'Dennis Lehane', '2003-04-15', '368', '50', '61' ),
-    ('Le Da Vinci Code', '', 'Le professeur Robert Langdon découvre une série de mystères cachés dans les œuvres de Léonard de Vinci.', 'Dan Brown', '2003-03-18', '736', '50', '61' ),
-
-    ('Pulp Fiction', '', 'Un film culte de Quentin Tarantino composé de plusieurs histoires entrecroisées dans le monde du crime à Los Angeles.', 'Quentin Tarantino', '1994-05-21', '176', '50', '62' ),
-    ('Le Grand Bleu', '', 'Une histoire d\'amitié et de rivalité entre deux apnéistes de haut niveau.', 'Luc Besson', '1988-05-11', '188', '50', '62' ),
-    ('La Haine', '', 'Le quotidien de trois jeunes issus de banlieues parisiennes après une nuit d\'émeutes.', 'Mathieu Kassovitz', '1995-05-31', '98', '50', '62' ),
-    ('Inception', '', 'Un spécialiste du vol de secrets par le biais des rêves se voit confier une mission complexe d\'implanter une idée dans l\'esprit d\'un héritier.', 'Christopher Nolan', '2010-07-16', '148', '50', '62' ),
-    ('Les Enfants du paradis', '', 'Une fresque romantique et tragique se déroulant dans le monde du théâtre parisien au XIXe siècle.', 'Jacques Prévert', '1945-03-09', '195', '50', '62' );
-
-INSERT INTO `musics` (`title`, `picture`, `singer`, `date`, `duration`, `quantities`, `id_category`)
-VALUES
-    ('Ye', '', 'Burna Boy', '2018-08-06', '174', '50', '63'),
-    ('Jerusalema', '', 'Master KG, Nomcebo Zikode', '2019-12-13', '232', '50', '63'),
-    ('Djadja', '', 'Aya Nakamura', '2018-04-06', '168', '50', '63'),
-    ('Essence', '', 'WizKid, Tems', '2020-10-30', '240', '50', '63'),
-    ('Come Closer', '', 'WizKid, Drake', '2017-03-31', '209', '50', '63'),
-
-    ('Gurenge', '', 'LiSA', '2019-04-22', '230', '50', '64'),
-    ('Blue Bird', '', 'Ikimono Gakari', '2008-07-09', '220', '50', '64'),
-    ('Unravel', '', 'TK from Ling Tosite Sigure', '2014-07-23', '240', '50', '64'),
-    ('Again', '', 'YUI', '2009-06-03', '280', '50', '64'),
-    ('Silhouette', '', 'KANA-BOON', '2014-11-26', '228', '50', '64'),
-
-    ('The Thrill Is Gone', '', 'B.B. King', '1969-12-01', '300', '50', '65'),
-    ('Stormy Monday', '', 'T-Bone Walker', '1947-11-01', '196', '50', '65'),
-    ('Hoochie Coochie Man', '', 'Muddy Waters', '1954-01-07', '170', '50', '65'),
-    ('I\'d Rather Go Blind', '', 'Etta James', '1968-10-15', '173', '50', '65'),
-    ('Cross Road Blues', '', 'Robert Johnson', '1936-11-27', '165', '50', '65'),
-
-    ('Blinding Lights', '', 'The Weeknd', '2019-11-29', '200', '50', '66'),
-    ('Levitating', '', 'Dua Lipa', '2020-03-27', '203', '50', '66'),
-    ('Watermelon Sugar', '', 'Harry Styles', '2019-11-16', '173', '50', '66'),
-    ('Good 4 U', '', 'Olivia Rodrigo', '2021-05-14', '178', '50', '66'),
-    ('Bad Guy', '', 'Billie Eilish', '2019-03-29', '194', '50', '66'),
-
-    ('Sunset Lover', '', 'Petit Biscuit', '2015-06-15', '191', '50', '67'),
-    ('Weightless', '', 'Marconi Union', '2011-10-16', '505', '50', '67'),
-    ('Night Owl', '', 'Gerry Rafferty', '1979-06-01', '264', '50', '67'),
-    ('Better Together', '', 'Jack Johnson', '2005-03-01', '207', '50', '67'),
-    ('Gravity', '', 'John Mayer', '2006-09-12', '242', '50', '67'),
-
-    ('Clair de Lune', '', 'Claude Debussy', '1882-12-20', '180', '50', '68'),
-    ('Für Elise', '', 'Ludwig van Beethoven', '1810-08-14', '177', '50', '68'),
-    ('Symphony No. 5', '', 'Ludwig van Beethoven', '1808-12-22', '1980', '50', '68'),
-    ('Nocturne Op. 9 No. 2', '', 'Frédéric Chopin', '1831-01-01', '240', '50', '68'),
-    ('Canon in D Major', '', 'Johann Pachelbel', '1680-01-01', '356', '50', '68'),
-
-    ('Jolene', '', 'Dolly Parton', '1973-10-15', '155', '50', '69'),
-    ('Take Me Home, Country Roads', '', 'John Denver', '1971-04-12', '191', '50', '69'),
-    ('The Gambler', '', 'Kenny Rogers', '1978-11-15', '220', '50', '69'),
-    ('Ring of Fire', '', 'Johnny Cash', '1963-04-19', '175', '50', '69'),
-    ('Friends in Low Places', '', 'Garth Brooks', '1990-08-06', '268', '50', '69'),
-
-    ('Born This Way', '', 'Lady Gaga', '2011-02-11', '260', '50', '70'),
-    ('Vogue', '', 'Madonna', '1990-03-27', '300', '50', '70'),
-    ('Freedom! 90', '', 'George Michael', '1990-10-30', '389', '50', '70'),
-    ('True Colors', '', 'Cyndi Lauper', '1986-08-28', '255', '50', '70'),
-    ('I Will Survive', '', 'Gloria Gaynor', '1978-10-23', '208', '50', '70'),
-
-    ('Wake Me Up', '', 'Avicii', '2013-06-17', '247', '50', '71'),
-    ('Titanium', '', 'David Guetta, Sia', '2011-08-08', '245', '50', '71'),
-    ('Animals', '', 'Martin Garrix', '2013-06-17', '267', '50', '71'),
-    ('Lean On', '', 'Major Lazer, DJ Snake, MØ', '2015-03-02', '176', '50', '71'),
-    ('Don\'t You Worry Child', '', 'Swedish House Mafia, John Martin', '2012-09-14', '215', '50', '71'),
-
-    ('Stayin\' Alive', '', 'Bee Gees', '1977-12-13', '284', '50', '72'),
-    ('Le Freak', '', 'Chic', '1978-09-30', '283', '50', '72'),
-    ('I Will Survive', '', 'Gloria Gaynor', '1978-10-23', '208', '50', '72'),
-    ('Dancing Queen', '', 'ABBA', '1976-08-15', '230', '50', '72'),
-    ('Don\'t Stop \'Til You Get Enough', '', 'Michael Jackson', '1979-07-28', '362', '50', '72'),
-
-    ('Superstar', '', 'RuPaul', '1993-06-08', '178', '50', '73'),
-    ('Sissy That Walk', '', 'RuPaul', '2014-01-28', '208', '50', '73'),
-    ('Kitty Girl', '', 'RuPaul', '2017-03-24', '207', '50', '73'),
-    ('Read U Wrote U', '', 'RuPaul, The Cast of Rupaul\'s Drag Race All Stars, Season 2', '2016-10-28', '191', '50', '73'),
-    ('Glamazon', '', 'RuPaul', '2011-05-03', '187', '50', '73'),
-
-    ('My Heart Will Go On', '', 'Céline Dion', '1997-11-18', '305', '50', '74'),
-    ('Hedwig\'s Theme', '', 'John Williams', '2001-10-30', '304', '50', '74'),
-    ('Shallow', '', 'Lady Gaga, Bradley Cooper', '2018-09-27', '216', '50', '74'),
-    ('Let It Go', '', 'Idina Menzel', '2013-11-25', '218', '50', '74'),
-    ('Circle of Life', '', 'Elton John', '1994-08-09', '242', '50', '74'),
-
-    ('The A Team', '', 'Ed Sheeran', '2011-06-12', '256', '50', '75'),
-    ('Skinny Love', '', 'Bon Iver', '2007-07-08', '234', '50', '75'),
-    ('Ho Hey', '', 'The Lumineers', '2012-04-03', '164', '50', '75'),
-    ('Fast Car', '', 'Tracy Chapman', '1988-04-06', '298', '50', '75'),
-    ('Big Yellow Taxi', '', 'Joni Mitchell', '1970-03-01', '178', '50', '75'),
-
-    ('Megalovania', '', 'Toby Fox', '2015-09-15', '140', '50', '76'),
-    ('Baba Yetu', '', 'Christopher Tin', '2005-07-19', '229', '50', '76'),
-    ('Still Alive', '', 'GLaDOS, Jonathan Coulton', '2007-10-10', '178', '50', '76'),
-    ('Lifelight', '', 'Hideki Sakamoto', '2018-11-01', '154', '50', '76'),
-    ('Gerudo Valley', '', 'Koji Kondo', '1998-11-21', '142', '50', '76'),
-
-    ('Oh Happy Day', '', 'Edwin Hawkins Singers', '1969-03-02', '304', '50', '77'),
-    ('Amazing Grace', '', 'Aretha Franklin', '1972-06-01', '246', '50', '77'),
-    ('Take My Hand, Precious Lord', '', 'Mahalia Jackson', '1956-01-01', '216', '50', '77'),
-    ('Shackles (Praise You)', '', 'Mary Mary', '2000-05-09', '210', '50', '77'),
-    ('Revolution', '', 'Kirk Franklin', '1998-10-27', '321', '50', '77'),
-
-    ('Enter Sandman', '', 'Metallica', '1991-07-29', '331', '50', '78'),
-    ('Iron Man', '', 'Black Sabbath', '1970-10-07', '355', '50', '78'),
-    ('Painkiller', '', 'Judas Priest', '1990-09-03', '367', '50', '78'),
-    ('The Trooper', '', 'Iron Maiden', '1983-06-20', '244', '50', '78'),
-    ('Breaking the Law', '', 'Judas Priest', '1980-04-14', '158', '50', '78'),
-
-    ('Lose Yourself', '', 'Eminem', '2002-10-28', '326', '50', '79'),
-    ('Juicy', '', 'The Notorious B.I.G.', '1994-08-09', '308', '50', '79'),
-    ('Nuthin\' But a "G" Thang', '', 'Dr. Dre, Snoop Dogg', '1992-11-19', '242', '50', '79'),
-    ('C.R.E.A.M.', '', 'Wu-Tang Clan', '1994-01-31', '252', '50', '79'),
-    ('Fight The Power', '', 'Public Enemy', '1989-07-04', '320', '50', '79'),
-
-    ('Mr. Brightside', '', 'The Killers', '2003-09-29', '222', '50', '80'),
-    ('Take Me Out', '', 'Franz Ferdinand', '2004-02-09', '238', '50', '80'),
-    ('Float On', '', 'Modest Mouse', '2004-02-14', '224', '50', '80'),
-    ('Reptilia', '', 'The Strokes', '2004-02-09', '233', '50', '80'),
-    ('Electric Feel', '', 'MGMT', '2007-10-02', '231', '50', '80'),
-
-    ('So What', '', 'Miles Davis', '1959-08-17', '563', '50', '81'),
-    ('Take Five', '', 'The Dave Brubeck Quartet', '1959-09-21', '324', '50', '81'),
-    ('What a Wonderful World', '', 'Louis Armstrong', '1967-10-18', '139', '50', '81'),
-    ('A Love Supreme', '', 'John Coltrane', '1965-02-01', '467', '50', '81'),
-    ('Birdland', '', 'Weather Report', '1977-05-01', '331', '50', '81'),
-
-    ('Dynamite', '', 'BTS', '2020-08-21', '199', '50', '82'),
-    ('DDU-DU DDU-DU', '', 'BLACKPINK', '2018-06-15', '210', '50', '82'),
-    ('Gangnam Style', '', 'PSY', '2012-07-15', '219', '50', '82'),
-    ('FANCY', '', 'TWICE', '2019-04-22', '212', '50', '82'),
-    ('Love Scenario', '', 'iKON', '2018-01-25', '198', '50', '82'),
-
-    ('Despacito', '', 'Luis Fonsi, Daddy Yankee', '2017-01-13', '229', '50', '83'),
-    ('Bailando', '', 'Enrique Iglesias, Gente de Zona, Descemer Bueno', '2014-04-11', '250', '50', '83'),
-    ('Hips Don\'t Lie', '', 'Shakira, Wyclef Jean', '2006-02-28', '218', '50', '83'),
-    ('Vivir Mi Vida', '', 'Marc Anthony', '2013-07-23', '258', '50', '83'),
-    ('La Bicicleta', '', 'Carlos Vives, Shakira', '2016-05-27', '225', '50', '83'),
-
-    ('Coffee Break', '', 'Zmeyev', '2020-01-15', '149', '50', '84'),
-    ('Snowfall', '', 'Idealism', '2017-12-12', '122', '50', '84'),
-    ('Dreaming', '', 'Jinsang', '2016-04-14', '165', '50', '84'),
-    ('You & I', '', 'Eevee', '2018-06-15', '120', '50', '84'),
-    ('Sundew', '', 'Nymano', '2017-08-11', '136', '50', '84'),
-
-    ('Master of Puppets', '', 'Metallica', '1986-03-03', '516', '50', '85'),
-    ('Paranoid', '', 'Black Sabbath', '1970-09-18', '171', '50', '85'),
-    ('Ace of Spades', '', 'Motörhead', '1980-10-27', '166', '50', '85'),
-    ('Holy Diver', '', 'Dio', '1983-05-25', '311', '50', '85'),
-    ('Raining Blood', '', 'Slayer', '1986-10-07', '251', '50', '85'),
-
-    ('Mas, Que Nada', '', 'Jorge Ben Jor', '1963-07-01', '180', '50', '86'),
-    ('Aquarela do Brasil', '', 'Gal Costa', '1981-11-01', '165', '50', '86'),
-    ('Chega de Saudade', '', 'João Gilberto', '1959-01-01', '183', '50', '86'),
-    ('Tropicália', '', 'Caetano Veloso', '1968-10-01', '239', '50', '86'),
-    ('Sampa', '', 'Caetano Veloso', '1999-07-01', '237', '50', '86'),
-
-    ('Lemon', '', 'Kenshi Yonezu', '2018-02-14', '248', '50', '87'),
-    ('Pretender', '', 'Official HIGE DANDism', '2019-01-09', '260', '50', '87'),
-    ('Heavy Rotation', '', 'AKB48', '2010-08-18', '232', '50', '87'),
-    ('Paprika', '', 'Foorin', '2018-12-12', '225', '50', '87'),
-    ('Koi', '', 'Gen Hoshino', '2016-12-14', '207', '50', '87'),
-
-    ('Baba Yetu', '', 'Christopher Tin', '2005-01-01', '243', '50', '88'),
-    ('Sidi Mansour', '', 'Hedi Jouini', '1987-01-01', '263', '50', '88'),
-    ('Aicha', '', 'Khaled', '1996-10-01', '240', '50', '88'),
-    ('Pata Pata', '', 'Miriam Makeba', '1967-01-01', '185', '50', '88'),
-    ('Je l’aime à mourir', '', 'Francis Cabrel', '2007-01-01', '248', '50', '88'),
-
-    ('Nessun Dorma', '', 'Luciano Pavarotti', '1990-01-01', '210', '50', '89'),
-    ('La Traviata: Brindisi', '', 'Maria Callas', '1953-01-01', '158', '50', '89'),
-    ('Ave Maria', '', 'Andrea Bocelli', '1999-01-01', '178', '50', '89'),
-    ('O Mio Babbino Caro', '', 'Jessye Norman', '1992-01-01', '163', '50', '89'),
-    ('Carmen: Habanera', '', 'Elina Garanca', '2009-01-01', '183', '50', '89'),
-
-    ('Billie Jean', '', 'Michael Jackson', '1982-01-02', '294', '50', '90'),
-    ('Like a Prayer', '', 'Madonna', '1989-03-21', '349', '50', '90'),
-    ('Poker Face', '', 'Lady Gaga', '2008-09-26', '238', '50', '90'),
-    ('Blinding Lights', '', 'The Weeknd', '2019-11-29', '201', '50', '90'),
-    ('Rolling in the Deep', '', 'Adele', '2010-11-29', '228', '50', '90'),
-
-    ('Anarchy in the U.K.', '', 'Sex Pistols', '1976-11-26', '167', '50', '91'),
-    ('Blitzkrieg Bop', '', 'Ramones', '1976-02-04', '168', '50', '91'),
-    ('London Calling', '', 'The Clash', '1979-12-14', '195', '50', '91'),
-    ('I Wanna Be Sedated', '', 'Ramones', '1978-02-01', '174', '50', '91'),
-    ('Holiday in Cambodia', '', 'Dead Kennedys', '1980-07-01', '224', '50', '91'),
-
-    ('Let\'s Stay Together', '', 'Al Green', '1972-01-31', '202', '50', '92'),
-    ('What\'s Going On', '', 'Marvin Gaye', '1971-05-21', '233', '50', '92'),
-    ('I\'m Every Woman', '', 'Chaka Khan', '1978-10-12', '280', '50', '92'),
-    ('Kiss', '', 'Prince', '1986-02-05', '213', '50', '92'),
-    ('Ain\'t Nobody', '', 'Rufus, Chaka Khan', '1983-07-15', '247', '50', '92'),
-
-    ('Didi', '', 'Khaled', '1992-01-01', '245', '50', '93'),
-    ('Aïcha', '', 'Khaled', '1996-10-01', '240', '50', '93'),
-    ('Abdel Kader', '', 'Khaled, Rachid Taha', '1999-05-01', '278', '50', '93'),
-    ('C\'est La Vie', '', 'Khaled', '2012-06-01', '199', '50', '93'),
-    ('N\'ssi N\'ssi', '', 'Cheb Hasni', '1991-01-01', '237', '50', '93'),
-
-    ('Lose Yourself', '', 'Eminem', '2002-10-28', '261', '50', '94'),
-    ('Juicy', '', 'The Notorious B.I.G.', '1994-08-09', '357', '50', '94'),
-    ('California Love', '', '2Pac', '1995-12-12', '226', '50', '94'),
-    ('C.R.E.A.M.', '', 'Wu-Tang Clan', '1993-01-31', '210', '50', '94'),
-    ('Gold Digger', '', 'Kanye West, Jamie Foxx', '2005-09-13', '212', '50', '94'),
-
-    ('Three Little Birds', '', 'Bob Marley & The Wailers', '1977-05-23', '180', '50', '95'),
-    ('Bad Boys', '', 'Inner Circle', '1987-04-08', '210', '50', '95'),
-    ('Red Red Wine', '', 'UB40', '1983-01-29', '187', '50', '95'),
-    ('Sweat (A La La La La Long),', '', 'Inner Circle', '1992-06-28', '232', '50', '95'),
-    ('Could You Be Loved', '', 'Bob Marley & The Wailers', '1980-05-10', '220', '50', '95'),
-
-    ('Despacito', '', 'Luis Fonsi, Daddy Yankee', '2017-01-13', '229', '50', '96'),
-    ('Dákiti', '', 'Bad Bunny, Jhay Cortez', '2020-10-30', '211', '50', '96'),
-    ('Taki Taki', '', 'DJ Snake, Selena Gomez, Ozuna, Cardi B', '2018-09-28', '212', '50', '96'),
-    ('Hawái', '', 'Maluma', '2020-07-02', '174', '50', '96'),
-    ('Dile Que Tú Me Quieres', '', 'Ozuna', '2018-04-06', '188', '50', '96'),
-
-    ('Bohemian Rhapsody', '', 'Queen', '1975-10-31', '354', '50', '97'),
-    ('Hotel California', '', 'Eagles', '1976-12-08', '391', '50', '97'),
-    ('Stairway to Heaven', '', 'Led Zeppelin', '1971-11-08', '482', '50', '97'),
-    ('Imagine', '', 'John Lennon', '1971-10-11', '187', '50', '97'),
-    ('Sweet Child O\' Mine', '', 'Guns N\' Roses', '1987-08-08', '356', '50', '97'),
-
-    ('Smells Like Teen Spirit', '', 'Nirvana', '1991-09-10', '301', '50', '98'),
-    ('Creep', '', 'Radiohead', '1992-09-24', '239', '50', '98'),
-    ('Losing My Religion', '', 'R.E.M.', '1991-03-19', '229', '50', '98'),
-    ('Under the Bridge', '', 'Red Hot Chili Peppers', '1992-09-01', '266', '50', '98'),
-    ('No Rain', '', 'Blind Melon', '1992-09-16', '238', '50', '98'),
-
-    ('Aquel lugar', '', 'Héctor Lavoe', '1988-01-01', '245', '50', '99'),
-    ('Vivir lo Nuestro', '', 'Marc Anthony, La India', '1994-11-01', '297', '50', '99'),
-    ('Que Manera de Quererte', '', 'Gilberto Santa Rosa', '1995-03-01', '250', '50', '99'),
-    ('Lloraré', '', 'Oscar D’León', '1983-07-01', '276', '50', '99'),
-    ('El Cantante', '', 'Héctor Lavoe', '1978-01-01', '262', '50', '99'),
-
-    ('Superstition', '', 'Stevie Wonder', '1972-10-24', '263', '50', '100'),
-    ('I Got You (I Feel Good),', '', 'James Brown', '1965-09-13', '161', '50', '100'),
-    ('Respect', '', 'Aretha Franklin', '1967-04-01', '148', '50', '100'),
-    ('Let’s Groove', '', 'Earth, Wind & Fire', '1981-10-05', '267', '50', '100'),
-    ('Ain’t No Mountain High Enough', '', 'Marvin Gaye, Tammi Terrell', '1967-06-01', '137', '50', '100'),
-
-    ('Sandstorm', '', 'Darude', '1999-11-15', '137', '50', '101'),
-    ('Adagio for Strings', '', 'Tiesto', '2005-03-07', '264', '50', '101'),
-    ('Scary Monsters and Nice Sprites', '', 'Skrillex', '2010-10-22', '246', '50', '101'),
-    ('One More Time', '', 'Daft Punk', '2000-11-13', '320', '50', '101'),
-    ('Harder, Better, Faster, Stronger', '', 'Daft Punk', '2001-03-12', '232', '50', '101'),
-
-    ('Adagio for Strings', '', 'Tiesto', '2005-03-07', '264', '50', '102'),
-    ('For an Angel', '', 'Paul van Dyk', '1998-09-21', '320', '50', '102'),
-    ('Sun & Moon', '', 'Above & Beyond', '2011-02-28', '236', '50', '102'),
-    ('Sandstorm', '', 'Darude', '1999-11-15', '137', '50', '102'),
-    ('Communication', '', 'Armin van Buuren', '1999-05-01', '264', '50', '102'),
-
-    ('Sicko Mode', '', 'Travis Scott', '2018-08-03', '312', '50', '103'),
-    ('Goosebumps', '', 'Travis Scott', '2016-03-04', '210', '50', '103'),
-    ('Bad and Boujee', '', 'Migos, Lil Uzi Vert', '2016-10-28', 217, 50, 103),
-    ('God\'s Plan', '', 'Drake', '2018-01-19', 198, 50, 103),
-    ('Mask Off', '', 'Future', '2017-04-18', 203, 50, 103),
-
-    ('Je te promets', '', 'Johnny Hallyday', '1986-11-01', '257', '50', '104'),
-    ('La Vie en rose', '', 'Édith Piaf', '1947-05-01', '187', '50', '104'),
-    ('Ne me quitte pas', '', 'Jacques Brel', '1959-01-01', '197', '50', '104'),
-    ('Je l’aime à mourir', '', 'Francis Cabrel', '2007-01-01', '248', '50', '104'),
-    ('L’encre de tes yeux', '', 'Francis Cabrel', '1980-01-01', '221', '50', '104');
+    `books` (
+        `title`,
+        `picture`,
+        `description`,
+        `author`,
+        `date`,
+        `pages`,
+        `quantities`,
+        `id_category`
+    )
+VALUES (
+        'Le Deuxième Sexe',
+        'https://m.media-amazon.com/images/I/71qjM2w0RoL._SY466_.jpg',
+        'Essai de Simone de Beauvoir sur la condition des femmes.',
+        'Simone de Beauvoir',
+        '1949-03-14',
+        '768',
+        '50',
+        '27'
+    ),
+    (
+        'Moi, Christiane F.',
+        'https://m.media-amazon.com/images/I/41ZN0nEdsqL._SY445_SX342_.jpg',
+        'Le récit autobiographique d’une adolescente perdue dans la drogue et la prostitution.',
+        'Christiane F.',
+        '1979-03-01',
+        '272',
+        '50',
+        '27'
+    ),
+    (
+        'Les Confessions',
+        'https://m.media-amazon.com/images/I/71U-3bc-4KL._SY466_.jpg',
+        'Autobiographie de Jean-Jacques Rousseau dans laquelle il raconte son histoire personnelle.',
+        'Jean-Jacques Rousseau',
+        '1782-03-01',
+        '512',
+        '50',
+        '27'
+    ),
+    (
+        'Moi, Malala',
+        'https://cdn.bookey.app/20210820145141651/20210820145508107.jpg',
+        'L’histoire inspirante de Malala Yousafzai, la jeune militante pour l’éducation.',
+        'Malala Yousafzai',
+        '2013-10-08',
+        '288',
+        '50',
+        '27'
+    ),
+    (
+        'Le Journal d\'Anne Frank',
+        'https://m.media-amazon.com/images/I/41xV1gecXhL._SY445_SX342_.jpg',
+        'Les écrits poignants d’Anne Frank, une jeune fille juive cachée pendant la Seconde Guerre mondiale.',
+        'Anne Frank',
+        '1947-06-25',
+        '283',
+        '50',
+        '27'
+    ),
+
+(
+    'Astérix le Gaulois',
+    'https://m.media-amazon.com/images/I/618+ej+x29L._SY445_SX342_.jpg',
+    'Les aventures humoristiques d’un guerrier gaulois et de ses amis.',
+    'René Goscinny, Albert Uderzo',
+    '1961-10-01',
+    '48',
+    '50',
+    '28'
+),
+(
+    'Tintin au Tibet',
+    'https://m.media-amazon.com/images/I/41x5ydLTFqL._SY445_SX342_.jpg',
+    'Tintin part à la recherche de son ami Chang dans les montagnes tibétaines.',
+    'Hergé',
+    '1960-10-01',
+    '62',
+    '50',
+    '28'
+),
+(
+    'Les Schtroumpfs',
+    'https://bdi.dlpdomain.com/album/9782800158068-couv-M700x1200.jpg',
+    'Les aventures des petits Schtroumpfs dans leur village.',
+    'Peyo',
+    '1958-10-01',
+    '40',
+    '50',
+    '28'
+),
+(
+    'Blake et Mortimer',
+    'https://www.bedetheque.com/media/Couvertures/blakeetmortimercouv01espadon.jpg',
+    'Les aventures de deux détectives dans des enquêtes complexes et palpitantes.',
+    'Edgar P. Jacobs',
+    '1950-09-01',
+    '56',
+    '50',
+    '28'
+),
+(
+    'Dragon Ball',
+    'https://www.legaliondesetoiles.com/photo/art/default/8265239-12927519.jpg?v=1674306988',
+    'Les aventures de Goku et ses amis dans leur quête des Dragon Balls.',
+    'Akira Toriyama',
+    '1984-11-01',
+    '200',
+    '50',
+    '28'
+),
+
+(
+    'La Fabrique du prince charmant',
+    'https://ref.lamartinieregroupe.com/media/9782021533224/grande/153322_couverture_Hres_0.jpg',
+    'Imaginez le prince charmant des années 70, celui des romans-photos aux sourcils circonflexes, brushing « nuque longue » et assurance à toute épreuve dans son pattes d’éléphant.',
+    'Ovidie',
+    '2024-05-24',
+    '120',
+    '50',
+    '29'
+),
+(
+    'les jardins de versailles',
+    'https://boutique-chateauversailles.fr/wp-content/uploads/2023/11/LesjardinsdeVersailles_Une.png',
+    'Un livre illustré sur la splendeur des jardins de Versailles.',
+    'Jacques Moulin',
+    '2023-10-20',
+    '256',
+    '50',
+    '29'
+),
+(
+    'Les Grands Maîtres de la Peinture',
+    'https://m.media-amazon.com/images/I/51F2QXDS0CL._SY466_.jpg',
+    'Une exploration des œuvres des plus grands maîtres de la peinture.',
+    'Robert Cumming',
+    '1999-01-05',
+    '256',
+    '50',
+    '29'
+),
+(
+    'Les Merveilles du Monde',
+    'https://pictures.abebooks.com/isbn/9782859610357-fr.jpg',
+    'Un voyage visuel à travers les plus grands sites du patrimoine mondial.',
+    'Edmund SWINGLEHURST',
+    '1978-01-01',
+    '156',
+    '50',
+    '29'
+),
+(
+    'Les Architectes Célèbres',
+    'https://pictures.abebooks.com/inventory/md/md31154665612.jpg',
+    'Un aperçu des réalisations des architectes les plus influents.',
+    'Lucien Mazenod',
+    '1958-01-01',
+    '352',
+    '50',
+    '29'
+),
+
+(
+    'Steve Jobs',
+    'https://m.media-amazon.com/images/I/81vhsD+QgKL._SY466_.jpg',
+    'Une biographie détaillée de Steve Jobs, co-fondateur d’Apple.',
+    'Walter Isaacson',
+    '2011-10-24',
+    '656',
+    '50',
+    '30'
+),
+(
+    'Une vie',
+    'https://m.media-amazon.com/images/I/71CUud+k3OL._SY466_.jpg',
+    'Biographie de Simone Veil, une figure emblématique de la politique française.',
+    'Simone Veil',
+    '2007-09-10',
+    '496',
+    '50',
+    '30'
+),
+(
+    'Nelson Mandela : Un Long Chemin Vers La Liberté',
+    'https://m.media-amazon.com/images/I/81+qJ3dldOL._SY466_.jpg',
+    'L’autobiographie de Nelson Mandela sur son combat pour la liberté en Afrique du Sud.',
+    'Nelson Mandela',
+    '1994-11-01',
+    '576',
+    '50',
+    '30'
+),
+(
+    'Einstein : Sa Vie, Son Univers',
+    'https://m.media-amazon.com/images/I/71IIC0n4cBL._SY466_.jpg',
+    'Une biographie détaillée d’Albert Einstein, le génie de la physique.',
+    'Walter Isaacson',
+    '2007-09-01',
+    '704',
+    '50',
+    '30'
+),
+(
+    'L’Inconnu du Luxembourg',
+    'https://m.media-amazon.com/images/I/917XqYjHH8L._SY466_.jpg',
+    'La biographie de la mystérieuse figure du Luxembourg qui a marqué l’histoire.',
+    'Laurence Lebas',
+    '2019-11-15',
+    '320',
+    '50',
+    '30'
+),
+
+(
+    'Le Petit Prince',
+    'https://m.media-amazon.com/images/I/710wth0vXZL._SY466_.jpg',
+    'Le conte poétique d’Antoine de Saint-Exupéry sur un jeune prince et ses voyages.',
+    'Antoine de Saint-Exupéry',
+    '1943-04-06',
+    '96',
+    '50',
+    '31'
+),
+(
+    'Les Contes de Perrault',
+    'https://m.media-amazon.com/images/I/611p-w1auTL._SY466_.jpg',
+    'Recueil des célèbres contes de Charles Perrault.',
+    'Charles Perrault',
+    '1697-01-01',
+    '272',
+    '50',
+    '31'
+),
+(
+    'Alice au Pays des Merveilles',
+    'https://m.media-amazon.com/images/I/713BVhe+IJL._SY466_.jpg',
+    'L’aventure fantastique d’Alice dans un monde étrange.',
+    'Lewis Carroll',
+    '1865-11-26',
+    '100',
+    '50',
+    '31'
+),
+(
+    'Peter Pan',
+    'https://m.media-amazon.com/images/I/61v4oe0lMCL._SY466_.jpg',
+    'Les aventures de Peter Pan, le garçon qui ne veut pas grandir.',
+    'J.M. Barrie',
+    '1911-01-01',
+    '208',
+    '50',
+    '31'
+),
+(
+    'La Belle au bois dormant',
+    'https://m.media-amazon.com/images/I/81QUrPZqycL._SY466_.jpg',
+    'Le conte classique de la princesse endormie, victime d’une malédiction.',
+    'Charles Perrault',
+    '1697-01-01',
+    '72',
+    '50',
+    '31'
+),
+
+(
+    'Les Liaisons dangereuses',
+    'https://media.senscritique.com/media/000004378333/300/les_liaisons_dangereuses.jpg',
+    'Un duel pervers entre deux nobles manipulateurs et libertins du siècle des lumières qui se jouent de la société pudibonde dans laquelle ils vivent.',
+    'Choderlos de Laclos',
+    '1782-01-01',
+    '000',
+    '50',
+    '32'
+),
+(
+    'Correspondances entre Montaigne et La Boétie',
+    'https://m.media-amazon.com/images/I/614j4FDuUGL._SY466_.jpg',
+    'Échanges épistolaires entre deux grandes figures de la Renaissance.',
+    'Michel de Montaigne',
+    '2008-04-15',
+    '368',
+    '50',
+    '32'
+),
+(
+    'Les Lettres de Vincent Van Gogh',
+    'https://static.fnac-static.com/multimedia/PE/Images/FR/NR/d7/21/14/1319383/1507-1/tsp20231226071839/Lettres-a-son-frere-Theo.jpg',
+    'Correspondances fascinantes du peintre Vincent Van Gogh.',
+    'Vincent Van Gogh',
+    '2012-01-20',
+    '432',
+    '50',
+    '32'
+),
+(
+    'Correspondances de Flaubert',
+    'https://images.epagine.fr/793/9782070402793_1_75.jpg',
+    'Une vue intérieure sur la vie de Gustave Flaubert à travers ses lettres.',
+    'Gustave Flaubert',
+    '2011-06-10',
+    '256',
+    '50',
+    '32'
+),
+(
+    'Lettre à une jeune fille',
+    'https://bddi.2dcom.fr/libriweb.php?ean=9782246745815',
+    'Une série de lettres adressées à une jeune femme pour la guider.',
+    'Joë Bousquet',
+    '2008-10-15',
+    '322',
+    '50',
+    '32'
+),
+
+(
+    'La Structure des Révolutions Scientifiques',
+    'https://m.media-amazon.com/images/I/61qk+o9sy2L._SY466_.jpg',
+    'Essai de Thomas Kuhn sur la façon dont les révolutions scientifiques changent les paradigmes.',
+    'Thomas Kuhn',
+    '1962-11-01',
+    '288',
+    '50',
+    '33'
+),
+(
+    'L\'Étranger',
+    'https://m.media-amazon.com/images/I/41LdKQUBsWL._SY445_SX342_.jpg',
+    'Essai philosophique de Camus sur l’absurdité de la condition humaine.',
+    'Albert Camus',
+    '1942-05-01',
+    '123',
+    '50',
+    '33'
+),
+(
+    'Le Capital',
+    'https://m.media-amazon.com/images/I/81ZiOatNr1L._SY466_.jpg',
+    'Analyse critique de l’économie politique par Karl Marx.',
+    'Karl Marx',
+    '1867-09-01',
+    '1008',
+    '50',
+    '33'
+),
+(
+    'La Condition Humaine',
+    'https://m.media-amazon.com/images/I/81FIjdDHYPL._SY466_.jpg',
+    'Essai de Malraux sur les dimensions existentielles de l’être humain.',
+    'André Malraux',
+    '1933-10-15',
+    '320',
+    '50',
+    '33'
+),
+(
+    'Sapiens : Une Brève Histoire de l’Humanité',
+    'https://m.media-amazon.com/images/I/61SaNiLLX-L._SY466_.jpg',
+    'Un essai sur l’évolution de l’humanité par Yuval Noah Harari.',
+    'Yuval Noah Harari',
+    '2011-09-04',
+    '498',
+    '50',
+    '33'
+),
+
+(
+    'La Fontaine : Fables',
+    'https://m.media-amazon.com/images/I/61pCJvXKBNL._SY466_.jpg',
+    'Recueil des célèbres fables de Jean de La Fontaine.',
+    'Jean de La Fontaine',
+    '1668-01-01',
+    '336',
+    '50',
+    '34'
+),
+(
+    'Les Fables de La Fontaine',
+    'https://m.media-amazon.com/images/I/61pp3BTB15L._SY466_.jpg',
+    'Une nouvelle édition des fables de La Fontaine avec illustrations.',
+    'Jean de La Fontaine',
+    '1694-01-01',
+    '350',
+    '50',
+    '34'
+),
+(
+    'Fables pour les petits d\'après Ésope',
+    'https://m.media-amazon.com/images/I/61vJUlHR8AS._SY466_.jpg',
+    'Collection de fables adaptées aux jeunes lecteurs.',
+    'Susanna Davidson',
+    '2021-08-12',
+    '160',
+    '50',
+    '34'
+),
+(
+    'Contes et fables d\'animaux',
+    'https://m.media-amazon.com/images/I/51DeTCeoAoL._SY466_.jpg',
+    'Fables mettant en scène des animaux et leurs leçons de vie.',
+    'Laurent Kling',
+    '2005-03-23',
+    '44',
+    '50',
+    '34'
+),
+
+(
+    'Le Guide du Routard',
+    'https://m.media-amazon.com/images/I/81475VZnbyL._SY466_.jpg',
+    'Guide pratique pour voyager à travers différents pays.',
+    'Collectif',
+    '2022-05-10',
+    '576',
+    '50',
+    '35'
+),
+(
+    'Sos cuisine',
+    'https://cdn1.booknode.com/book_cover/1350/sos_cuisine-1349554-264-432.jpg',
+    'Jean-Pierre Coffe propose 360 recettes classiques ou originales et 450 trucs vraiment efficaces pour les réussir.',
+    'Jean-Pierre Coffe',
+    '2007-12-12',
+    '598',
+    '50',
+    '35'
+),
+(
+    'Guide des plantes médicinales',
+    'https://m.media-amazon.com/images/I/81Ff8JSZyCL._SY466_.jpg',
+    'Guide complet des plantes médicinales et de leurs usages.',
+    'Paul Schauenberg',
+    '2005-03-11',
+    '396',
+    '50',
+    '35'
+),
+(
+    'Le Petit Larousse du jardin facile',
+    '',
+    'Un guide pour les passionnés de jardinage, avec conseils et techniques.',
+    'Didier Willery',
+    '2018-02-28',
+    '336',
+    '50',
+    '35'
+),
+(
+    'Le Grand Livre du Développement Personnel',
+    'https://m.media-amazon.com/images/I/61cD7os4i6L._SY466_.jpg',
+    'Conseils pratiques pour améliorer son bien-être et son développement personnel.',
+    'James Path',
+    '2023-11-04',
+    '347',
+    '50',
+    '35'
+),
+
+(
+    'La Bible',
+    'https://pictures.abebooks.com/isbn/9781935302421-fr.jpg',
+    'Le texte sacré du christianisme.',
+    'Anonyme',
+    '0000-01-01',
+    '1500',
+    '50',
+    '36'
+),
+(
+    'Le Coran',
+    'https://previews.123rf.com/images/mawardibahar/mawardibahar1310/mawardibahar131000176/22739705-coran-premi%C3%A8re-page-de-couverture.jpg',
+    'Le texte sacré de l’islam.',
+    'Anonyme',
+    '610-01-01',
+    '604',
+    '50',
+    '36'
+),
+(
+    'Les Vedas',
+    'https://m.media-amazon.com/images/I/51XvEVvj0+L._SY445_SX342_.jpg',
+    'Les textes sacrés de l’hindouisme.',
+    'Anonyme',
+    '1500-01-01',
+    '700',
+    '50',
+    '36'
+),
+(
+    'La Torah',
+    'https://m.media-amazon.com/images/I/81D74ny63nL._SY466_.jpg',
+    'Le texte sacré du judaïsme.',
+    'Anonyme',
+    '1500-01-01',
+    '304',
+    '50',
+    '36'
+),
+(
+    'Le Bouddhisme : Enseignements, Histoire et Pratiques',
+    'https://m.media-amazon.com/images/I/51HSJHK0EoL._SY466_.jpg',
+    'Introduction aux enseignements et pratiques du bouddhisme.',
+    'Peter Harvey',
+    '1999-01-01',
+    '448',
+    '50',
+    '36'
+),
+
+(
+    'Naruto',
+    'https://m.media-amazon.com/images/I/71GsyZF5AyL._SY466_.jpg',
+    'Les aventures du ninja Naruto Uzumaki et ses quêtes pour devenir Hokage.',
+    'Masashi Kishimoto',
+    '1999-09-21',
+    '208',
+    '50',
+    '37'
+),
+(
+    'One Piece',
+    'https://m.media-amazon.com/images/I/91t7YlWwGfL._SY466_.jpg',
+    'Les aventures de Monkey D. Luffy à la recherche du trésor ultime, le One Piece.',
+    'Eiichiro Oda',
+    '1997-07-22',
+    '208',
+    '50',
+    '37'
+),
+(
+    'Dragon Ball',
+    'https://m.media-amazon.com/images/I/51doNJR9pTL._SY445_SX342_.jpg',
+    'Les aventures de Goku, un garçon doté de pouvoirs extraordinaires.',
+    'Akira Toriyama',
+    '1984-11-01',
+    '200',
+    '50',
+    '37'
+),
+(
+    'Death Note',
+    'https://m.media-amazon.com/images/I/812k3BWrksL._SY466_.jpg',
+    'Un adolescent trouve un cahier qui lui permet de tuer quiconque en écrivant son nom.',
+    'Tsugumi Ohba',
+    '2003-12-01',
+    '220',
+    '50',
+    '37'
+),
+(
+    'Attack on Titan',
+    'https://m.media-amazon.com/images/I/516FKAN4t7L._SY445_SX342_.jpg',
+    'Dans un monde où l’humanité est menacée par des titans, Eren Yeager lutte pour survivre.',
+    'Hajime Isayama',
+    '2009-09-09',
+    '232',
+    '50',
+    '37'
+),
+
+(
+    'Mémoires d\'outre-tombe',
+    'https://m.media-amazon.com/images/I/31lO1vK4n9L._SY445_SX342_.jpg',
+    'Les mémoires de François-René de Chateaubriand sur sa vie et ses voyages.',
+    'François-René de Chateaubriand',
+    '1848-01-01',
+    '800',
+    '50',
+    '38'
+),
+(
+    'Les Confessions',
+    'https://m.media-amazon.com/images/I/71QsjSE+8xL._SY466_.jpg',
+    'Autobiographie de Jean-Jacques Rousseau.',
+    'Jean-Jacques Rousseau',
+    '1782-01-01',
+    '512',
+    '50',
+    '38'
+),
+(
+    'Mémoires d\'un jeune homme dérangé',
+    'https://m.media-amazon.com/images/I/81CSgULhaqL._SY466_.jpg',
+    'Les mémoires d’un jeune homme en proie à des crises intérieures.',
+    'Frédéric Beigbeder',
+    '2016-08-01',
+    '160',
+    '50',
+    '38'
+),
+(
+    'La Vie de Samuel Johnson',
+    'https://m.media-amazon.com/images/I/51PNQ8RNM4L._SY466_.jpg',
+    'Une biographie détaillée de Samuel Johnson, écrivain et critique.',
+    'James Boswell',
+    '1791-01-01',
+    '960',
+    '50',
+    '38'
+),
+(
+    'Mémoires d\'une Geisha',
+    'https://m.media-amazon.com/images/I/41MGHx-nxBL._SY445_SX342_.jpg',
+    'L’histoire d’une geisha japonaise qui se bat pour survivre dans un monde turbulent.',
+    'Arthur Golden',
+    '1997-09-24',
+    '448',
+    '50',
+    '38'
+),
+
+(
+    'Les Nouvelles de Maupassant',
+    'https://servimg.eyrolles.com/static/media/0266/9782492900266_internet_h1400.jpg',
+    'Recueil de nouvelles de Guy de Maupassant.',
+    'Guy de Maupassant',
+    '1885-01-01',
+    '312',
+    '50',
+    '39'
+),
+(
+    'Nouvelles Histoires Extraordinaires',
+    'https://images.noosfere.org/couv/l/ldp1055-1992.jpg',
+    'Recueil de nouvelles fantastiques par Edgar Allan Poe.',
+    'Edgar Allan Poe',
+    '1845-01-01',
+    '264',
+    '50',
+    '39'
+),
+(
+    'Le Horla',
+    'https://upload.wikimedia.org/wikipedia/commons/3/3f/Guy_de_Maupassant_le_Horla-edition1908.jpg',
+    'Nouvelles fantastiques et étranges de Guy de Maupassant.',
+    'Guy de Maupassant',
+    '1887-01-01',
+    '128',
+    '50',
+    '39'
+),
+(
+    'Dubliners',
+    'https://m.media-amazon.com/images/I/41+RbJgJhxL.jpg',
+    'Recueil de nouvelles de James Joyce sur la vie à Dublin.',
+    'James Joyce',
+    '1914-06-15',
+    '208',
+    '50',
+    '39'
+),
+(
+    'La Peste',
+    'https://upload.wikimedia.org/wikipedia/commons/c/c6/La_Peste_book_cover.jpg',
+    'Une nouvelle d’Albert Camus sur l’épidémie qui ravage une ville.',
+    'Albert Camus',
+    '1947-11-10',
+    '318',
+    '50',
+    '39'
+),
+
+(
+    'Le Pamphlet des Droits de l\'Homme',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Declaration_of_the_Rights_of_Man_and_of_the_Citizen_in_1789.jpg/800px-Declaration_of_the_Rights_of_Man_and_of_the_Citizen_in_1789.jpg',
+    'Un pamphlet important sur les droits de l’homme.',
+    'Anonyme',
+    '1789-07-14',
+    '48',
+    '50',
+    '40'
+),
+(
+    'Pamphlet pour la Liberté',
+    '',
+    'Un pamphlet plaidant pour les libertés individuelles.',
+    'Anonyme',
+    '1790-01-01',
+    '64',
+    '50',
+    '40'
+),
+(
+    'Le Pamphlet Économique',
+    '',
+    'Critique économique présentée sous forme de pamphlet.',
+    'Anonyme',
+    '1850-01-01',
+    '72',
+    '50',
+    '40'
+),
+(
+    'Pamphlet Politique',
+    '',
+    'Analyse politique et critique sous forme de pamphlet.',
+    'Anonyme',
+    '1910-01-01',
+    '56',
+    '50',
+    '40'
+),
+(
+    'Pamphlet sur la Réforme',
+    '',
+    'Pamphlet abordant les questions de réforme sociale.',
+    'Anonyme',
+    '1920-01-01',
+    '80',
+    '50',
+    '40'
+),
+
+(
+    'Le Spleen de Paris',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Spleen_et_ideal-aquarell.jpg/260px-Spleen_et_ideal-aquarell.jpg',
+    'Poèmes en prose de Charles Baudelaire sur les thèmes de la ville et de l’ennui.',
+    'Charles Baudelaire',
+    '1869-01-01',
+    '182',
+    '50',
+    '41'
+),
+(
+    'Le Livre de Monelle',
+    'https://books.google.fr/books/content?id=0x-fm0VVT-sC&hl=fr&pg=PA1&img=1&zoom=3&bul=1&sig=ACfU3U2BW5ELDUZgDQKgqFFne9wZNXNuSg&w=1280',
+    'Poésie en prose de Marcel Schwob explorant des récits mystérieux.',
+    'Marcel Schwob',
+    '1894-01-01',
+    '216',
+    '50',
+    '41'
+),
+(
+    'Les Fleurs du mal',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Fleurs_du_mal.jpg/250px-Fleurs_du_mal.jpg',
+    'Poésie en prose de Baudelaire, célèbre recueil explorant les thèmes de la beauté et du mal.',
+    'Charles Baudelaire',
+    '1857-06-25',
+    '192',
+    '50',
+    '41'
+),
+(
+    'Je, d\'un accident ou d\'amour',
+    'https://m.media-amazon.com/images/I/51jxt3+PXzL._SY466_.jpg',
+    'Depuis, ma pensée se désordre. Mon langage se confusion. D’un commencement comme ça. Je voiture Adèle jusqu’à la gare de l’Est, elle se départ chez elle, distance d’ici. Bien trop lointain. Elle m’amour, je l’énormément, mais elle s’en retour. A trois centaines de kilomètres.',
+    'Loïc Demey',
+    '2014-10-01',
+    '44',
+    '50',
+    '41'
+),
+(
+    'Fureur et Mystère',
+    'https://m.media-amazon.com/images/I/41CddFBFEwL._SY466_.jpg',
+    'Pourquoi le cacher ? Ce n\'est pas une poésie facile. Ses difficultés sont à proportion, en nous, des vieilles habitudes de voir et de leur résistance : René Char ou la jeunesse des mots, du monde...',
+    'René Char',
+    '1967-01-20',
+    '219',
+    '50',
+    '41'
+),
+
+(
+    'Les Rimes de Verlaine',
+    '',
+    'Recueil de poèmes en vers par Paul Verlaine.',
+    'Paul Verlaine',
+    '1874-01-01',
+    '160',
+    '50',
+    '42'
+),
+(
+    'Le Cantique des cantiques',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Song_of_songs_Rothschild_mahzor.jpg/250px-Song_of_songs_Rothschild_mahzor.jpg',
+    'Poème biblique ancien en vers.',
+    'Anonyme',
+    '0000-01-01',
+    '64',
+    '50',
+    '42'
+),
+(
+    'Méditations poétiques',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Lamartine_-_M%C3%A9ditations_po%C3%A9tiques_%28%C3%A9dition_de_1820%29.djvu/page12-800px-Lamartine_-_M%C3%A9ditations_po%C3%A9tiques_%28%C3%A9dition_de_1820%29.djvu.jpg',
+    'Recueil de poèmes en vers de Lamartine.',
+    'Alphonse de Lamartine',
+    '1820-01-01',
+    '284',
+    '50',
+    '42'
+),
+(
+    'Les Fleurs du mal',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Fleurs_du_mal.jpg/250px-Fleurs_du_mal.jpg',
+    'Recueil de poèmes en vers de Baudelaire.',
+    'Charles Baudelaire',
+    '1857-06-25',
+    '192',
+    '50',
+    '42'
+),
+(
+    'Ode à la Joie',
+    'https://upload.wikimedia.org/wikipedia/commons/2/2d/Schiller_an_die_freude_manuskript_2.jpg',
+    'Poème en vers de Friedrich Schiller sur la joie universelle.',
+    'Friedrich Schiller',
+    '1786-01-01',
+    '64',
+    '50',
+    '42'
+),
+
+(
+    'Le Grand Livre de la Cuisine',
+    'https://www.hachette.fr/sites/default/files/images/livres/couv/9782017216117-001-T.jpeg',
+    'Recueil de recettes de cuisine pour tous les goûts.',
+    'Collectif',
+    '2023-10-18',
+    '384',
+    '50',
+    '43'
+),
+(
+    '500 Recettes de Grand-Mère',
+    'https://cdn.cultura.com/cdn-cgi/image/width=830/media/pim/TITELIVE/69_9782353558001_1_75.jpg',
+    'Recettes traditionnelles transmises par les grands-mères.',
+    'BROZINSKA ANASTASIIA',
+    '2011-11-24',
+    '352',
+    '50',
+    '43'
+),
+(
+    'Cuisine Facile',
+    'https://media.hachette.fr/fit-in/500x500/imgArticle/MARABOUT/2019/9782501142380-001-X.jpeg?source=web',
+    'Guide pratique de recettes simples et rapides.',
+    'Collectif',
+    '2019-09-04',
+    '480',
+    '50',
+    '43'
+),
+(
+    'La Cuisine du Monde',
+    'https://static.fnac-static.com/multimedia/Images/FR/NR/0f/19/dc/14424335/1540-1/tsp20231016081104/Cuisines-du-monde.jpg',
+    'Recettes de cuisine internationales.',
+    'Collectif',
+    '2028-09-28',
+    '448',
+    '50',
+    '43'
+),
+(
+    'Les Délices de la Pâtisserie',
+    '',
+    'Recueil de recettes de pâtisserie.',
+    'Anonyme',
+    '2017-08-22',
+    '272',
+    '50',
+    '43'
+),
+
+(
+    'Voyage au Centre de la Terre',
+    'https://m.media-amazon.com/images/I/51JcOyh3GlL._SY445_SX342_.jpg',
+    'Aventure scientifique et fantastique de Jules Verne.',
+    'Jules Verne',
+    '1864-01-01',
+    '320',
+    '50',
+    '44'
+),
+(
+    'En Route pour le Soleil',
+    'https://i.ebayimg.com/images/g/QRoAAOSwGuBmT5m2/s-l960.jpg',
+    'Récit d’un voyage fascinant vers le soleil.',
+    'Nancy Martin',
+    '2015-04-10',
+    '280',
+    '50',
+    '44'
+),
+(
+    'Les Voyages de Gulliver',
+    'https://m.media-amazon.com/images/I/81fZOS91fYL._SY466_.jpg',
+    'Voyages imaginaires de Gulliver dans des mondes fantastiques.',
+    'Jonathan Swift',
+    '1726-10-01',
+    '432',
+    '50',
+    '44'
+),
+(
+    'Le Tour du Monde en Quatre-vingts Jours',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Verne_Tour_du_Monde.jpg/250px-Verne_Tour_du_Monde.jpg',
+    'Aventure autour du monde en 80 jours par Jules Verne.',
+    'Jules Verne',
+    '1872-01-01',
+    '320',
+    '50',
+    '44'
+),
+(
+    'Récits d’un Voyage en Asie',
+    '',
+    'Récits captivants d’un voyage à travers l’Asie.',
+    'Anonyme',
+    '2020-09-15',
+    '320',
+    '50',
+    '44'
+),
+
+(
+    'Neuromancien',
+    'https://m.media-amazon.com/images/I/514O6OgWH1L._SY466_.jpg',
+    'Roman cyberpunk de William Gibson sur un hacker dans un futur dystopique.',
+    'William Gibson',
+    '1984-07-01',
+    '271',
+    '50',
+    '45'
+),
+(
+    'Dune',
+    'https://www.lisez.com/usuaris/libros/fotos/9782266321/m_libros/9782266320481ORI.jpg',
+    'Roman épique de science-fiction sur la planète Arrakis.',
+    'Frank Herbert',
+    '1965-08-01',
+    '688',
+    '50',
+    '45'
+),
+(
+    'Fondation',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIlQxXzyTXiQsgxcVYIANeSwBzdP70woeDiXLiLXt3ZAb8W8m1',
+    'Saga de science-fiction sur la chute d’un empire galactique.',
+    'Isaac Asimov',
+    '1951-06-01',
+    '255',
+    '50',
+    '45'
+),
+(
+    'Le Meilleur des Mondes',
+    'https://m.media-amazon.com/images/I/61v7bRPlQPL._SY466_.jpg',
+    'Roman de science-fiction d’Aldous Huxley sur une société dystopique.',
+    'Aldous Huxley',
+    '1932-01-01',
+    '311',
+    '50',
+    '45'
+),
+(
+    'La Machine à Explorer le Temps',
+    'https://m.media-amazon.com/images/I/61Wu23921IL._SY466_.jpg',
+    'Roman de H.G. Wells sur un voyage dans le futur.',
+    'H.G. Wells',
+    '1895-01-01',
+    '132',
+    '50',
+    '45'
+),
+
+(
+    'L\'Attrape-Cœurs',
+    'https://m.media-amazon.com/images/I/51Pe+9usQFL._SY445_SX342_.jpg',
+    'L’histoire de Holden Caulfield, adolescent en rébellion à New York.',
+    'J.D. Salinger',
+    '1951-07-16',
+    '277',
+    '50',
+    '46'
+),
+(
+    'Le Rouge et le Noir',
+    'https://m.media-amazon.com/images/I/81xF2uEZLNL._SY466_.jpg',
+    'Roman de Stendhal sur la vie d’un jeune ambitieux au début du XIXe siècle.',
+    'Stendhal',
+    '1830-11-01',
+    '528',
+    '50',
+    '46'
+),
+(
+    'Siddhartha',
+    'https://m.media-amazon.com/images/I/31Xppl-IMbL.jpg',
+    'Récit de la quête spirituelle d’un jeune homme dans l’Inde ancienne.',
+    'Hermann Hesse',
+    '1922-01-01',
+    '152',
+    '50',
+    '46'
+),
+(
+    'Les Années d\'apprentissage de Wilhelm Meister',
+    'https://m.media-amazon.com/images/I/81k2kDV2S3L._SY466_.jpg',
+    'Roman de Goethe sur la formation d’un jeune homme en Allemagne.',
+    'Johann Wolfgang von Goethe',
+    '1795-01-01',
+    '442',
+    '50',
+    '46'
+),
+(
+    'La Vie devant soi',
+    'https://m.media-amazon.com/images/I/41rFB6k+wCL._SY466_.jpg',
+    'L’histoire d’un jeune orphelin arabe sous la garde d’une vieille femme juive.',
+    'Romain Gary',
+    '1975-01-01',
+    '248',
+    '50',
+    '46'
+),
+
+(
+    'Les Trois Mousquetaires',
+    'https://m.media-amazon.com/images/I/81rmbx14FlL._SY466_.jpg',
+    'Les aventures de d’Artagnan et de ses amis mousquetaires.',
+    'Alexandre Dumas',
+    '1844-03-01',
+    '768',
+    '50',
+    '47'
+),
+(
+    'L\'Île au trésor',
+    'https://m.media-amazon.com/images/I/71y4XC2YROL._SY466_.jpg',
+    'Roman d’aventure sur la chasse au trésor d’un jeune garçon.',
+    'Robert Louis Stevenson',
+    '1883-11-14',
+    '320',
+    '50',
+    '47'
+),
+(
+    'Vingt Mille Lieues sous les mers',
+    'https://m.media-amazon.com/images/I/91mCz5zst4L._SY466_.jpg',
+    'L’aventure sous-marine du capitaine Nemo et de son équipage.',
+    'Jules Verne',
+    '1870-03-01',
+    '384',
+    '50',
+    '47'
+),
+(
+    'Robinson Crusoe',
+    'https://m.media-amazon.com/images/I/714uTgCI1fL._SY466_.jpg',
+    'Une magnifique édition illustrée vintage du roman intemporel Robinson Crusoé de Daniel Defoe',
+    'Foe Daniel',
+    '1952-01-01',
+    '472',
+    '50',
+    '47'
+),
+(
+    'La Piste des Éléphants',
+    'https://m.media-amazon.com/images/I/91kIyazy+SL._SY466_.jpg',
+    'Un voyage d’aventure à travers la jungle pour retrouver des éléphants perdus.',
+    'Éric Gallorini',
+    '2013-05-28',
+    '245',
+    '50',
+    '47'
+),
+
+(
+    'Le Seigneur des Anneaux',
+    'https://img.livraddict.com/covers/183/183472/couv60527719.jpg',
+    'L’épopée de la Terre du Milieu et la quête pour détruire l’Anneau Unique.',
+    'J.R.R. Tolkien',
+    '1954-07-29',
+    '1216',
+    '50',
+    '48'
+),
+(
+    'Harry Potter à l\'école des sorciers',
+    'https://pictures.abebooks.com/inventory/31887879498.jpg',
+    'Les aventures d’un jeune sorcier à Poudlard.',
+    'J.K. Rowling',
+    '1997-06-26',
+    '309',
+    '50',
+    '48'
+),
+(
+    'Les Chroniques de Narnia',
+    'https://m.media-amazon.com/images/I/51l3WHZuiAL._SY466_.jpg',
+    'Les aventures fantastiques de quatre enfants dans un monde magique.',
+    'C.S. Lewis',
+    '1950-10-16',
+    '768',
+    '50',
+    '48'
+),
+(
+    'Eragon',
+    'https://m.media-amazon.com/images/I/91JrDpvTiML._SY466_.jpg',
+    'L’histoire d’un jeune fermier qui découvre un dragon et part pour une grande aventure.',
+    'Christopher Paolini',
+    '2002-08-26',
+    '528',
+    '50',
+    '48'
+),
+(
+    'La Belgariade',
+    'https://m.media-amazon.com/images/I/81yr6aavh+L._SY466_.jpg',
+    'Une série de fantasy qui suit un jeune homme dans une quête épique.',
+    'David Eddings',
+    '1982-05-01',
+    '464',
+    '50',
+    '48'
+),
+
+(
+    'Ensemble, c\'est tout',
+    'https://www.ledilettante.com/wp-content/uploads/2019/05/978-2-84263-085-0.jpg',
+    'L’histoire de plusieurs personnes qui se retrouvent pour construire une famille.',
+    'Anna Gavalda',
+    '2004-08-20',
+    '458',
+    '50',
+    '49'
+),
+(
+    'Le Vieux qui ne voulait pas fêter son anniversaire',
+    'https://m.media-amazon.com/images/I/717KhB2omVL._SY466_.jpg',
+    'Les aventures d’un vieil homme qui fuit sa fête d’anniversaire et vit des péripéties.',
+    'Jonas Jonasson',
+    '2009-08-25',
+    '376',
+    '50',
+    '49'
+),
+(
+    'La Délicatesse',
+    'https://images.epagine.fr/415/9782070126415_1_75.jpg',
+    'L’histoire d’une femme qui retrouve l’amour après une tragédie.',
+    'David Foenkinos',
+    '2009-01-01',
+    '248',
+    '50',
+    '49'
+),
+(
+    'Le Petit Prince',
+    'https://www.antoinedesaintexupery.com/wp-content/uploads/2011/02/08_0.jpg',
+    'La célèbre histoire d’un prince venu d’une autre planète et de ses découvertes sur Terre.',
+    'Antoine de Saint-Exupéry',
+    '1943-04-06',
+    '96',
+    '50',
+    '49'
+),
+(
+    'A la lumière du petit matin',
+    'https://m.media-amazon.com/images/I/61XdlgSxFOL._SY466_.jpg',
+    'À l\'approche de la quarantaine, Hortense se partage entre son métier de professeur de danse et sa liaison avec un homme marié.',
+    'Agnès Martin-Lugand',
+    '2019-09-05',
+    '384',
+    '50',
+    '49'
+),
+
+(
+    'Les Misérables',
+    'https://m.media-amazon.com/images/I/61qEU1CUkHL._SY466_.jpg',
+    'Roman épique de Victor Hugo sur la justice sociale.',
+    'Victor Hugo',
+    '1862-01-01',
+    '1463',
+    '50',
+    '50'
+),
+(
+    'Germinal',
+    'https://m.media-amazon.com/images/I/51QhaCkG0WL._SY445_SX342_.jpg',
+    'Roman de Zola sur les conditions des mineurs au XIXe siècle.',
+    'Émile Zola',
+    '1885-01-01',
+    '512',
+    '50',
+    '50'
+),
+(
+    'La Reine Margot',
+    'https://tomtomlatomate.wordpress.com/wp-content/uploads/2019/02/la-reine-margot-alexandre-dumas.jpg',
+    'L’histoire de la Reine Margot et des intrigues politiques au XVIe siècle.',
+    'Alexandre Dumas',
+    '1845-05-01',
+    '512',
+    '50',
+    '50'
+),
+(
+    'Le Comte de Monte-Cristo',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Louis_Fran%C3%A7ais-Dant%C3%A8s_sur_son_rocher.jpg/250px-Louis_Fran%C3%A7ais-Dant%C3%A8s_sur_son_rocher.jpg',
+    'L’histoire de vengeance d’Edmond Dantès, injustement emprisonné.',
+    'Alexandre Dumas',
+    '1846-01-01',
+    '1278',
+    '50',
+    '50'
+),
+(
+    'Les Choses',
+    'https://m.media-amazon.com/images/I/5151NNLoxxL._SY466_.jpg',
+    'Portrait d’une génération des années 60 à travers les yeux de François et Christine.',
+    'Georges Pérec',
+    '1965-01-01',
+    '256',
+    '50',
+    '50'
+),
+
+(
+    'Dracula',
+    'https://m.media-amazon.com/images/I/51rv060WrZL._SY445_SX342_.jpg',
+    'L’histoire du comte Dracula, vampire et des événements terrifiants qu’il provoque.',
+    'Bram Stoker',
+    '1897-05-26',
+    '416',
+    '50',
+    '51'
+),
+(
+    'Frankenstein',
+    'https://m.media-amazon.com/images/I/41+TJDLYviL._SY445_SX342_.jpg',
+    'Le récit de Victor Frankenstein et de sa création monstrueuse.',
+    'Mary Shelley',
+    '1818-01-01',
+    '280',
+    '50',
+    '51'
+),
+(
+    'Ça',
+    'https://m.media-amazon.com/images/I/31IHWxBVh8L.jpg',
+    'L’histoire de l’entité maléfique qui hante la ville de Derry.',
+    'Stephen King',
+    '1986-09-15',
+    '1138',
+    '50',
+    '51'
+),
+(
+    'Le Shining',
+    'https://m.media-amazon.com/images/I/61evFv7CJ5L._SY466_.jpg',
+    'L’histoire d’un écrivain et de sa famille confrontés à des forces surnaturelles.',
+    'Stephen King',
+    '1977-01-28',
+    '447',
+    '50',
+    '51'
+),
+(
+    'L’Exorciste',
+    'https://m.media-amazon.com/images/I/71Aa9Pgz0sL._SY466_.jpg',
+    'Un récit de possession démoniaque et de lutte contre le mal.',
+    'William Peter Blatty',
+    '1971-06-01',
+    '332',
+    '50',
+    '51'
+),
+
+(
+    'Le Petit Nicolas',
+    'https://m.media-amazon.com/images/I/61861NRhcpL._SY466_.jpg',
+    'Les aventures amusantes et espiègles d\'un jeune garçon nommé Nicolas et de ses amis.',
+    'René Goscinny',
+    '1960-03-29',
+    '160',
+    '50',
+    '52'
+),
+(
+    'Les Tribulations d\'un chinois en Chine',
+    'https://m.media-amazon.com/images/I/510IlNZrRfL._SY466_.jpg',
+    'Les mésaventures humoristiques d\'un riche héritier en voyage en Chine.',
+    'Jules Verne',
+    '1879-07-01',
+    '288',
+    '50',
+    '52'
+),
+(
+    'Le Journal d\'une femme de chambre',
+    'https://m.media-amazon.com/images/I/61S3ED0UBaL._SY466_.jpg',
+    'Le récit satirique des expériences d\'une femme de chambre au service des bourgeois parisiens.',
+    'Octave Mirbeau',
+    '1900-02-20',
+    '352',
+    '50',
+    '52'
+),
+(
+    'Au bonheur des ogres',
+    'https://m.media-amazon.com/images/I/61gX+A0a+IL._SY466_.jpg',
+    'Les mésaventures loufoques d\'un héros gaffeur au sein d\'une famille farfelue.',
+    'Daniel Pennac',
+    '1985-09-20',
+    '288',
+    '50',
+    '52'
+),
+(
+    'La vie sexuelle des super-héros',
+    'https://m.media-amazon.com/images/I/91niz6Vzy4L._SY466_.jpg',
+    'Une parodie amusante de la vie privée des super-héros et de leurs relations amoureuses.',
+    'Marco Mancassola',
+    '2010-04-15',
+    '416',
+    '50',
+    '52'
+),
+
+(
+    'Le Royaume de Kensuké',
+    'https://m.media-amazon.com/images/I/81N3Utt2zHS._SY466_.jpg',
+    'Le Royaume de Kensuké est un roman de Michael Morpurgo destiné à un public pré-adolescent ou adolescent. C\'est un livre d\'aventures s\'inspirant de Robinson Crusoé.',
+    'Michael Morpurgo',
+    '2000-06-26',
+    '152',
+    '50',
+    '53'
+),
+(
+    'Le Petit Prince',
+    'https://books.google.fr/books/publisher/content?id=1ppDEAAAQBAJ&hl=fr&pg=PP1&img=1&zoom=3&bul=1&sig=ACfU3U23RwcBAaHGuhoAmqSoMiu8GnUJoA&w=1280',
+    'L\'histoire poétique et philosophique d\'un jeune prince explorant des planètes lointaines.',
+    'Antoine de Saint-Exupéry',
+    '1943-04-06',
+    '96',
+    '50',
+    '53'
+),
+(
+    'L\'esprit de l\'hiver',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhzrUYE0kixpie0gA__ljoDJheW_p4VMDW1lKYnz8Ruix2K174',
+    'L\'hiver et son manteau se sont posés sur la forêt. Les jours sont froids et les nuits sont longues, mais, comme chaque année à l\'approche de la fête de Yule, les habitants de Bellécorce se réjouissent : les boutiques regorgent de jolies choses, les gourmandises se préparent, et beaucoup prennent la direction du Grand Nord.',
+    'Mickaël Brun-Arnaud',
+    '2023-10-04',
+    '324',
+    '50',
+    '53'
+),
+(
+    'Charlie et la chocolaterie',
+    'https://m.media-amazon.com/images/I/51vABGxjcfL._SY466_.jpg',
+    'Les aventures extraordinaires de Charlie Bucket dans la fabuleuse chocolaterie de Willy Wonka.',
+    'Roald Dahl',
+    '1964-01-17',
+    '176',
+    '50',
+    '53'
+),
+(
+    'Le Lion',
+    'https://m.media-amazon.com/images/I/91U1rbnk5uL._SY466_.jpg',
+    'L\'histoire touchante de la relation entre une jeune fille et un lion dans la savane africaine.',
+    'Joseph Kessel',
+    '1958-01-01',
+    '272',
+    '50',
+    '53'
+),
+
+(
+    'La Tresse',
+    'https://m.media-amazon.com/images/I/71FtuYQlQrL._SY466_.jpg',
+    'Trois femmes, trois histoires, trois continents : le destin tressé de Smita en Inde, Giulia en Sicile et Sarah au Canada.',
+    'Laetitia Colombani',
+    '2017-05-10',
+    '224',
+    '50',
+    '54'
+),
+(
+    'L\'élégance du hérisson',
+    'https://m.media-amazon.com/images/I/41osx8p8yrL._SY445_SX342_.jpg',
+    'Dans un immeuble bourgeois parisien, la concierge Renée et la jeune Paloma nouent une amitié improbable.',
+    'Muriel Barbery',
+    '2006-08-20',
+    '359',
+    '50',
+    '54'
+),
+(
+    'En attendant Bojangles',
+    'https://m.media-amazon.com/images/I/81DB6wNMluL._SY466_.jpg',
+    'Un enfant raconte la vie extravagante de ses parents, entre folie et amour démesuré.',
+    'Olivier Bourdeaut',
+    '2016-01-06',
+    '160',
+    '50',
+    '54'
+),
+(
+    'Les Gratitudes',
+    'https://m.media-amazon.com/images/I/71l31Lyl95L._SY466_.jpg',
+    'Une réflexion sur la gratitude à travers l\'histoire d\'une vieille femme et de son entourage.',
+    'Delphine de Vigan',
+    '2019-02-20',
+    '208',
+    '50',
+    '54'
+),
+(
+    'Changer l\'eau des fleurs',
+    'https://m.media-amazon.com/images/I/71m1nkcF2EL._SY466_.jpg',
+    'La vie douce-amère de Violette Toussaint, gardienne de cimetière, au milieu des histoires de deuil et de renaissance.',
+    'Valérie Perrin',
+    '2018-02-28',
+    '576',
+    '50',
+    '54'
+),
+
+(
+    'Madame Bovary',
+    'https://m.media-amazon.com/images/I/81ghr9ALaDL._SY466_.jpg',
+    'L\'histoire tragique d\'Emma Bovary, une femme insatisfaite de sa vie provinciale.',
+    'Gustave Flaubert',
+    '1857-04-15',
+    '432',
+    '50',
+    '55'
+),
+(
+    'Bel-Ami',
+    'https://m.media-amazon.com/images/I/4118OrYciZL._SY445_SX342_.jpg',
+    'L\'ascension sociale d\'un jeune homme ambitieux dans le Paris du XIXe siècle.',
+    'Guy de Maupassant',
+    '1885-04-01',
+    '384',
+    '50',
+    '55'
+),
+(
+    'Thérèse Raquin',
+    'https://m.media-amazon.com/images/I/61cDRpN2D4L._SY466_.jpg',
+    'Le drame d\'une femme adultère et de son amant après qu\'ils ont assassiné son mari.',
+    'Émile Zola',
+    '1867-01-01',
+    '336',
+    '50',
+    '55'
+),
+(
+    'Le Rouge et le Noir',
+    'https://m.media-amazon.com/images/I/61yOisDsHYL._SY466_.jpg',
+    'Le parcours ambitieux et amoureux de Julien Sorel dans la France post-napoléonienne.',
+    'Stendhal',
+    '1830-11-01',
+    '576',
+    '50',
+    '55'
+),
+(
+    'La Curée',
+    'https://m.media-amazon.com/images/I/51ncGHkZ22S._SY466_.jpg',
+    'Les excès et la décadence de la bourgeoisie parisienne sous le Second Empire.',
+    'Émile Zola',
+    '1871-01-01',
+    '416',
+    '50',
+    '55'
+),
+
+(
+    'Le Dahlia noir',
+    'https://m.media-amazon.com/images/I/51HYoNXm54L._SY466_.jpg',
+    'L\'enquête sur le meurtre brutal et non résolu d\'une jeune femme à Los Angeles en 1947.',
+    'James Ellroy',
+    '1987-09-15',
+    '512',
+    '50',
+    '56'
+),
+(
+    'American Psycho',
+    'https://m.media-amazon.com/images/I/61i+TTSlbVL._SY466_.jpg',
+    'Le récit dérangeant d\'un jeune cadre new-yorkais en apparence parfait, mais en réalité psychopathe et meurtrier.',
+    'Bret Easton Ellis',
+    '1991-03-06',
+    '400',
+    '50',
+    '56'
+),
+(
+    'Millénium, Tome 1 : Les Hommes qui n\'aimaient pas les femmes',
+    'https://m.media-amazon.com/images/I/41vJBg-JcTL._SY466_.jpg',
+    'Le journaliste Mikael Blomkvist et la hackeuse Lisbeth Salander enquêtent sur une disparition vieille de 40 ans.',
+    'Stieg Larsson',
+    '2005-08-01',
+    '672',
+    '50',
+    '56'
+),
+(
+    'La Nuit des temps',
+    'https://m.media-amazon.com/images/I/51BE6jBtZ4L._SY445_SX342_.jpg',
+    'La découverte d\'une civilisation ancienne et l\'amour impossible entre deux êtres séparés par des millénaires.',
+    'René Barjavel',
+    '1968-09-25',
+    '384',
+    '50',
+    '56'
+),
+(
+    'Seul le silence',
+    'https://m.media-amazon.com/images/I/61LeJC1VwvL._SY466_.jpg',
+    'Un jeune garçon découvre les secrets sombres de sa petite ville après une série de meurtres brutaux.',
+    'R. J. Ellory',
+    '2007-01-18',
+    '544',
+    '50',
+    '56'
+),
+
+(
+    'Le Monde de Sophie',
+    '',
+    'Une introduction à la philosophie à travers les aventures d\'une jeune fille découvrant les grandes questions existentielles.',
+    'Jostein Gaarder',
+    '1991-12-05',
+    '544',
+    '50',
+    '57'
+),
+(
+    'L\'Étranger',
+    '',
+    'Le récit absurde et détaché de Meursault, un homme indifférent aux normes sociales, confronté à la justice.',
+    'Albert Camus',
+    '1942-06-15',
+    '191',
+    '50',
+    '57'
+),
+(
+    'Le Prophète',
+    '',
+    'Une série de poèmes philosophiques sur la vie, l\'amour, le travail et la liberté.',
+    'Khalil Gibran',
+    '1923-01-01',
+    '128',
+    '50',
+    '57'
+),
+(
+    'Ainsi parlait Zarathoustra',
+    '',
+    'Un traité philosophique sous forme de récit où Nietzsche expose sa vision du Surhomme.',
+    'Friedrich Nietzsche',
+    '1883-01-01',
+    '336',
+    '50',
+    '57'
+),
+(
+    'Siddhartha',
+    '',
+    'Le voyage spirituel et philosophique d\'un homme en quête de sagesse et de sens.',
+    'Hermann Hesse',
+    '1922-01-01',
+    '152',
+    '50',
+    '57'
+),
+
+(
+    'Le Chien des Baskerville',
+    '',
+    'Sherlock Holmes enquête sur la légende d\'un chien monstrueux qui hanterait une famille noble.',
+    'Arthur Conan Doyle',
+    '1902-04-01',
+    '272',
+    '50',
+    '58'
+),
+(
+    'Le Crime de l\'Orient-Express',
+    '',
+    'Hercule Poirot enquête sur le meurtre d\'un riche homme d\'affaires à bord de l\'Orient-Express.',
+    'Agatha Christie',
+    '1934-01-01',
+    '256',
+    '50',
+    '58'
+),
+(
+    'Da Vinci Code',
+    '',
+    'Le professeur Robert Langdon découvre une série de mystères cachés dans les œuvres de Léonard de Vinci.',
+    'Dan Brown',
+    '2003-03-18',
+    '736',
+    '50',
+    '58'
+),
+(
+    'Millénium, Tome 1 : Les Hommes qui n\'aimaient pas les femmes',
+    '',
+    'Le journaliste Mikael Blomkvist et la hackeuse Lisbeth Salander enquêtent sur une disparition vieille de 40 ans.',
+    'Stieg Larsson',
+    '2005-08-01',
+    '672',
+    '50',
+    '58'
+),
+(
+    'Le Nom de la rose',
+    '',
+    'Le moine franciscain Guillaume de Baskerville mène une enquête dans une abbaye médiévale où se produisent des meurtres mystérieux.',
+    'Umberto Eco',
+    '1980-01-01',
+    '552',
+    '50',
+    '58'
+),
+
+(
+    '1984',
+    '',
+    'Un homme tente de survivre dans un régime totalitaire où Big Brother surveille tout.',
+    'George Orwell',
+    '1949-06-08',
+    '328',
+    '50',
+    '59'
+),
+(
+    'Dune',
+    '',
+    'L\'épopée de Paul Atréides sur la planète désertique Arrakis, où l\'épice mélangée est la substance la plus précieuse de l\'univers.',
+    'Frank Herbert',
+    '1965-08-01',
+    '688',
+    '50',
+    '59'
+),
+(
+    'Le Meilleur des mondes',
+    '',
+    'Un futur dystopique où les êtres humains sont conditionnés et contrôlés dès la naissance pour maintenir une société stable.',
+    'Aldous Huxley',
+    '1932-01-01',
+    '288',
+    '50',
+    '59'
+),
+(
+    'Neuromancien',
+    '',
+    'Un hacker sur le déclin est engagé pour réaliser une mission de piratage dans un univers cybernétique.',
+    'William Gibson',
+    '1984-07-01',
+    '271',
+    '50',
+    '59'
+),
+(
+    'La Guerre des mondes',
+    '',
+    'L\'invasion de la Terre par des extraterrestres martiens et la lutte de l\'humanité pour sa survie.',
+    'H.G. Wells',
+    '1898-01-01',
+    '192',
+    '50',
+    '59'
+),
+
+(
+    'Orgueil et Préjugés',
+    '',
+    'La relation tumultueuse entre Elizabeth Bennet et Mr. Darcy dans l\'Angleterre du début du XIXe siècle.',
+    'Jane Austen',
+    '1813-01-28',
+    '432',
+    '50',
+    '60'
+),
+(
+    'Les Hauts de Hurlevent',
+    '',
+    'L\'histoire d\'amour passionnée et destructrice entre Heathcliff et Catherine Earnshaw dans les landes du Yorkshire.',
+    'Emily Brontë',
+    '1847-12-01',
+    '416',
+    '50',
+    '60'
+),
+(
+    'Outlander',
+    '',
+    'Une infirmière de la Seconde Guerre mondiale se retrouve projetée dans l\'Écosse du XVIIIe siècle où elle rencontre un Highlander.',
+    'Diana Gabaldon',
+    '1991-06-01',
+    '896',
+    '50',
+    '60'
+),
+(
+    'La Nuit des temps',
+    '',
+    'La découverte d\'une civilisation ancienne et l\'amour impossible entre deux êtres séparés par des millénaires.',
+    'René Barjavel',
+    '1968-09-25',
+    '384',
+    '50',
+    '60'
+),
+(
+    'P.S. I Love You',
+    '',
+    'Une jeune veuve reçoit des lettres de son défunt mari pour l\'aider à surmonter son deuil et retrouver le bonheur.',
+    'Cecelia Ahern',
+    '2004-01-01',
+    '512',
+    '50',
+    '60'
+),
+
+(
+    'Le Silence des agneaux',
+    '',
+    'L\'agent du FBI Clarice Starling doit interroger le dangereux psychopathe Hannibal Lecter pour arrêter un tueur en série.',
+    'Thomas Harris',
+    '1988-05-19',
+    '367',
+    '50',
+    '61'
+),
+(
+    'La Fille du train',
+    '',
+    'Une femme dépressive et alcoolique devient obsédée par un couple qu\'elle observe depuis le train, jusqu\'à ce qu\'un crime se produise.',
+    'Paula Hawkins',
+    '2015-01-13',
+    '408',
+    '50',
+    '61'
+),
+(
+    'Gone Girl',
+    '',
+    'La disparition mystérieuse d\'une femme mène à une enquête complexe révélant de sombres secrets matrimoniaux.',
+    'Gillian Flynn',
+    '2012-06-05',
+    '432',
+    '50',
+    '61'
+),
+(
+    'Shutter Island',
+    '',
+    'Deux marshals enquêtent sur la disparition d\'une patiente dans un hôpital psychiatrique situé sur une île isolée.',
+    'Dennis Lehane',
+    '2003-04-15',
+    '368',
+    '50',
+    '61'
+),
+(
+    'Le Da Vinci Code',
+    '',
+    'Le professeur Robert Langdon découvre une série de mystères cachés dans les œuvres de Léonard de Vinci.',
+    'Dan Brown',
+    '2003-03-18',
+    '736',
+    '50',
+    '61'
+),
+
+(
+    'Pulp Fiction',
+    '',
+    'Un film culte de Quentin Tarantino composé de plusieurs histoires entrecroisées dans le monde du crime à Los Angeles.',
+    'Quentin Tarantino',
+    '1994-05-21',
+    '176',
+    '50',
+    '62'
+),
+(
+    'Le Grand Bleu',
+    '',
+    'Une histoire d\'amitié et de rivalité entre deux apnéistes de haut niveau.',
+    'Luc Besson',
+    '1988-05-11',
+    '188',
+    '50',
+    '62'
+),
+(
+    'La Haine',
+    '',
+    'Le quotidien de trois jeunes issus de banlieues parisiennes après une nuit d\'émeutes.',
+    'Mathieu Kassovitz',
+    '1995-05-31',
+    '98',
+    '50',
+    '62'
+),
+(
+    'Inception',
+    '',
+    'Un spécialiste du vol de secrets par le biais des rêves se voit confier une mission complexe d\'implanter une idée dans l\'esprit d\'un héritier.',
+    'Christopher Nolan',
+    '2010-07-16',
+    '148',
+    '50',
+    '62'
+),
+(
+    'Les Enfants du paradis',
+    '',
+    'Une fresque romantique et tragique se déroulant dans le monde du théâtre parisien au XIXe siècle.',
+    'Jacques Prévert',
+    '1945-03-09',
+    '195',
+    '50',
+    '62'
+);
+
+INSERT INTO
+    `musics` (
+        `title`,
+        `picture`,
+        `singer`,
+        `date`,
+        `duration`,
+        `quantities`,
+        `id_category`
+    )
+VALUES (
+        'Ye',
+        '',
+        'Burna Boy',
+        '2018-08-06',
+        '174',
+        '50',
+        '63'
+    ),
+    (
+        'Jerusalema',
+        '',
+        'Master KG, Nomcebo Zikode',
+        '2019-12-13',
+        '232',
+        '50',
+        '63'
+    ),
+    (
+        'Djadja',
+        '',
+        'Aya Nakamura',
+        '2018-04-06',
+        '168',
+        '50',
+        '63'
+    ),
+    (
+        'Essence',
+        '',
+        'WizKid, Tems',
+        '2020-10-30',
+        '240',
+        '50',
+        '63'
+    ),
+    (
+        'Come Closer',
+        '',
+        'WizKid, Drake',
+        '2017-03-31',
+        '209',
+        '50',
+        '63'
+    ),
+
+(
+    'Gurenge',
+    '',
+    'LiSA',
+    '2019-04-22',
+    '230',
+    '50',
+    '64'
+),
+(
+    'Blue Bird',
+    '',
+    'Ikimono Gakari',
+    '2008-07-09',
+    '220',
+    '50',
+    '64'
+),
+(
+    'Unravel',
+    '',
+    'TK from Ling Tosite Sigure',
+    '2014-07-23',
+    '240',
+    '50',
+    '64'
+),
+(
+    'Again',
+    '',
+    'YUI',
+    '2009-06-03',
+    '280',
+    '50',
+    '64'
+),
+(
+    'Silhouette',
+    '',
+    'KANA-BOON',
+    '2014-11-26',
+    '228',
+    '50',
+    '64'
+),
+
+(
+    'The Thrill Is Gone',
+    '',
+    'B.B. King',
+    '1969-12-01',
+    '300',
+    '50',
+    '65'
+),
+(
+    'Stormy Monday',
+    '',
+    'T-Bone Walker',
+    '1947-11-01',
+    '196',
+    '50',
+    '65'
+),
+(
+    'Hoochie Coochie Man',
+    '',
+    'Muddy Waters',
+    '1954-01-07',
+    '170',
+    '50',
+    '65'
+),
+(
+    'I\'d Rather Go Blind',
+    '',
+    'Etta James',
+    '1968-10-15',
+    '173',
+    '50',
+    '65'
+),
+(
+    'Cross Road Blues',
+    '',
+    'Robert Johnson',
+    '1936-11-27',
+    '165',
+    '50',
+    '65'
+),
+
+(
+    'Blinding Lights',
+    '',
+    'The Weeknd',
+    '2019-11-29',
+    '200',
+    '50',
+    '66'
+),
+(
+    'Levitating',
+    '',
+    'Dua Lipa',
+    '2020-03-27',
+    '203',
+    '50',
+    '66'
+),
+(
+    'Watermelon Sugar',
+    '',
+    'Harry Styles',
+    '2019-11-16',
+    '173',
+    '50',
+    '66'
+),
+(
+    'Good 4 U',
+    '',
+    'Olivia Rodrigo',
+    '2021-05-14',
+    '178',
+    '50',
+    '66'
+),
+(
+    'Bad Guy',
+    '',
+    'Billie Eilish',
+    '2019-03-29',
+    '194',
+    '50',
+    '66'
+),
+
+(
+    'Sunset Lover',
+    '',
+    'Petit Biscuit',
+    '2015-06-15',
+    '191',
+    '50',
+    '67'
+),
+(
+    'Weightless',
+    '',
+    'Marconi Union',
+    '2011-10-16',
+    '505',
+    '50',
+    '67'
+),
+(
+    'Night Owl',
+    '',
+    'Gerry Rafferty',
+    '1979-06-01',
+    '264',
+    '50',
+    '67'
+),
+(
+    'Better Together',
+    '',
+    'Jack Johnson',
+    '2005-03-01',
+    '207',
+    '50',
+    '67'
+),
+(
+    'Gravity',
+    '',
+    'John Mayer',
+    '2006-09-12',
+    '242',
+    '50',
+    '67'
+),
+
+(
+    'Clair de Lune',
+    '',
+    'Claude Debussy',
+    '1882-12-20',
+    '180',
+    '50',
+    '68'
+),
+(
+    'Für Elise',
+    '',
+    'Ludwig van Beethoven',
+    '1810-08-14',
+    '177',
+    '50',
+    '68'
+),
+(
+    'Symphony No. 5',
+    '',
+    'Ludwig van Beethoven',
+    '1808-12-22',
+    '1980',
+    '50',
+    '68'
+),
+(
+    'Nocturne Op. 9 No. 2',
+    '',
+    'Frédéric Chopin',
+    '1831-01-01',
+    '240',
+    '50',
+    '68'
+),
+(
+    'Canon in D Major',
+    '',
+    'Johann Pachelbel',
+    '1680-01-01',
+    '356',
+    '50',
+    '68'
+),
+
+(
+    'Jolene',
+    '',
+    'Dolly Parton',
+    '1973-10-15',
+    '155',
+    '50',
+    '69'
+),
+(
+    'Take Me Home, Country Roads',
+    '',
+    'John Denver',
+    '1971-04-12',
+    '191',
+    '50',
+    '69'
+),
+(
+    'The Gambler',
+    '',
+    'Kenny Rogers',
+    '1978-11-15',
+    '220',
+    '50',
+    '69'
+),
+(
+    'Ring of Fire',
+    '',
+    'Johnny Cash',
+    '1963-04-19',
+    '175',
+    '50',
+    '69'
+),
+(
+    'Friends in Low Places',
+    '',
+    'Garth Brooks',
+    '1990-08-06',
+    '268',
+    '50',
+    '69'
+),
+
+(
+    'Born This Way',
+    '',
+    'Lady Gaga',
+    '2011-02-11',
+    '260',
+    '50',
+    '70'
+),
+(
+    'Vogue',
+    '',
+    'Madonna',
+    '1990-03-27',
+    '300',
+    '50',
+    '70'
+),
+(
+    'Freedom! 90',
+    '',
+    'George Michael',
+    '1990-10-30',
+    '389',
+    '50',
+    '70'
+),
+(
+    'True Colors',
+    '',
+    'Cyndi Lauper',
+    '1986-08-28',
+    '255',
+    '50',
+    '70'
+),
+(
+    'I Will Survive',
+    '',
+    'Gloria Gaynor',
+    '1978-10-23',
+    '208',
+    '50',
+    '70'
+),
+
+(
+    'Wake Me Up',
+    '',
+    'Avicii',
+    '2013-06-17',
+    '247',
+    '50',
+    '71'
+),
+(
+    'Titanium',
+    '',
+    'David Guetta, Sia',
+    '2011-08-08',
+    '245',
+    '50',
+    '71'
+),
+(
+    'Animals',
+    '',
+    'Martin Garrix',
+    '2013-06-17',
+    '267',
+    '50',
+    '71'
+),
+(
+    'Lean On',
+    '',
+    'Major Lazer, DJ Snake, MØ',
+    '2015-03-02',
+    '176',
+    '50',
+    '71'
+),
+(
+    'Don\'t You Worry Child',
+    '',
+    'Swedish House Mafia, John Martin',
+    '2012-09-14',
+    '215',
+    '50',
+    '71'
+),
+
+(
+    'Stayin\' Alive',
+    '',
+    'Bee Gees',
+    '1977-12-13',
+    '284',
+    '50',
+    '72'
+),
+(
+    'Le Freak',
+    '',
+    'Chic',
+    '1978-09-30',
+    '283',
+    '50',
+    '72'
+),
+(
+    'I Will Survive',
+    '',
+    'Gloria Gaynor',
+    '1978-10-23',
+    '208',
+    '50',
+    '72'
+),
+(
+    'Dancing Queen',
+    '',
+    'ABBA',
+    '1976-08-15',
+    '230',
+    '50',
+    '72'
+),
+(
+    'Don\'t Stop \'Til You Get Enough',
+    '',
+    'Michael Jackson',
+    '1979-07-28',
+    '362',
+    '50',
+    '72'
+),
+
+(
+    'Superstar',
+    '',
+    'RuPaul',
+    '1993-06-08',
+    '178',
+    '50',
+    '73'
+),
+(
+    'Sissy That Walk',
+    '',
+    'RuPaul',
+    '2014-01-28',
+    '208',
+    '50',
+    '73'
+),
+(
+    'Kitty Girl',
+    '',
+    'RuPaul',
+    '2017-03-24',
+    '207',
+    '50',
+    '73'
+),
+(
+    'Read U Wrote U',
+    '',
+    'RuPaul, The Cast of Rupaul\'s Drag Race All Stars, Season 2',
+    '2016-10-28',
+    '191',
+    '50',
+    '73'
+),
+(
+    'Glamazon',
+    '',
+    'RuPaul',
+    '2011-05-03',
+    '187',
+    '50',
+    '73'
+),
+
+(
+    'My Heart Will Go On',
+    '',
+    'Céline Dion',
+    '1997-11-18',
+    '305',
+    '50',
+    '74'
+),
+(
+    'Hedwig\'s Theme',
+    '',
+    'John Williams',
+    '2001-10-30',
+    '304',
+    '50',
+    '74'
+),
+(
+    'Shallow',
+    '',
+    'Lady Gaga, Bradley Cooper',
+    '2018-09-27',
+    '216',
+    '50',
+    '74'
+),
+(
+    'Let It Go',
+    '',
+    'Idina Menzel',
+    '2013-11-25',
+    '218',
+    '50',
+    '74'
+),
+(
+    'Circle of Life',
+    '',
+    'Elton John',
+    '1994-08-09',
+    '242',
+    '50',
+    '74'
+),
+
+(
+    'The A Team',
+    '',
+    'Ed Sheeran',
+    '2011-06-12',
+    '256',
+    '50',
+    '75'
+),
+(
+    'Skinny Love',
+    '',
+    'Bon Iver',
+    '2007-07-08',
+    '234',
+    '50',
+    '75'
+),
+(
+    'Ho Hey',
+    '',
+    'The Lumineers',
+    '2012-04-03',
+    '164',
+    '50',
+    '75'
+),
+(
+    'Fast Car',
+    '',
+    'Tracy Chapman',
+    '1988-04-06',
+    '298',
+    '50',
+    '75'
+),
+(
+    'Big Yellow Taxi',
+    '',
+    'Joni Mitchell',
+    '1970-03-01',
+    '178',
+    '50',
+    '75'
+),
+
+(
+    'Megalovania',
+    '',
+    'Toby Fox',
+    '2015-09-15',
+    '140',
+    '50',
+    '76'
+),
+(
+    'Baba Yetu',
+    '',
+    'Christopher Tin',
+    '2005-07-19',
+    '229',
+    '50',
+    '76'
+),
+(
+    'Still Alive',
+    '',
+    'GLaDOS, Jonathan Coulton',
+    '2007-10-10',
+    '178',
+    '50',
+    '76'
+),
+(
+    'Lifelight',
+    '',
+    'Hideki Sakamoto',
+    '2018-11-01',
+    '154',
+    '50',
+    '76'
+),
+(
+    'Gerudo Valley',
+    '',
+    'Koji Kondo',
+    '1998-11-21',
+    '142',
+    '50',
+    '76'
+),
+
+(
+    'Oh Happy Day',
+    '',
+    'Edwin Hawkins Singers',
+    '1969-03-02',
+    '304',
+    '50',
+    '77'
+),
+(
+    'Amazing Grace',
+    '',
+    'Aretha Franklin',
+    '1972-06-01',
+    '246',
+    '50',
+    '77'
+),
+(
+    'Take My Hand, Precious Lord',
+    '',
+    'Mahalia Jackson',
+    '1956-01-01',
+    '216',
+    '50',
+    '77'
+),
+(
+    'Shackles (Praise You)',
+    '',
+    'Mary Mary',
+    '2000-05-09',
+    '210',
+    '50',
+    '77'
+),
+(
+    'Revolution',
+    '',
+    'Kirk Franklin',
+    '1998-10-27',
+    '321',
+    '50',
+    '77'
+),
+
+(
+    'Enter Sandman',
+    '',
+    'Metallica',
+    '1991-07-29',
+    '331',
+    '50',
+    '78'
+),
+(
+    'Iron Man',
+    '',
+    'Black Sabbath',
+    '1970-10-07',
+    '355',
+    '50',
+    '78'
+),
+(
+    'Painkiller',
+    '',
+    'Judas Priest',
+    '1990-09-03',
+    '367',
+    '50',
+    '78'
+),
+(
+    'The Trooper',
+    '',
+    'Iron Maiden',
+    '1983-06-20',
+    '244',
+    '50',
+    '78'
+),
+(
+    'Breaking the Law',
+    '',
+    'Judas Priest',
+    '1980-04-14',
+    '158',
+    '50',
+    '78'
+),
+
+(
+    'Lose Yourself',
+    '',
+    'Eminem',
+    '2002-10-28',
+    '326',
+    '50',
+    '79'
+),
+(
+    'Juicy',
+    '',
+    'The Notorious B.I.G.',
+    '1994-08-09',
+    '308',
+    '50',
+    '79'
+),
+(
+    'Nuthin\' But a "G" Thang',
+    '',
+    'Dr. Dre, Snoop Dogg',
+    '1992-11-19',
+    '242',
+    '50',
+    '79'
+),
+(
+    'C.R.E.A.M.',
+    '',
+    'Wu-Tang Clan',
+    '1994-01-31',
+    '252',
+    '50',
+    '79'
+),
+(
+    'Fight The Power',
+    '',
+    'Public Enemy',
+    '1989-07-04',
+    '320',
+    '50',
+    '79'
+),
+
+(
+    'Mr. Brightside',
+    '',
+    'The Killers',
+    '2003-09-29',
+    '222',
+    '50',
+    '80'
+),
+(
+    'Take Me Out',
+    '',
+    'Franz Ferdinand',
+    '2004-02-09',
+    '238',
+    '50',
+    '80'
+),
+(
+    'Float On',
+    '',
+    'Modest Mouse',
+    '2004-02-14',
+    '224',
+    '50',
+    '80'
+),
+(
+    'Reptilia',
+    '',
+    'The Strokes',
+    '2004-02-09',
+    '233',
+    '50',
+    '80'
+),
+(
+    'Electric Feel',
+    '',
+    'MGMT',
+    '2007-10-02',
+    '231',
+    '50',
+    '80'
+),
+
+(
+    'So What',
+    '',
+    'Miles Davis',
+    '1959-08-17',
+    '563',
+    '50',
+    '81'
+),
+(
+    'Take Five',
+    '',
+    'The Dave Brubeck Quartet',
+    '1959-09-21',
+    '324',
+    '50',
+    '81'
+),
+(
+    'What a Wonderful World',
+    '',
+    'Louis Armstrong',
+    '1967-10-18',
+    '139',
+    '50',
+    '81'
+),
+(
+    'A Love Supreme',
+    '',
+    'John Coltrane',
+    '1965-02-01',
+    '467',
+    '50',
+    '81'
+),
+(
+    'Birdland',
+    '',
+    'Weather Report',
+    '1977-05-01',
+    '331',
+    '50',
+    '81'
+),
+
+(
+    'Dynamite',
+    '',
+    'BTS',
+    '2020-08-21',
+    '199',
+    '50',
+    '82'
+),
+(
+    'DDU-DU DDU-DU',
+    '',
+    'BLACKPINK',
+    '2018-06-15',
+    '210',
+    '50',
+    '82'
+),
+(
+    'Gangnam Style',
+    '',
+    'PSY',
+    '2012-07-15',
+    '219',
+    '50',
+    '82'
+),
+(
+    'FANCY',
+    '',
+    'TWICE',
+    '2019-04-22',
+    '212',
+    '50',
+    '82'
+),
+(
+    'Love Scenario',
+    '',
+    'iKON',
+    '2018-01-25',
+    '198',
+    '50',
+    '82'
+),
+
+(
+    'Despacito',
+    '',
+    'Luis Fonsi, Daddy Yankee',
+    '2017-01-13',
+    '229',
+    '50',
+    '83'
+),
+(
+    'Bailando',
+    '',
+    'Enrique Iglesias, Gente de Zona, Descemer Bueno',
+    '2014-04-11',
+    '250',
+    '50',
+    '83'
+),
+(
+    'Hips Don\'t Lie',
+    '',
+    'Shakira, Wyclef Jean',
+    '2006-02-28',
+    '218',
+    '50',
+    '83'
+),
+(
+    'Vivir Mi Vida',
+    '',
+    'Marc Anthony',
+    '2013-07-23',
+    '258',
+    '50',
+    '83'
+),
+(
+    'La Bicicleta',
+    '',
+    'Carlos Vives, Shakira',
+    '2016-05-27',
+    '225',
+    '50',
+    '83'
+),
+
+(
+    'Coffee Break',
+    '',
+    'Zmeyev',
+    '2020-01-15',
+    '149',
+    '50',
+    '84'
+),
+(
+    'Snowfall',
+    '',
+    'Idealism',
+    '2017-12-12',
+    '122',
+    '50',
+    '84'
+),
+(
+    'Dreaming',
+    '',
+    'Jinsang',
+    '2016-04-14',
+    '165',
+    '50',
+    '84'
+),
+(
+    'You & I',
+    '',
+    'Eevee',
+    '2018-06-15',
+    '120',
+    '50',
+    '84'
+),
+(
+    'Sundew',
+    '',
+    'Nymano',
+    '2017-08-11',
+    '136',
+    '50',
+    '84'
+),
+
+(
+    'Master of Puppets',
+    '',
+    'Metallica',
+    '1986-03-03',
+    '516',
+    '50',
+    '85'
+),
+(
+    'Paranoid',
+    '',
+    'Black Sabbath',
+    '1970-09-18',
+    '171',
+    '50',
+    '85'
+),
+(
+    'Ace of Spades',
+    '',
+    'Motörhead',
+    '1980-10-27',
+    '166',
+    '50',
+    '85'
+),
+(
+    'Holy Diver',
+    '',
+    'Dio',
+    '1983-05-25',
+    '311',
+    '50',
+    '85'
+),
+(
+    'Raining Blood',
+    '',
+    'Slayer',
+    '1986-10-07',
+    '251',
+    '50',
+    '85'
+),
+
+(
+    'Mas, Que Nada',
+    '',
+    'Jorge Ben Jor',
+    '1963-07-01',
+    '180',
+    '50',
+    '86'
+),
+(
+    'Aquarela do Brasil',
+    '',
+    'Gal Costa',
+    '1981-11-01',
+    '165',
+    '50',
+    '86'
+),
+(
+    'Chega de Saudade',
+    '',
+    'João Gilberto',
+    '1959-01-01',
+    '183',
+    '50',
+    '86'
+),
+(
+    'Tropicália',
+    '',
+    'Caetano Veloso',
+    '1968-10-01',
+    '239',
+    '50',
+    '86'
+),
+(
+    'Sampa',
+    '',
+    'Caetano Veloso',
+    '1999-07-01',
+    '237',
+    '50',
+    '86'
+),
+
+(
+    'Lemon',
+    '',
+    'Kenshi Yonezu',
+    '2018-02-14',
+    '248',
+    '50',
+    '87'
+),
+(
+    'Pretender',
+    '',
+    'Official HIGE DANDism',
+    '2019-01-09',
+    '260',
+    '50',
+    '87'
+),
+(
+    'Heavy Rotation',
+    '',
+    'AKB48',
+    '2010-08-18',
+    '232',
+    '50',
+    '87'
+),
+(
+    'Paprika',
+    '',
+    'Foorin',
+    '2018-12-12',
+    '225',
+    '50',
+    '87'
+),
+(
+    'Koi',
+    '',
+    'Gen Hoshino',
+    '2016-12-14',
+    '207',
+    '50',
+    '87'
+),
+
+(
+    'Baba Yetu',
+    '',
+    'Christopher Tin',
+    '2005-01-01',
+    '243',
+    '50',
+    '88'
+),
+(
+    'Sidi Mansour',
+    '',
+    'Hedi Jouini',
+    '1987-01-01',
+    '263',
+    '50',
+    '88'
+),
+(
+    'Aicha',
+    '',
+    'Khaled',
+    '1996-10-01',
+    '240',
+    '50',
+    '88'
+),
+(
+    'Pata Pata',
+    '',
+    'Miriam Makeba',
+    '1967-01-01',
+    '185',
+    '50',
+    '88'
+),
+(
+    'Je l’aime à mourir',
+    '',
+    'Francis Cabrel',
+    '2007-01-01',
+    '248',
+    '50',
+    '88'
+),
+
+(
+    'Nessun Dorma',
+    '',
+    'Luciano Pavarotti',
+    '1990-01-01',
+    '210',
+    '50',
+    '89'
+),
+(
+    'La Traviata: Brindisi',
+    '',
+    'Maria Callas',
+    '1953-01-01',
+    '158',
+    '50',
+    '89'
+),
+(
+    'Ave Maria',
+    '',
+    'Andrea Bocelli',
+    '1999-01-01',
+    '178',
+    '50',
+    '89'
+),
+(
+    'O Mio Babbino Caro',
+    '',
+    'Jessye Norman',
+    '1992-01-01',
+    '163',
+    '50',
+    '89'
+),
+(
+    'Carmen: Habanera',
+    '',
+    'Elina Garanca',
+    '2009-01-01',
+    '183',
+    '50',
+    '89'
+),
+
+(
+    'Billie Jean',
+    '',
+    'Michael Jackson',
+    '1982-01-02',
+    '294',
+    '50',
+    '90'
+),
+(
+    'Like a Prayer',
+    '',
+    'Madonna',
+    '1989-03-21',
+    '349',
+    '50',
+    '90'
+),
+(
+    'Poker Face',
+    '',
+    'Lady Gaga',
+    '2008-09-26',
+    '238',
+    '50',
+    '90'
+),
+(
+    'Blinding Lights',
+    '',
+    'The Weeknd',
+    '2019-11-29',
+    '201',
+    '50',
+    '90'
+),
+(
+    'Rolling in the Deep',
+    '',
+    'Adele',
+    '2010-11-29',
+    '228',
+    '50',
+    '90'
+),
+
+(
+    'Anarchy in the U.K.',
+    '',
+    'Sex Pistols',
+    '1976-11-26',
+    '167',
+    '50',
+    '91'
+),
+(
+    'Blitzkrieg Bop',
+    '',
+    'Ramones',
+    '1976-02-04',
+    '168',
+    '50',
+    '91'
+),
+(
+    'London Calling',
+    '',
+    'The Clash',
+    '1979-12-14',
+    '195',
+    '50',
+    '91'
+),
+(
+    'I Wanna Be Sedated',
+    '',
+    'Ramones',
+    '1978-02-01',
+    '174',
+    '50',
+    '91'
+),
+(
+    'Holiday in Cambodia',
+    '',
+    'Dead Kennedys',
+    '1980-07-01',
+    '224',
+    '50',
+    '91'
+),
+
+(
+    'Let\'s Stay Together',
+    '',
+    'Al Green',
+    '1972-01-31',
+    '202',
+    '50',
+    '92'
+),
+(
+    'What\'s Going On',
+    '',
+    'Marvin Gaye',
+    '1971-05-21',
+    '233',
+    '50',
+    '92'
+),
+(
+    'I\'m Every Woman',
+    '',
+    'Chaka Khan',
+    '1978-10-12',
+    '280',
+    '50',
+    '92'
+),
+(
+    'Kiss',
+    '',
+    'Prince',
+    '1986-02-05',
+    '213',
+    '50',
+    '92'
+),
+(
+    'Ain\'t Nobody',
+    '',
+    'Rufus, Chaka Khan',
+    '1983-07-15',
+    '247',
+    '50',
+    '92'
+),
+
+(
+    'Didi',
+    '',
+    'Khaled',
+    '1992-01-01',
+    '245',
+    '50',
+    '93'
+),
+(
+    'Aïcha',
+    '',
+    'Khaled',
+    '1996-10-01',
+    '240',
+    '50',
+    '93'
+),
+(
+    'Abdel Kader',
+    '',
+    'Khaled, Rachid Taha',
+    '1999-05-01',
+    '278',
+    '50',
+    '93'
+),
+(
+    'C\'est La Vie',
+    '',
+    'Khaled',
+    '2012-06-01',
+    '199',
+    '50',
+    '93'
+),
+(
+    'N\'ssi N\'ssi',
+    '',
+    'Cheb Hasni',
+    '1991-01-01',
+    '237',
+    '50',
+    '93'
+),
+
+(
+    'Lose Yourself',
+    '',
+    'Eminem',
+    '2002-10-28',
+    '261',
+    '50',
+    '94'
+),
+(
+    'Juicy',
+    '',
+    'The Notorious B.I.G.',
+    '1994-08-09',
+    '357',
+    '50',
+    '94'
+),
+(
+    'California Love',
+    '',
+    '2Pac',
+    '1995-12-12',
+    '226',
+    '50',
+    '94'
+),
+(
+    'C.R.E.A.M.',
+    '',
+    'Wu-Tang Clan',
+    '1993-01-31',
+    '210',
+    '50',
+    '94'
+),
+(
+    'Gold Digger',
+    '',
+    'Kanye West, Jamie Foxx',
+    '2005-09-13',
+    '212',
+    '50',
+    '94'
+),
+
+(
+    'Three Little Birds',
+    '',
+    'Bob Marley & The Wailers',
+    '1977-05-23',
+    '180',
+    '50',
+    '95'
+),
+(
+    'Bad Boys',
+    '',
+    'Inner Circle',
+    '1987-04-08',
+    '210',
+    '50',
+    '95'
+),
+(
+    'Red Red Wine',
+    '',
+    'UB40',
+    '1983-01-29',
+    '187',
+    '50',
+    '95'
+),
+(
+    'Sweat (A La La La La Long),',
+    '',
+    'Inner Circle',
+    '1992-06-28',
+    '232',
+    '50',
+    '95'
+),
+(
+    'Could You Be Loved',
+    '',
+    'Bob Marley & The Wailers',
+    '1980-05-10',
+    '220',
+    '50',
+    '95'
+),
+
+(
+    'Despacito',
+    '',
+    'Luis Fonsi, Daddy Yankee',
+    '2017-01-13',
+    '229',
+    '50',
+    '96'
+),
+(
+    'Dákiti',
+    '',
+    'Bad Bunny, Jhay Cortez',
+    '2020-10-30',
+    '211',
+    '50',
+    '96'
+),
+(
+    'Taki Taki',
+    '',
+    'DJ Snake, Selena Gomez, Ozuna, Cardi B',
+    '2018-09-28',
+    '212',
+    '50',
+    '96'
+),
+(
+    'Hawái',
+    '',
+    'Maluma',
+    '2020-07-02',
+    '174',
+    '50',
+    '96'
+),
+(
+    'Dile Que Tú Me Quieres',
+    '',
+    'Ozuna',
+    '2018-04-06',
+    '188',
+    '50',
+    '96'
+),
+
+(
+    'Bohemian Rhapsody',
+    '',
+    'Queen',
+    '1975-10-31',
+    '354',
+    '50',
+    '97'
+),
+(
+    'Hotel California',
+    '',
+    'Eagles',
+    '1976-12-08',
+    '391',
+    '50',
+    '97'
+),
+(
+    'Stairway to Heaven',
+    '',
+    'Led Zeppelin',
+    '1971-11-08',
+    '482',
+    '50',
+    '97'
+),
+(
+    'Imagine',
+    '',
+    'John Lennon',
+    '1971-10-11',
+    '187',
+    '50',
+    '97'
+),
+(
+    'Sweet Child O\' Mine',
+    '',
+    'Guns N\' Roses',
+    '1987-08-08',
+    '356',
+    '50',
+    '97'
+),
+
+(
+    'Smells Like Teen Spirit',
+    '',
+    'Nirvana',
+    '1991-09-10',
+    '301',
+    '50',
+    '98'
+),
+(
+    'Creep',
+    '',
+    'Radiohead',
+    '1992-09-24',
+    '239',
+    '50',
+    '98'
+),
+(
+    'Losing My Religion',
+    '',
+    'R.E.M.',
+    '1991-03-19',
+    '229',
+    '50',
+    '98'
+),
+(
+    'Under the Bridge',
+    '',
+    'Red Hot Chili Peppers',
+    '1992-09-01',
+    '266',
+    '50',
+    '98'
+),
+(
+    'No Rain',
+    '',
+    'Blind Melon',
+    '1992-09-16',
+    '238',
+    '50',
+    '98'
+),
+
+(
+    'Aquel lugar',
+    '',
+    'Héctor Lavoe',
+    '1988-01-01',
+    '245',
+    '50',
+    '99'
+),
+(
+    'Vivir lo Nuestro',
+    '',
+    'Marc Anthony, La India',
+    '1994-11-01',
+    '297',
+    '50',
+    '99'
+),
+(
+    'Que Manera de Quererte',
+    '',
+    'Gilberto Santa Rosa',
+    '1995-03-01',
+    '250',
+    '50',
+    '99'
+),
+(
+    'Lloraré',
+    '',
+    'Oscar D’León',
+    '1983-07-01',
+    '276',
+    '50',
+    '99'
+),
+(
+    'El Cantante',
+    '',
+    'Héctor Lavoe',
+    '1978-01-01',
+    '262',
+    '50',
+    '99'
+),
+
+(
+    'Superstition',
+    '',
+    'Stevie Wonder',
+    '1972-10-24',
+    '263',
+    '50',
+    '100'
+),
+(
+    'I Got You (I Feel Good),',
+    '',
+    'James Brown',
+    '1965-09-13',
+    '161',
+    '50',
+    '100'
+),
+(
+    'Respect',
+    '',
+    'Aretha Franklin',
+    '1967-04-01',
+    '148',
+    '50',
+    '100'
+),
+(
+    'Let’s Groove',
+    '',
+    'Earth, Wind & Fire',
+    '1981-10-05',
+    '267',
+    '50',
+    '100'
+),
+(
+    'Ain’t No Mountain High Enough',
+    '',
+    'Marvin Gaye, Tammi Terrell',
+    '1967-06-01',
+    '137',
+    '50',
+    '100'
+),
+
+(
+    'Sandstorm',
+    '',
+    'Darude',
+    '1999-11-15',
+    '137',
+    '50',
+    '101'
+),
+(
+    'Adagio for Strings',
+    '',
+    'Tiesto',
+    '2005-03-07',
+    '264',
+    '50',
+    '101'
+),
+(
+    'Scary Monsters and Nice Sprites',
+    '',
+    'Skrillex',
+    '2010-10-22',
+    '246',
+    '50',
+    '101'
+),
+(
+    'One More Time',
+    '',
+    'Daft Punk',
+    '2000-11-13',
+    '320',
+    '50',
+    '101'
+),
+(
+    'Harder, Better, Faster, Stronger',
+    '',
+    'Daft Punk',
+    '2001-03-12',
+    '232',
+    '50',
+    '101'
+),
+
+(
+    'Adagio for Strings',
+    '',
+    'Tiesto',
+    '2005-03-07',
+    '264',
+    '50',
+    '102'
+),
+(
+    'For an Angel',
+    '',
+    'Paul van Dyk',
+    '1998-09-21',
+    '320',
+    '50',
+    '102'
+),
+(
+    'Sun & Moon',
+    '',
+    'Above & Beyond',
+    '2011-02-28',
+    '236',
+    '50',
+    '102'
+),
+(
+    'Sandstorm',
+    '',
+    'Darude',
+    '1999-11-15',
+    '137',
+    '50',
+    '102'
+),
+(
+    'Communication',
+    '',
+    'Armin van Buuren',
+    '1999-05-01',
+    '264',
+    '50',
+    '102'
+),
+
+(
+    'Sicko Mode',
+    '',
+    'Travis Scott',
+    '2018-08-03',
+    '312',
+    '50',
+    '103'
+),
+(
+    'Goosebumps',
+    '',
+    'Travis Scott',
+    '2016-03-04',
+    '210',
+    '50',
+    '103'
+),
+(
+    'Bad and Boujee',
+    '',
+    'Migos, Lil Uzi Vert',
+    '2016-10-28',
+    217,
+    50,
+    103
+),
+(
+    'God\'s Plan',
+    '',
+    'Drake',
+    '2018-01-19',
+    198,
+    50,
+    103
+),
+(
+    'Mask Off',
+    '',
+    'Future',
+    '2017-04-18',
+    203,
+    50,
+    103
+),
+
+(
+    'Je te promets',
+    '',
+    'Johnny Hallyday',
+    '1986-11-01',
+    '257',
+    '50',
+    '104'
+),
+(
+    'La Vie en rose',
+    '',
+    'Édith Piaf',
+    '1947-05-01',
+    '187',
+    '50',
+    '104'
+),
+(
+    'Ne me quitte pas',
+    '',
+    'Jacques Brel',
+    '1959-01-01',
+    '197',
+    '50',
+    '104'
+),
+(
+    'Je l’aime à mourir',
+    '',
+    'Francis Cabrel',
+    '2007-01-01',
+    '248',
+    '50',
+    '104'
+),
+(
+    'L’encre de tes yeux',
+    '',
+    'Francis Cabrel',
+    '1980-01-01',
+    '221',
+    '50',
+    '104'
+);

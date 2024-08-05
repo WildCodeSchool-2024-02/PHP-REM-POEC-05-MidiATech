@@ -12,6 +12,9 @@ abstract class AbstractController
 {
     public const USER = 'user';
     public const ADMIN = 'admin';
+    public const MEDIA_BOOKS = 'books';
+    public const MEDIA_MUSICS = 'musics';
+    public const MEDIA_VIDEOS = 'videos';
 
     protected Environment $twig;
     protected ManagerRegistry $managers;

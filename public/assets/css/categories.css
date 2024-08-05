@@ -1,0 +1,127 @@
+/* General Container */
+.container2 {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Title styles (h1) */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 32px;
+    color: #251565;
+}
+
+/* Section Titles (h2) */
+h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #251565;
+    text-align: center;
+}
+
+/* Search Section Styles */
+.search-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-filter input[type="text"],
+.search-filter select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-filter input[type="text"] {
+    width: 200px;
+}
+
+.search-filter input {
+    background-color: #f8faf6;
+}
+
+/* Media List Section Styles */
+.media-list-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+table th {
+    background-color:#f8faf6 ;
+}
+
+table td.options {
+    text-align: center;
+}
+
+.button {
+    background-color: #5f599f;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0 5px;
+}
+
+.button:hover {
+    background-color: #000000;
+}
+
+/* Add Media Section Styles */
+.add-media-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px; /* Add margin to separate from previous sections */
+}
+
+.add-media-btn {
+    display: inline-block;
+    padding: 5px 10px; /* Reduced padding */
+    background-color: #5f599f;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    width: 150px; /* Set fixed width */
+    text-align: center;
+}
+
+.add-media-btn:hover {
+    background-color: #000000;
+}
+
+.action {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

@@ -172,6 +172,11 @@ abstract class AbstractManager
         return $this->pdo->query($query)->fetch();
     }
 
+    public function selectCategories(): array
+    {
+        $query = "SELECT * FROM categories WHERE name LIKE '" . static::TABLE . "%' ORDER BY name";
+        return $this->pdo->query($query)->fetchAll(\PDO::FETCH_ASSOC);
+    }
     /**
      * Sélectionne les enregistrements filtrés par titre et auteur.
      */

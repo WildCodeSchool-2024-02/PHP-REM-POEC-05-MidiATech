@@ -38,7 +38,7 @@ class BooksManager extends AbstractManager
     }
 
     // Méthode pour mettre à jour un livre existant dans la base de données.
-    public function update(array $item): bool
+    public function update(array $item): int
     {
         // Préparation de la requête SQL de mise à jour.
         $statement = $this->pdo->prepare(
@@ -59,8 +59,8 @@ class BooksManager extends AbstractManager
         $statement->bindValue(':quantities', $item['quantities'], PDO::PARAM_INT);
         $statement->bindValue(':id_category', $item['id_category'], PDO::PARAM_INT);
 
-        // Exécution de la requête de mise à jour.
-        return $statement->execute();
+        $statement->execute();
+        return (int)$item['id'];
     }
 
     // Méthode pour sélectionner des livres par catégorie.

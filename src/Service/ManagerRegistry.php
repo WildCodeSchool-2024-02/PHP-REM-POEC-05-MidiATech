@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\AdminManager;
 use App\Model\SessionManager;
 use App\Model\UserManager;
 use App\Model\RoleManager;

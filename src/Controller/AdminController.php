@@ -34,6 +34,11 @@ class AdminController extends AbstractController
         return $this->twig->render('Home/index.html.twig');
     }
 
+    public function categoriesMedias(): string
+    {
+        return $this->twig->render('Admin/categoriesMedias.html.twig');
+    }
+
     public function reservations(): string
     {
         // Récupère toutes les réservations
@@ -70,26 +75,6 @@ class AdminController extends AbstractController
 
         // Redirige vers la page de connexion si non connecté
         $this->redirect('/login');
-    }
-
-    public function collections(): string
-    {
-        // Récupère toutes les collections de livres, musiques et vidéos
-        $booksManager = new BooksManager();
-        $books = $booksManager->selectAll();
-
-        $musicsManager = new MusicsManager();
-        $music = $musicsManager->selectAll();
-
-        $videosManager = new VideosManager();
-        $videos = $videosManager->selectAll();
-
-        // Affiche la page de gestion des collections
-        return $this->twig->render('Admin/collections.html.twig', [
-            'books' => $books,
-            'music' => $music,
-            'videos' => $videos
-        ]);
     }
 
     public function acceptReturn()
