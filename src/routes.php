@@ -41,7 +41,5 @@ return [
     'admin/accept-return' => ['AdminController', 'acceptReturn', ['id']],
     'admin/update-stock' => ['AdminController', 'handleUpdateStock'],
 
-    // New Routes for Media Search and Update
-    'admin/search-media' => ['AdminController', 'searchMedia'], // Route for searching media
-    'admin/update-media' => ['AdminController', 'updateMedia'], // Route for updating media
+   
 ];
