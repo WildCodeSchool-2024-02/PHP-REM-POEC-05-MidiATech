@@ -367,7 +367,7 @@ nav {
     }
 }
 
-.return {
+.return, .return_index {
     margin: 30px;
 
     & a {
@@ -381,3 +381,8 @@ nav {
         text-decoration: none;
     }
 }
+
+@media (max-width: 768px) {
+.return{
+    display: none;
+}}

@@ -58,15 +58,12 @@ return [
     'admin/types/videos/edit' => ['VideosTypesController', 'editTypes', ['id']],
     'admin/types/videos/add' => ['VideosTypesController', 'addTypes'],
 
+    'admin/delete-reservation' => ['AdminController', 'deleteReservation'],
     'admin/stocks' => ['AdminController', 'stocks'],
     'profile/edit' => ['UserController', 'editProfile'],
     'borrowings/add' => ['BorrowingController', 'addBorrowing'],
-
     'borrowings/retour' => ['BorrowingController', 'retour', ['id']],
     'borrowings/request-return' => ['BorrowingController', 'requestReturn', ['id']],
     'admin/accept-return' => ['AdminController', 'acceptReturn', ['id']],
-
     'admin/update-stock' => ['AdminController', 'handleUpdateStock'],
-
-
 ];

@@ -69,3 +69,43 @@ let Carousel = (function () {
         moveSlide: moveSlide
     }
 })();
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all modifier buttons
+    const modifierButtons = document.querySelectorAll('.modifier-button');
+
+    modifierButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Get the target form id
+            const targetFormId = button.getAttribute('data-target');
+            // Toggle the display of the form
+            const form = document.getElementById(targetFormId);
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        });
+    });
+});
+
+// Toggle form visibility
+document.querySelectorAll('.modifier-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const targetId = this.getAttribute('data-target');
+        toggleForm(targetId);
+    });
+});
+
+function toggleForm(formId) {
+    const form = document.getElementById(formId);
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+}
+
+// Toggle form visibility
+document.querySelectorAll('.modifier-button').forEach(button => {
+    button.addEventListener('click', function() {
+        const target = document.getElementById(this.getAttribute('data-target'));
+        target.style.display = target.style.display === 'none' ? 'block' : 'none';
+    });
+});

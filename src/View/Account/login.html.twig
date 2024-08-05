@@ -4,6 +4,10 @@
 <link rel="stylesheet" href="/assets/css/login.css" />
 {% endblock %}
 
+{% block javascript %}
+<script defer src="/assets/javascript/login.js"></script>
+{% endblock %}
+
 {% block title %}Connexion{% endblock %}
 
 {% block content %}
@@ -23,12 +27,22 @@
 
             <button type="submit" id="loginButton" class="login-button">Se connecter</button>
         </form>
-        {% if session.login_error %}
-            <div id="loginError" class="login-error-message">{{ session.login_error }}</div>
+        {% if error %}
+            <div id="loginError" class="login-error-message">{{ error }}</div>
         {% endif %}
         <div class="login-register-prompt">
             <p>Pas encore inscrit ? <a href="/register">Créez un compte</a></p>
         </div>
     </div>
 </div>
+
+{% if error %}
+    <div class="error-modal" id="errorModal">
+        <div class="error-modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <h3>Erreur :</h3>
+            <p>{{ error }}</p>
+        </div>
+    </div>
+{% endif %}
 {% endblock %}
