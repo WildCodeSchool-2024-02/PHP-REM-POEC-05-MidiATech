@@ -50,7 +50,7 @@ class BooksController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function show($id): string
+    public function show(int $id): string
     {
         $media = $this->managers->booksManager->selectOneById($id);
 
