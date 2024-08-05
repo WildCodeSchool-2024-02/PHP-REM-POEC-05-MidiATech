@@ -125,3 +125,53 @@ a.stockMedia {
 a.stockMedia:hover {
     color: var(--quaternaryColor);
 }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    table {
+        font-size: 14px;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    table th, table td {
+        padding: 8px;
+    }
+
+    .options form {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .modify-stock-btn,
+    .filter-container button {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .filter-container input[type="text"],
+    .filter-container select {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    .search-form {
+        flex-direction: column;
+        gap: 10px;
+    }
+}

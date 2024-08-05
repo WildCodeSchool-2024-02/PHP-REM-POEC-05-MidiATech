@@ -31,17 +31,13 @@ return [
     'musics/delete' => ['MusicsController', 'delete', ['id']],
     'videos/delete' => ['VideosController', 'delete', ['id']],
     'admin/reservations' => ['AdminController', 'reservations'],
-    'admin/delete-reservation' => ['AdminController', 'deleteReservation'],  // New route for deletion
+    'admin/delete-reservation' => ['AdminController', 'deleteReservation'],
     'admin/collections' => ['AdminController', 'collections'],
     'admin/stocks' => ['AdminController', 'stocks'],
     'profile/edit' => ['UserController', 'editProfile'],
     'borrowings/add' => ['BorrowingController', 'addBorrowing'],
-
     'borrowings/retour' => ['BorrowingController', 'retour', ['id']],
     'borrowings/request-return' => ['BorrowingController', 'requestReturn', ['id']],
     'admin/accept-return' => ['AdminController', 'acceptReturn', ['id']],
-
     'admin/update-stock' => ['AdminController', 'handleUpdateStock'],
-
-
 ];

@@ -96,4 +96,13 @@ class UserManager extends AbstractManager
 
         return $role['role'] ?? null;
     }
+    public function emailExists(string $email): bool
+    {
+        $query = 'SELECT COUNT(*) FROM ' . self::TABLE . ' WHERE email = :email';
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':email', $email, \PDO::PARAM_STR);
+        $statement->execute();
+
+        return $statement->fetchColumn() > 0;
+    }
 }
