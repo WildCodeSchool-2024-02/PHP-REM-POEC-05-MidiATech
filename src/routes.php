@@ -40,6 +40,4 @@ return [
     'borrowings/request-return' => ['BorrowingController', 'requestReturn', ['id']],
     'admin/accept-return' => ['AdminController', 'acceptReturn', ['id']],
     'admin/update-stock' => ['AdminController', 'handleUpdateStock'],
-
-   
 ];
