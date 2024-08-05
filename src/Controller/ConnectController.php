@@ -22,6 +22,11 @@ class ConnectController extends AbstractController
             $user = array_map('trim', $_POST);
             $errors = $this->validate($user);
 
+            // Check if the email already exists in the database
+            if ($this->managers->userManager->emailExists($user['email'])) {
+                $errors['email'] = 'Cette adresse email est déjà utilisée.';
+            }
+
             if (empty($errors)) {
                 $user['password'] = password_hash($user['password'], PASSWORD_DEFAULT);
                 $user['role_id'] = 2;
@@ -35,6 +40,7 @@ class ConnectController extends AbstractController
 
         return $this->twig->render('Account/register.html.twig');
     }
+
 
     /**
      * @throws SyntaxError
@@ -57,6 +63,7 @@ class ConnectController extends AbstractController
      * @throws RuntimeError
      * @throws LoaderError
      */
+
     private function processLogin(): string
     {
         $this->redirectIfLoggedIn();
@@ -70,8 +77,10 @@ class ConnectController extends AbstractController
             $this->logInUser($user);
         }
 
+        // Passing the error message to the Twig template
         return $this->twig->render('Account/login.html.twig', ['error' => 'Email ou mot de passe invalide']);
     }
+
 
     private function logInUser($user): void
     {
