@@ -64,7 +64,7 @@ class MusicsManager extends AbstractManager
     {
         // Requête pour récupérer les musiques par catégorie
         $statement = $this->pdo->prepare("
-        SELECT m.*, TRIM(SUBSTRING_INDEX(c.name, 'Music ', -1)) AS category
+        SELECT m.*, TRIM(SUBSTRING_INDEX(c.name, 'musics ', -1)) AS category
         FROM musics m
         JOIN categories c ON m.id_category = c.id
         WHERE c.name = :category
@@ -82,8 +82,8 @@ class MusicsManager extends AbstractManager
     {
         // Requête pour augmenter le stock d'une musique par son ID
         $statement = $this->pdo->prepare("
-            UPDATE " . self::TABLE . " 
-            SET quantities = quantities + 1 
+            UPDATE " . self::TABLE . "
+            SET quantities = quantities + 1
             WHERE id = :id
         ");
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
@@ -98,7 +98,7 @@ class MusicsManager extends AbstractManager
     {
         // Requête pour diminuer le stock d'une musique par son ID
         $statement = $this->pdo->prepare("
-            UPDATE " . self::TABLE . " 
+            UPDATE " . self::TABLE . "
             SET quantities = quantities - 1
             WHERE id = :id
         ");

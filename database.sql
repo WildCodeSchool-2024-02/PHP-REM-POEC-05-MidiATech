@@ -261,9 +261,7 @@ VALUES ('videos action'),
     ('books roman horreur'),
     ('books roman humoristique'),
     ('books roman jeunesse'),
-    (
-        'books roman littérature contemporaine'
-    ),
+    ('books roman littérature contemporaine'),
     ('books roman mœurs'),
     ('books roman noir'),
     ('books roman philosophique'),
