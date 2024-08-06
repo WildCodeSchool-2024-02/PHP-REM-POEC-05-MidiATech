@@ -89,7 +89,7 @@ class VideosManager extends AbstractManager
     {
         // Requête pour récupérer les vidéos par catégorie
         $statement = $this->pdo->prepare("
-            SELECT v.*, TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS category
+            SELECT v.*, TRIM(SUBSTRING_INDEX(c.name, 'videos ', -1)) AS category
             FROM videos v
             JOIN categories c ON v.id_category = c.id
             WHERE c.name = :category
@@ -151,7 +151,7 @@ class VideosManager extends AbstractManager
         // Construction de la requête en fonction de la catégorie
         if ($category === null || $category === 'Tout') {
             $statement = $this->pdo->prepare("
-            SELECT v.*, t.name AS type, TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS category
+            SELECT v.*, t.name AS type, TRIM(SUBSTRING_INDEX(c.name, 'videos ', -1)) AS category
             FROM videos v
             JOIN categories c ON v.id_category = c.id
             JOIN types t ON v.id_types = t.id
@@ -160,13 +160,13 @@ class VideosManager extends AbstractManager
             $statement->bindValue(':type_id', $typeId, PDO::PARAM_INT);
         } else {
             $statement = $this->pdo->prepare("
-            SELECT v.*, t.name AS type, TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS category
+            SELECT v.*, t.name AS type, TRIM(SUBSTRING_INDEX(c.name, 'videos ', -1)) AS category
             FROM videos v
             JOIN categories c ON v.id_category = c.id
             JOIN types t ON v.id_types = t.id
             WHERE c.name = :category AND t.id = :type_id
         ");
-            $statement->bindValue(':category', 'Video ' . $category, PDO::PARAM_STR);
+            $statement->bindValue(':category', 'videos ' . $category, PDO::PARAM_STR);
             $statement->bindValue(':type_id', $typeId, PDO::PARAM_INT);
         }
 
@@ -181,8 +181,8 @@ class VideosManager extends AbstractManager
     {
         // Requête pour augmenter le stock d'une vidéo par son ID
         $statement = $this->pdo->prepare("
-            UPDATE " . self::TABLE . " 
-            SET quantities = quantities + 1 
+            UPDATE " . self::TABLE . "
+            SET quantities = quantities + 1
             WHERE id = :id
         ");
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
@@ -197,7 +197,7 @@ class VideosManager extends AbstractManager
     {
         // Requête pour diminuer le stock d'une vidéo par son ID
         $statement = $this->pdo->prepare("
-            UPDATE " . self::TABLE . " 
+            UPDATE " . self::TABLE . "
             SET quantities = quantities - 1
             WHERE id = :id
         ");

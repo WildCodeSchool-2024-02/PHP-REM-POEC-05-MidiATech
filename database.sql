@@ -261,9 +261,7 @@ VALUES ('videos action'),
     ('books roman horreur'),
     ('books roman humoristique'),
     ('books roman jeunesse'),
-    (
-        'books roman littérature contemporaine'
-    ),
+    ('books roman littérature contemporaine'),
     ('books roman mœurs'),
     ('books roman noir'),
     ('books roman philosophique'),
@@ -2514,7 +2512,7 @@ VALUES (
     'https://static.fnac-static.com/multimedia/Images/FR/NR/0f/19/dc/14424335/1540-1/tsp20231016081104/Cuisines-du-monde.jpg',
     'Recettes de cuisine internationales.',
     'Collectif',
-    '2028-09-28',
+    '2008-09-28',
     '448',
     '50',
     '43'

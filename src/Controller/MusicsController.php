@@ -23,7 +23,7 @@ class MusicsController extends AbstractController
     {
 
         if ($category && $category !== 'Tout') {
-            $categoryFullName = 'Music ' . $category;
+            $categoryFullName = 'musics ' . $category;
             $medias = $this->managers->musicsManager->selectByCategory($categoryFullName);
         } else {
             $medias = $this->managers->musicsManager->selectAll();
@@ -34,7 +34,10 @@ class MusicsController extends AbstractController
         }
 
         $title = "Musiques";
-        $filters = array_merge(['Tout'], $this->managers->categoriesManager->getAllMusicCategories());
+        $categories = array_map(static function ($category) {
+            return $category['name'];
+        }, $this->managers->categoriesManager->getAllMusicCategories());
+        $filters = array_merge(['Tout'], $categories);
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
@@ -69,7 +72,7 @@ class MusicsController extends AbstractController
     public function edit(int $id): ?string
     {
         $media = $this->managers->musicsManager->selectOneById($id);
-        $categories = $this->managers->categoriesManager->selectAll();
+        $categories = $this->managers->categoriesManager->getAllMusicCategories();
         $userRole = $this->getUserRole();
 
 
@@ -117,7 +120,7 @@ class MusicsController extends AbstractController
      */
     public function add(): ?string
     {
-        $categories = $this->managers->categoriesManager->selectAll();
+        $categories = $this->managers->categoriesManager->getAllMusicCategories();
         $userRole = $this->getUserRole();
 
 
