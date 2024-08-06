@@ -24,7 +24,7 @@ class BooksController extends AbstractController
             $categoryFullName = 'books ' . $category;
             $medias = $this->managers->booksManager->selectByCategory($categoryFullName);
         } else {
-            $medias = $this->managers->booksManager->selectAll();
+            $medias = $this->managers->booksManager->selectAll('title');
         }
 
         foreach ($medias as &$media) {
