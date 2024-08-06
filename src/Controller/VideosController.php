@@ -312,6 +312,7 @@ class VideosController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categorie = array_map('trim', $_POST);
             $errors = $this->validateCategories($categorie);
+            $categorie['name'] = self::MEDIA_VIDEOS . " " . $categorie['name'];
 
             if (empty($errors)) {
                 try {
