@@ -8,12 +8,13 @@ h1 {
 
 /* Container for main content */
 .container2 {
-    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 40px;
     align-items: center;
-    padding: 40px 20px; /* Increased padding for more space above and below */
-    margin: 20px 0; /* Additional margin for more space above and below */
 }
 
 /* Admin links section */
