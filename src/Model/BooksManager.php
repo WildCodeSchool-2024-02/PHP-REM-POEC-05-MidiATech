@@ -68,7 +68,7 @@ class BooksManager extends AbstractManager
     {
         // Préparation de la requête SQL pour sélectionner les livres par catégorie.
         $statement = $this->pdo->prepare("
-        SELECT b.*, TRIM(SUBSTRING_INDEX(c.name, 'Book ', -1)) AS category
+        SELECT b.*, TRIM(SUBSTRING_INDEX(c.name, 'books ', -1)) AS category
         FROM books b
         JOIN categories c ON b.id_category = c.id
         WHERE c.name = :category
@@ -86,8 +86,8 @@ class BooksManager extends AbstractManager
     {
         // Préparation de la requête SQL pour incrémenter le stock.
         $statement = $this->pdo->prepare("
-            UPDATE " . self::TABLE . " 
-            SET quantities = quantities + 1 
+            UPDATE " . self::TABLE . "
+            SET quantities = quantities + 1
             WHERE id = :id
         ");
         // Liaison de l'ID du livre au paramètre de la requête.
@@ -102,7 +102,7 @@ class BooksManager extends AbstractManager
     {
         // Préparation de la requête SQL pour décrémenter le stock.
         $statement = $this->pdo->prepare("
-            UPDATE " . self::TABLE . " 
+            UPDATE " . self::TABLE . "
             SET quantities = quantities - 1
             WHERE id = :id
         ");

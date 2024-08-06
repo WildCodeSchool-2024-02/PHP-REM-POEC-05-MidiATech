@@ -2,8 +2,15 @@
 <link rel="stylesheet" href="/assets/css/index.css" />
 {% endblock %} {% block title %}Administration MidiATech {% endblock %} {% block
 content %}
-<h1>Gestion des catégories</h1>
-<main class="container2">
+
+<section class="return">
+    <a href="/admin">Retour Administration</a>
+</section>
+
+<div class="container2">
+    
+    <h1>Gestion des catégories</h1>
+    
     <section class="admin-links">
         <h2>Choix du Média</h2>
         <ul>
@@ -12,7 +19,7 @@ content %}
             <li><a href="/admin/categories/videos">Vidéos</a></li>
         </ul>
     </section>
-</main>
+</div>
 <form action="/logout" method="post">
     <button type="submit">Se déconnecter</button>
 </form>

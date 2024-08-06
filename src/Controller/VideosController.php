@@ -23,20 +23,29 @@ class VideosController extends AbstractController
     {
         $medias = $this->getMedias($this->managers->videosManager, $category, $type);
 
+        foreach ($medias as &$media) {
+            $media['categories'] = $this->managers->categoriesManager->getCategoriesByVideoId($media['id']);
+        }
+
         $this->addCategoriesAndTypes($medias, $this->managers->categoriesManager, $this->managers->typesManager);
 
         $title = "Films - Séries - Jeunesses - Documentaires";
-        $categoryFilters = array_merge(['Tout'], $this->managers->categoriesManager->getAllVideoCategories());
+
         $typeFilters = array_merge(['Tout'], $this->managers->typesManager->getAllTypes());
+
+        $categories = array_map(static function ($category) {
+            return $category['name'];
+        }, $this->managers->categoriesManager->getAllVideoCategories());
+        $filters = array_merge(['Tout'], $categories);
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
-            'categoryFilters' => $categoryFilters,
+            'categoryFilters' => $filters,
             'typeFilters' => $typeFilters,
             'medias' => $medias,
             'media_type' => 'videos',
             'selected_category' => $category,
-            'selected_type' => $type
+            'selected_type' => null
         ]);
     }
 
@@ -47,7 +56,7 @@ class VideosController extends AbstractController
         }
 
         if ($this->hasCategory($category)) {
-            $categoryFullName = 'Video ' . $category;
+            $categoryFullName = 'videos ' . $category;
             return $videosManager->selectByCategory($categoryFullName);
         }
 
@@ -107,7 +116,7 @@ class VideosController extends AbstractController
     public function edit(int $id): ?string
     {
         $media = $this->managers->videosManager->selectOneById($id);
-        $categories = $this->managers->categoriesManager->selectAll();
+        $categories = $this->managers->categoriesManager->getAllVideoCategories();
         $types = $this->managers->typesManager->selectAll();
         $userRole = $this->getUserRole();
 
@@ -170,7 +179,7 @@ class VideosController extends AbstractController
      */
     public function add(): ?string
     {
-        $categories = $this->managers->categoriesManager->selectAll();
+        $categories = $this->managers->categoriesManager->getAllVideoCategories();
         $types = $this->managers->typesManager->selectAll();
         $userRole = $this->getUserRole();
 
@@ -303,6 +312,7 @@ class VideosController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categorie = array_map('trim', $_POST);
             $errors = $this->validateCategories($categorie);
+            $categorie['name'] = self::MEDIA_VIDEOS . " " . $categorie['name'];
 
             if (empty($errors)) {
                 try {
