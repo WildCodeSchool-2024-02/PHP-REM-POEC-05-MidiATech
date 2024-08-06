@@ -21,7 +21,7 @@ class BooksController extends AbstractController
     public function index(?string $category = null): string
     {
         if ($category && $category !== 'Tout') {
-            $categoryFullName = 'Book ' . $category;
+            $categoryFullName = 'books ' . $category;
             $medias = $this->managers->booksManager->selectByCategory($categoryFullName);
         } else {
             $medias = $this->managers->booksManager->selectAll();
@@ -32,7 +32,10 @@ class BooksController extends AbstractController
         }
 
         $title = "Livres";
-        $filters = array_merge(['Tout'], $this->managers->categoriesManager->getAllBookCategories());
+        $categories = array_map(static function ($category) {
+            return $category['name'];
+        }, $this->managers->categoriesManager->getAllBookCategories());
+        $filters = array_merge(['Tout'], $categories);
 
         return $this->twig->render('Media/index.html.twig', [
             'page_title' => $title,
@@ -70,7 +73,7 @@ class BooksController extends AbstractController
     public function edit(int $id): ?string
     {
         $media = $this->managers->booksManager->selectOneById($id);
-        $categories = $this->managers->categoriesManager->selectAll();
+        $categories = $this->managers->categoriesManager->getAllBookCategories();
         $userRole = $this->getUserRole();
 
         if ($userRole !== self::ADMIN) {
@@ -121,7 +124,7 @@ class BooksController extends AbstractController
      */
     public function add(): ?string
     {
-        $categories = $this->managers->categoriesManager->selectAll();
+        $categories = $this->managers->categoriesManager->getAllBookCategories();
         $userRole = $this->getUserRole();
 
         if ($userRole !== self::ADMIN) {
@@ -244,6 +247,7 @@ class BooksController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categorie = array_map('trim', $_POST);
             $errors = $this->validateCategories($categorie);
+            $categorie['name'] = self::MEDIA_BOOKS . " " . $categorie['name'];
 
             if (empty($errors)) {
                 try {

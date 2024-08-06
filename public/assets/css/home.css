@@ -127,7 +127,11 @@
 }
 
 .article > ul {
-    display: inline;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
     list-style: none;
 }
 
@@ -174,8 +178,8 @@ ul li {
 }
 
 .article_img {
-    max-width: 25vw;
-    max-height: 25vw;
+    max-width: 30vw;
+    max-height: 50vh;
 }
 
 .button {

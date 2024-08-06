@@ -11,7 +11,7 @@ class CategoriesManager extends AbstractManager
     public function getCategoriesByBookId(int $bookId): array
     {
         $statement = $this->pdo->prepare("
-        SELECT TRIM(SUBSTRING_INDEX(c.name, 'Book ', -1)) AS name
+        SELECT TRIM(SUBSTRING_INDEX(c.name, 'books ', -1)) AS name
         FROM categories c
         JOIN books b ON c.id = b.id_category
         WHERE b.id = :book_id
@@ -19,7 +19,7 @@ class CategoriesManager extends AbstractManager
         $statement->bindValue(':book_id', $bookId, PDO::PARAM_INT);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -27,39 +27,39 @@ class CategoriesManager extends AbstractManager
     public function getAllBookCategories(): array
     {
         $statement = $this->pdo->query("
-        SELECT TRIM(SUBSTRING_INDEX(name, 'Book ', -1)) AS name
+        SELECT id, TRIM(SUBSTRING_INDEX(name, 'books ', -1)) AS name
         FROM " . self::TABLE . "
-        WHERE name LIKE 'Book %'
+        WHERE name LIKE 'books %'
     ");
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getAllVideoCategories(): array
     {
         $statement = $this->pdo->query("
-        SELECT TRIM(SUBSTRING_INDEX(name, 'Video ', -1)) AS name
+        SELECT id, TRIM(SUBSTRING_INDEX(name, 'videos ', -1)) AS name
         FROM " . self::TABLE . "
-        WHERE name LIKE 'Video %'
+        WHERE name LIKE 'videos %'
     ");
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     public function getAllMusicCategories(): array
     {
         $statement = $this->pdo->query("
-        SELECT TRIM(SUBSTRING_INDEX(name, 'Music ', -1)) AS name
+        SELECT id, TRIM(SUBSTRING_INDEX(name, 'musics ', -1)) AS name
         FROM " . self::TABLE . "
-        WHERE name LIKE 'Music %'
+        WHERE name LIKE 'musics %'
     ");
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getCategoriesByVideoId(int $videoId): array
     {
         $statement = $this->pdo->prepare("
-        SELECT TRIM(SUBSTRING_INDEX(c.name, 'Video ', -1)) AS name
+        SELECT TRIM(SUBSTRING_INDEX(c.name, 'videos ', -1)) AS name
         FROM categories c
         JOIN videos v ON c.id = v.id_category
         WHERE v.id = :video_id
@@ -67,13 +67,13 @@ class CategoriesManager extends AbstractManager
         $statement->bindValue(':video_id', $videoId, PDO::PARAM_INT);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getCategoriesByMusicId(int $musicId): array
     {
         $statement = $this->pdo->prepare("
-        SELECT TRIM(SUBSTRING_INDEX(c.name, 'Music ', -1)) AS name
+        SELECT TRIM(SUBSTRING_INDEX(c.name, 'musics ', -1)) AS name
         FROM categories c
         JOIN musics m ON c.id = m.id_category
         WHERE m.id = :music_id
@@ -81,7 +81,7 @@ class CategoriesManager extends AbstractManager
         $statement->bindValue(':music_id', $musicId, PDO::PARAM_INT);
         $statement->execute();
 
-        return $statement->fetchAll(PDO::FETCH_COLUMN);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
