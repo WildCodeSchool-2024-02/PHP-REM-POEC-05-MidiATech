@@ -26,7 +26,7 @@ class MusicsController extends AbstractController
             $categoryFullName = 'musics ' . $category;
             $medias = $this->managers->musicsManager->selectByCategory($categoryFullName);
         } else {
-            $medias = $this->managers->musicsManager->selectAll();
+            $medias = $this->managers->musicsManager->selectAll('title');
         }
 
         foreach ($medias as &$media) {

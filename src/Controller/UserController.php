@@ -48,14 +48,10 @@ class UserController extends AbstractController
             $user = $this->managers->userManager->selectOneById($userId);
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $updatedUser = [
-                    'id' => $userId,
-                    $user = array_map('trim', $_POST)
-                ];
+                $user = array_map('trim', $_POST);
+                $user['id'] = $userId;
 
-                //$errors = $this->validate($user);
-
-                $this->managers->userManager->update($updatedUser);
+                $this->managers->userManager->update($user);
                 $this->redirect('/account');
             }
 
