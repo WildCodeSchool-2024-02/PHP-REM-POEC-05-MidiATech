@@ -42,6 +42,7 @@
     margin-top: 10px;
     box-shadow: #cff0ff 0px 5px 10px -5px;
     border: 1px solid #ddd;
+    box-sizing: border-box;
 }
 
 .login-input::placeholder {

@@ -103,56 +103,6 @@ page %}home{% endblock %} {% block stylesheet %}
                 </a>
             </li>
         </ul>
-        <div class="button">
-            {% if app.userRole == 'admin' %}
-            <button
-                class="button modifier-button"
-                data-target="recommandations-form"
-            >
-                Modifier
-            </button>
-            <form
-                class="modifier-form"
-                id="recommandations-form"
-                style="display: none"
-            >
-                <label for="mediaTitle">Titre:</label>
-                <input
-                    type="text"
-                    id="mediaTitle"
-                    name="mediaTitle"
-                    autocomplete="off"
-                    oninput="searchMedia()"
-                    required
-                />
-                <div id="mediaTitleSuggestions" class="suggestions"></div>
-
-                <label for="mediaType">Type:</label>
-                <select id="mediaType" name="mediaType" required>
-                    <option value="books">Livre</option>
-                    <option value="musics">Musique</option>
-                    <option value="videos">Vidéo</option>
-                </select>
-
-                <label for="mediaAuthor">Auteur/Chanteur/Réalisateur:</label>
-                <input
-                    type="text"
-                    id="mediaAuthor"
-                    name="mediaAuthor"
-                    autocomplete="off"
-                    oninput="searchMedia()"
-                    required
-                />
-                <div id="mediaAuthorSuggestions" class="suggestions"></div>
-
-                <input type="hidden" id="mediaId" name="mediaId" />
-
-                <button type="button" onclick="updateRecommandations()">
-                    Enregistrer
-                </button>
-            </form>
-            {% endif %}
-        </div>
     </article>
 
     <article class="article informations">
@@ -186,37 +136,7 @@ page %}home{% endblock %} {% block stylesheet %}
                 </a>
             </li>
         </ul>
-        <div class="button">
-            {% if app.userRole == 'admin' %}
-            <button class="button modifier-button" data-target="populaire-form">
-                Modifier
-            </button>
-            <form
-                class="modifier-form"
-                id="populaire-form"
-                style="display: none"
-            >
-                <label for="populaireId">Choisir un élément:</label>
-                <select id="populaireId" required>
-                    <option value="1">Livre</option>
-                    <option value="2">Musique</option>
-                    <option value="3">Vidéo</option>
-                </select>
-
-                <label for="populaireTitle">Titre:</label>
-                <input type="text" id="populaireTitle" required />
-
-                <label for="populaireAuthor"
-                    >Auteur/Chanteur/Réalisateur:</label
-                >
-                <input type="text" id="populaireAuthor" required />
-
-                <button type="button" onclick="updatePopulaire()">
-                    Enregistrer
-                </button>
-            </form>
-            {% endif %}
-        </div>
+       
     </article>
     <article class="article informations">
         <h2>EVENEMENTS</h2>
